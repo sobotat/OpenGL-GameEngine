@@ -16,7 +16,7 @@ Application::Application() {
 void Application::init() {    
     printf("Init\n");
     
-    //glfwSetErrorCallback(error_callback);
+    glfwSetErrorCallback(error_callback);
     if (!glfwInit()) {
         fprintf(stderr, "ERROR: could not start GLFW3\n");
         exit(EXIT_FAILURE);
@@ -56,6 +56,10 @@ void Application::init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+    glfwSetWindowFocusCallback(window, window_focus_callback);
+    glfwSetWindowIconifyCallback(window, window_iconify_callback);
+    glfwSetWindowSizeCallback(window, window_size_callback);
 
     input = new Input(window);
     scene = new Scene();

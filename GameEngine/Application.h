@@ -34,3 +34,20 @@ public:
     GLFWwindow* getWindow();
     Input* getInput();     
 };
+
+static void error_callback(int error, const char* description) {
+    fputs(description, stderr);
+}
+
+static void window_focus_callback(GLFWwindow* window, int focused) {
+    printf("window_focus_callback \n");
+}
+
+static void window_iconify_callback(GLFWwindow* window, int iconified) {
+    printf("window_iconify_callback \n");
+}
+
+static void window_size_callback(GLFWwindow* window, int width, int height) {
+    printf("resize %d, %d \n", width, height);
+    glViewport(0, 0, width, height);
+}
