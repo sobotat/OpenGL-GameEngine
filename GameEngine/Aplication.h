@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 
+#include "Scene.h"
 #include "Inputs/Input.h"
 #include "Shaders/FragmentShader.h"
 #include "Shaders/VertexShader.h"
@@ -17,7 +18,11 @@ protected:
     int height = 800;
     float ratio;
     GLFWwindow* window;
+    
     Input* input;
+    Scene* scene;
+
+    void onExit();
     
 public:
     static Aplication* getInstance();

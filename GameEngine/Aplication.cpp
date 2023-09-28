@@ -55,6 +55,7 @@ void Aplication::init() {
     glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 
     input = new Input(window);
+    scene = new Scene();
 }
 
 void Aplication::createShaders() {
@@ -76,14 +77,51 @@ void Aplication::createShaders() {
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
     printf("Shader Program Set\n");
+
+    printf("Checking Shaders ...\n");
+    GLint status;
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
+    if (status == GL_FALSE)
+    {
+        GLint infoLogLength;
+        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
+        GLchar *strInfoLog = new GLchar[infoLogLength + 1];
+        glGetProgramInfoLog(shaderProgram, infoLogLength, NULL, strInfoLog);
+        fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+        delete[] strInfoLog;
+    }
+    printf("Shaders Check\n");
 }
 
 void Aplication::createModels() {
     printf("Creating Models ...\n");
+    Mesh* mesh = new Mesh({
+        0.0f, 0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+       -0.5f, -0.5f, 0.0f
+    });
+
+    scene->addMesh(mesh);
+
+    printf("Models Created\n");
 }
 
 void Aplication::run() {
     printf("Running ...\n");
+    while (!glfwWindowShouldClose(window)) {
+        scene->draw();
+    }
+
+    onExit();
+    
+    glfwDestroyWindow(window);
+    glfwTerminate();
+    exit(EXIT_SUCCESS);
+}
+
+
+void Aplication::onExit() {
+    printf("Exiting ...");
 }
 
 GLFWwindow* Aplication::getWindow() {
