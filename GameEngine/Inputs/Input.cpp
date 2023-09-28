@@ -2,7 +2,7 @@
 
 #include <cstdio>
 #include <GLFW/glfw3.h>
-#include "InputGLFWCallbacks.hpp"
+#include "../GLFWCallbacks/InputGLFWCallbacks.hpp"
 
 Input::Input(GLFWwindow* window) {
     glfwSetKeyCallback(window, key_callback);

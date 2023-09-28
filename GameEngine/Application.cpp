@@ -9,10 +9,6 @@ Application* Application::getInstance() {
     return instance_;
 }
 
-Application::Application() {
-    ratio = float(width) / float(height);
-}
-
 void Application::init() {    
     printf("Init\n");
     
@@ -22,20 +18,7 @@ void Application::init() {
         exit(EXIT_FAILURE);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE,
-    GLFW_OPENGL_CORE_PROFILE);  //*/
-
-    window = glfwCreateWindow(width, height, "ZPG", NULL, NULL);
-    if (!window) {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    screen = new Screen();
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -47,21 +30,9 @@ void Application::init() {
     printf("GLSL %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
     int major, minor, revision;
     glfwGetVersion(&major, &minor, &revision);
-    printf("Using GLFW %i.%i.%i\n", major, minor, revision);
+    printf("Using GLFW %i.%i.%i\n", major, minor, revision);   
 
-    glfwGetFramebufferSize(window, &width, &height);
-    
-    glViewport(0, 0, width, height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-
-    glfwSetWindowFocusCallback(window, window_focus_callback);
-    glfwSetWindowIconifyCallback(window, window_iconify_callback);
-    glfwSetWindowSizeCallback(window, window_size_callback);
-
-    input = new Input(window);
+    input = new Input(getWindow());
     scene = new Scene();
 }
 
@@ -113,13 +84,13 @@ void Application::createModels() {
 
 void Application::run() {
     printf("Running ...\n");
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(getWindow())) {
         scene->draw();
     }
 
     onExit();
     
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(getWindow());
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
@@ -130,9 +101,13 @@ void Application::onExit() {
 }
 
 GLFWwindow* Application::getWindow() {
-    return window;
+    return screen->getWindow();
 }
 
 Input* Application::getInput() {
     return input;
+}
+
+Screen* Application::getScreen() {
+    return screen;
 }

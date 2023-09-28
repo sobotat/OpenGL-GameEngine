@@ -221,6 +221,7 @@
     <ClCompile Include="Meshes\SquareMesh.cpp" />
     <ClCompile Include="Meshes\TriangleMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shaders\FragmentShader.cpp" />
     <ClCompile Include="Shaders\Shader.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -301,13 +302,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="GLFWCallbacks\InputGLFWCallbacks.hpp" />
+    <ClInclude Include="GLFWCallbacks\WindowGLFWCallbacks.hpp" />
     <ClInclude Include="Inputs\Input.h" />
-    <ClInclude Include="Inputs\InputGLFWCallbacks.hpp" />
     <ClInclude Include="Inputs\Listeners\TestKeyListener.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\SquareMesh.h" />
     <ClInclude Include="Meshes\TriangleMesh.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="Shaders\FragmentShader.h" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Shaders\VertexShader.h" />
