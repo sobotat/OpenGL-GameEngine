@@ -4,7 +4,7 @@
 #include <utility>
 #include <GL/glew.h>
 
-Mesh::Mesh(vector<float> meshPoints) {
+void Mesh::setPoints(vector<float> meshPoints) {
     points = std::move(meshPoints);
         
     //vertex buffer object (VBO)
@@ -17,14 +17,14 @@ Mesh::Mesh(vector<float> meshPoints) {
     glBindVertexArray(VAO); //bind the VAO
     glEnableVertexAttribArray(0); //enable vertex attributes
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, points.size() / 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 }
 
 void Mesh::tick() {}
 
 void Mesh::draw() {
     glBindVertexArray(VAO);        
-    glDrawArrays(GL_TRIANGLES, 0, points.size() / 3); //mode,first,count
+    glDrawArrays(GL_TRIANGLES, 0, points.size()); //mode,first,count
 }
 
 bool operator==(const Mesh& mesh1, const Mesh& mesh2) {

@@ -10,7 +10,7 @@ protected:
     GLuint VAO = 0;
     
 public:
-    Mesh(vector<float> meshPoints);
+    virtual void setPoints(vector<float> meshPoints);
     virtual void tick();
     virtual void draw();
 
