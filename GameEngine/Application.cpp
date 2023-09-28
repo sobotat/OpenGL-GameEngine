@@ -1,16 +1,16 @@
-﻿#include "Aplication.h"
+﻿#include "Application.h"
 
-Aplication* Aplication::instance_ = new Aplication();
+Application* Application::instance_ = new Application();
 
-Aplication* Aplication::getInstance() {
+Application* Application::getInstance() {
     return instance_;
 }
 
-Aplication::Aplication() {
+Application::Application() {
     ratio = float(width) / float(height);
 }
 
-void Aplication::init() {    
+void Application::init() {    
     printf("Init\n");
     
     //glfwSetErrorCallback(error_callback);
@@ -58,7 +58,7 @@ void Aplication::init() {
     scene = new Scene();
 }
 
-void Aplication::createShaders() {
+void Application::createShaders() {
     printf("Creating Shaders ...\n");
     FragmentShader fragmentShader = FragmentShader();
     fragmentShader.compile();
@@ -93,7 +93,7 @@ void Aplication::createShaders() {
     printf("Shaders Check\n");
 }
 
-void Aplication::createModels() {
+void Application::createModels() {
     printf("Creating Models ...\n");
     Mesh* mesh = new Mesh({
         0.0f, 0.5f, 0.0f,
@@ -106,7 +106,7 @@ void Aplication::createModels() {
     printf("Models Created\n");
 }
 
-void Aplication::run() {
+void Application::run() {
     printf("Running ...\n");
     while (!glfwWindowShouldClose(window)) {
         scene->draw();
@@ -120,14 +120,14 @@ void Aplication::run() {
 }
 
 
-void Aplication::onExit() {
+void Application::onExit() {
     printf("Exiting ...");
 }
 
-GLFWwindow* Aplication::getWindow() {
+GLFWwindow* Application::getWindow() {
     return window;
 }
 
-Input* Aplication::getInput() {
+Input* Application::getInput() {
     return input;
 }

@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "Aplication.h"
+#include "Application.h"
 
 void Scene::draw() {
     // clear color and depth buffer
@@ -15,7 +15,7 @@ void Scene::draw() {
     // update other events like input handling
     glfwPollEvents();
     // put the stuff we’ve been drawing onto the display
-    glfwSwapBuffers(Aplication::getInstance()->getWindow());
+    glfwSwapBuffers(Application::getInstance()->getWindow());
 }
 
 void Scene::addMesh(Mesh* mesh) {

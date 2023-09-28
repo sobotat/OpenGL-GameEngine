@@ -10,9 +10,9 @@
 #include "Shaders/FragmentShader.h"
 #include "Shaders/VertexShader.h"
 
-class Aplication {
+class Application {
 protected:
-    static Aplication* instance_;
+    static Application* instance_;
     
     int width = 800;
     int height = 800;
@@ -25,8 +25,8 @@ protected:
     void onExit();
     
 public:
-    static Aplication* getInstance();
-    Aplication();
+    static Application* getInstance();
+    Application();
     void init();
     void createShaders();
     void createModels();

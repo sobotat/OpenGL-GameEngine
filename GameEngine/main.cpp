@@ -2,7 +2,7 @@
 // Made by Tomáš Sobota, SOB0111
 // -----------------------------
 
-#include "Aplication.h"
+#include "Application.h"
 //Include GLEW
 #include <GL/glew.h>
 //Include GLFW
@@ -41,17 +41,17 @@ static void window_size_callback(GLFWwindow* window, int width, int height) {
 
 
 int main(void) {
-	Aplication* aplication = Aplication::getInstance();
-	aplication->init();
-	aplication->createShaders();
-	aplication->createModels();
+	Application* application = Application::getInstance();
+	application->init();
+	application->createShaders();
+	application->createModels();
 
 	// Sets the key callback
-	glfwSetWindowFocusCallback(aplication->getWindow(), window_focus_callback);
-	glfwSetWindowIconifyCallback(aplication->getWindow(), window_iconify_callback);
-	glfwSetWindowSizeCallback(aplication->getWindow(), window_size_callback);
+	glfwSetWindowFocusCallback(application->getWindow(), window_focus_callback);
+	glfwSetWindowIconifyCallback(application->getWindow(), window_iconify_callback);
+	glfwSetWindowSizeCallback(application->getWindow(), window_size_callback);
 	
-	aplication->getInput()->addListenerOnKey(new TestKeyListener());
+	application->getInput()->addListenerOnKey(new TestKeyListener());
 	
-	aplication->run();
+	application->run();
 }

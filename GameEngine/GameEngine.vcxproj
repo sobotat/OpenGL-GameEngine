@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Aplication.cpp" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Inputs\Input.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -298,7 +298,7 @@
     <ClCompile Include="Shaders\VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Aplication.h" />
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Inputs\Input.h" />
     <ClInclude Include="Inputs\InputGLFWCallbacks.hpp" />
     <ClInclude Include="Inputs\Listeners\TestKeyListener.h" />
