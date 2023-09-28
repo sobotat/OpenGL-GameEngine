@@ -1,5 +1,8 @@
 ﻿#include "Application.h"
 
+#include "Meshes/SquareMesh.h"
+#include "Meshes/TriangleMesh.h"
+
 Application* Application::instance_ = new Application();
 
 Application* Application::getInstance() {
@@ -95,13 +98,11 @@ void Application::createShaders() {
 
 void Application::createModels() {
     printf("Creating Models ...\n");
-    Mesh* mesh = new Mesh({
-        0.0f, 0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-       -0.5f, -0.5f, 0.0f
-    });
+    TriangleMesh* triangle = new TriangleMesh();
+    scene->addMesh(triangle);
 
-    scene->addMesh(mesh);
+    SquareMesh* square = new SquareMesh();
+    scene->addMesh(square);
 
     printf("Models Created\n");
 }
