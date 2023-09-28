@@ -1,5 +1,6 @@
 ﻿#include "Application.h"
 
+#include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Meshes/SquareMesh.h"
 #include "Meshes/TriangleMesh.h"
 

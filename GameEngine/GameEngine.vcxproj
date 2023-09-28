@@ -302,6 +302,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="GLFWCallbacks\ErrorGLFWCallback.hpp" />
     <ClInclude Include="GLFWCallbacks\InputGLFWCallbacks.hpp" />
     <ClInclude Include="GLFWCallbacks\WindowGLFWCallbacks.hpp" />
     <ClInclude Include="Inputs\Input.h" />
