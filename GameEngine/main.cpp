@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "Inputs/Listeners/TestKeyListener.h"
+
 // Callbacks
 static void error_callback(int error, const char* description) {
 	fputs(description, stderr);
@@ -62,7 +64,9 @@ int main(void) {
 	ap->init();
 	ap->createShaders();
 	ap->createModels();
-	ap->run();	
+	ap->run();
+
+	ap->getInput()->addListenerOnKey(new TestKeyListener());
 	
 	// Sets the key callback
 	glfwSetWindowFocusCallback(ap->getWindow(), window_focus_callback);
