@@ -26,17 +26,17 @@ struct MouseInput {
 
 class OnKeyListener {
 public:
-    virtual void notify(KeyInput keyInput) = 0;
+    virtual void onKeyChanged(KeyInput keyInput) = 0;
 };
 
 class OnCursorListener {
 public:
-    virtual void notify(CursorInput cursorInput) = 0;
+    virtual void onCursorChanged(CursorInput cursorInput) = 0;
 };
 
 class OnMouseListener {
 public:
-    virtual void notify(MouseInput mouseInput) = 0;
+    virtual void onMouseChanged(MouseInput mouseInput) = 0;
 };
 
 #pragma once

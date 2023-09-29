@@ -3,5 +3,5 @@
 
 class TestKeyListener : public OnKeyListener{
 public:
-    void notify(KeyInput keyInput) override;
+    void onKeyChanged(KeyInput keyInput) override;
 };

@@ -55,7 +55,7 @@ void Input::notifyOnKey(GLFWwindow* window, int key, int scancode, int action, i
     input.mods = mods;
     
     for (OnKeyListener* listener : onKeyListeners) {
-        listener->notify(input);    
+        listener->onKeyChanged(input);    
     }
 }
 
@@ -67,7 +67,7 @@ void Input::notifyOnCursor(GLFWwindow* window, double x, double y) const {
     input.y = y;
 
     for (OnCursorListener* listener : onCursorListeners) {
-        listener->notify(input);
+        listener->onCursorChanged(input);
     } 
 }
 
@@ -80,6 +80,6 @@ void Input::notifyOnMouse(GLFWwindow* window, int button, int action, int mode) 
     input.mode = mode;
 
     for (OnMouseListener* listener : onMouseListeners) {
-        listener->notify(input);
+        listener->onMouseChanged(input);
     }
 }
