@@ -11,6 +11,7 @@ protected:
     bool isCompiled = false;
 
 public:
+    virtual ~Shader() = default;
     virtual void compile();
     virtual void attach(GLuint shaderProgram); 
 };

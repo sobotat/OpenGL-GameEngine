@@ -27,6 +27,13 @@ ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
     printf("Shader Program Set\n");
 }
 
+ShaderProgram::~ShaderProgram() {
+    for (Shader* shader : shaders) {
+        delete shader;
+    }
+    shaders.clear();
+}
+
 void ShaderProgram::useProgram() {
     glUseProgram(program);
 }

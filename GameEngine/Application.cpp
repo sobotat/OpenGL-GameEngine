@@ -96,5 +96,9 @@ void Application::onExit() {
 }
 
 Application::~Application() {
+    for(ShaderProgram* program : shaderPrograms) {
+        delete program;
+    }
+    shaderPrograms.clear();
     delete scene;
 }

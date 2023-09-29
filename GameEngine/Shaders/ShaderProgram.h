@@ -12,5 +12,6 @@ protected:
     
 public:
     ShaderProgram(vector<Shader*> shaders);
+    ~ShaderProgram();
     void useProgram();
 };
