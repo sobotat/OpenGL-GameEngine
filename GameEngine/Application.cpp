@@ -2,8 +2,11 @@
 
 #include "Screen.h"
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
+#include "Inputs/Input.h"
 #include "Meshes/SquareMesh.h"
 #include "Meshes/TriangleMesh.h"
+#include "Shaders/FragmentShader.h"
+#include "Shaders/VertexShader.h"
 
 Application* Application::instance_ = new Application();
 

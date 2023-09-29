@@ -6,9 +6,6 @@
 #include <cstdlib>
 
 #include "Scene.h"
-#include "Inputs/Input.h"
-#include "Shaders/FragmentShader.h"
-#include "Shaders/VertexShader.h"
 
 class Application {
 protected:
