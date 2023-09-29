@@ -6,7 +6,6 @@
 #include <cstdlib>
 
 #include "Scene.h"
-#include "Screen.h"
 #include "Inputs/Input.h"
 #include "Shaders/FragmentShader.h"
 #include "Shaders/VertexShader.h"
@@ -17,7 +16,6 @@ protected:
     
     Input* input = nullptr;
     Scene* scene = nullptr;
-    Screen* screen = nullptr;
 
     void onExit();
     
@@ -27,7 +25,5 @@ public:
     void createShaders();
     void createModels();
     void run();
-    GLFWwindow* getWindow();
     Input* getInput();
-    Screen* getScreen();
 };

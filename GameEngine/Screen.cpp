@@ -4,7 +4,9 @@
 
 #include "GLFWCallbacks/WindowGLFWCallbacks.hpp"
 
-Screen::Screen() {
+Screen* Screen::instance = nullptr;
+
+void Screen::init() {    
     ratio = float(width) / float(height);
     
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -32,6 +34,13 @@ Screen::Screen() {
     glfwSetWindowFocusCallback(window, window_focus_callback);
     glfwSetWindowIconifyCallback(window, window_iconify_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
+}
+
+Screen* Screen::getInstance() {
+    if (instance == nullptr) {
+        instance = new Screen();
+    }
+    return instance;
 }
 
 GLFWwindow* Screen::getWindow() {

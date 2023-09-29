@@ -1,5 +1,6 @@
 ﻿#include "Application.h"
 
+#include "Screen.h"
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Meshes/SquareMesh.h"
 #include "Meshes/TriangleMesh.h"
@@ -18,8 +19,8 @@ void Application::init() {
         fprintf(stderr, "ERROR: could not start GLFW3\n");
         exit(EXIT_FAILURE);
     }
-
-    screen = new Screen();
+    
+    Screen::getInstance()->init();
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -33,7 +34,7 @@ void Application::init() {
     glfwGetVersion(&major, &minor, &revision);
     printf("Using GLFW %i.%i.%i\n", major, minor, revision);   
 
-    input = new Input(getWindow());
+    input = new Input(Screen::getInstance()->getWindow());
     scene = new Scene();
 }
 
@@ -85,13 +86,13 @@ void Application::createModels() {
 
 void Application::run() {
     printf("Running ...\n");
-    while (!glfwWindowShouldClose(getWindow())) {
+    while (!glfwWindowShouldClose(Screen::getInstance()->getWindow())) {
         scene->draw();
     }
 
     onExit();
     
-    glfwDestroyWindow(getWindow());
+    glfwDestroyWindow(Screen::getInstance()->getWindow());
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
@@ -101,14 +102,6 @@ void Application::onExit() {
     printf("Exiting ...");
 }
 
-GLFWwindow* Application::getWindow() {
-    return screen->getWindow();
-}
-
 Input* Application::getInput() {
     return input;
-}
-
-Screen* Application::getScreen() {
-    return screen;
 }

@@ -6,6 +6,8 @@
 using namespace std;
 class Screen {
 protected:
+    static Screen* instance;
+    
     string title = "ZPG";
     int width = 800;
     int height = 800;
@@ -16,7 +18,9 @@ protected:
     bool isIconified = false;
     
 public:
-    Screen();
+    void init();
+    
+    static Screen* getInstance(); 
     GLFWwindow* getWindow();
     
     void onFocus(GLFWwindow* window, int focused);
