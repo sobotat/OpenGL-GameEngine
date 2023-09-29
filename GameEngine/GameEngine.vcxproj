@@ -219,6 +219,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\SquareMesh.cpp" />
+    <ClCompile Include="Meshes\TriangleMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shaders\FragmentShader.cpp" />
@@ -308,6 +309,7 @@
     <ClInclude Include="Inputs\Listeners\TestKeyListener.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\SquareMesh.h" />
+    <ClInclude Include="Meshes\TriangleMesh.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shaders\FragmentShader.h" />
