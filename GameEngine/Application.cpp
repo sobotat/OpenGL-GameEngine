@@ -71,6 +71,7 @@ void Application::createShaders() {
         glGetProgramInfoLog(shaderProgram, infoLogLength, NULL, strInfoLog);
         fprintf(stderr, "Linker failure: %s\n", strInfoLog);
         delete[] strInfoLog;
+        exit(EXIT_FAILURE);
     }
     printf("Shaders Check\n");
 }
