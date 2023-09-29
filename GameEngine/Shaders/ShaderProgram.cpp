@@ -28,9 +28,6 @@ ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
 }
 
 ShaderProgram::~ShaderProgram() {
-    for (Shader* shader : shaders) {
-        delete shader;
-    }
     shaders.clear();
 }
 

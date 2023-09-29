@@ -47,12 +47,15 @@ void Application::createShaders() {
     printf("Creating Shaders ...\n");
     PositionFragmentShader* positionFragmentShader = new PositionFragmentShader();
     positionFragmentShader->compile();
+    shaders.push_back(positionFragmentShader);
 
     ColorFragmentShader* colorFragmentShader = new ColorFragmentShader();
     colorFragmentShader->compile();
+    shaders.push_back(colorFragmentShader);
     
     VertexShader* vertexShader = new VertexShader();
-    vertexShader->compile();  
+    vertexShader->compile();
+    shaders.push_back(vertexShader);
     printf("Shaders Created\n");
     
     shaderPrograms.push_back(new ShaderProgram({
@@ -100,5 +103,9 @@ Application::~Application() {
         delete program;
     }
     shaderPrograms.clear();
+    for(Shader* shader : shaders) {
+        delete shader;
+    }
+    shaders.clear();
     delete scene;
 }

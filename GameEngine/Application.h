@@ -13,6 +13,7 @@ protected:
     static Application* instance_;
 
     vector<ShaderProgram*> shaderPrograms;
+    vector<Shader*> shaders;
     
     Scene* scene = nullptr;
 
