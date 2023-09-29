@@ -6,10 +6,13 @@
 #include <cstdlib>
 
 #include "Scene.h"
+#include "Shaders/ShaderProgram.h"
 
 class Application {
 protected:
     static Application* instance_;
+
+    vector<ShaderProgram*> shaderPrograms;
     
     Scene* scene = nullptr;
 

@@ -5,7 +5,9 @@
 #include "Inputs/Input.h"
 #include "Meshes/SquareMesh.h"
 #include "Meshes/TriangleMesh.h"
-#include "Shaders/FragmentShader.h"
+#include "Shaders/ColorFragmentShader.h"
+#include "Shaders/PositionFragmentShader.h"
+#include "Shaders/ShaderProgram.h"
 #include "Shaders/VertexShader.h"
 
 Application* Application::instance_ = new Application();
@@ -43,48 +45,35 @@ void Application::init() {
 
 void Application::createShaders() {
     printf("Creating Shaders ...\n");
-    FragmentShader fragmentShader = FragmentShader();
-    fragmentShader.compile();
-    printf("FragmentShader Created\n");
+    PositionFragmentShader* positionFragmentShader = new PositionFragmentShader();
+    positionFragmentShader->compile();
+
+    ColorFragmentShader* colorFragmentShader = new ColorFragmentShader();
+    colorFragmentShader->compile();
     
-    VertexShader vertexShader = VertexShader();
-    vertexShader.compile();
-    printf("VertexShader Created\n");
-    
+    VertexShader* vertexShader = new VertexShader();
+    vertexShader->compile();  
     printf("Shaders Created\n");
+    
+    shaderPrograms.push_back(new ShaderProgram({
+        positionFragmentShader,
+        vertexShader,
+    }));
 
-    printf("Setting Shader Program ...\n");
-    const GLuint shaderProgram = glCreateProgram();
-    fragmentShader.attach(shaderProgram);
-    vertexShader.attach(shaderProgram);
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-    printf("Shader Program Set\n");
-
-    printf("Checking Shaders ...\n");
-    GLint status;
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        GLint infoLogLength;
-        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &infoLogLength);
-        GLchar *strInfoLog = new GLchar[infoLogLength + 1];
-        glGetProgramInfoLog(shaderProgram, infoLogLength, NULL, strInfoLog);
-        fprintf(stderr, "Linker failure: %s\n", strInfoLog);
-        delete[] strInfoLog;
-        exit(EXIT_FAILURE);
-    }
-    printf("Shaders Check\n");
+    shaderPrograms.push_back(new ShaderProgram({
+        colorFragmentShader,
+        vertexShader,
+    }));
 }
 
 void Application::createModels() {
     printf("Creating Models ...\n");
 
-    TriangleMesh* triangle = new TriangleMesh();
-    scene->addMesh(triangle);
-
-    // SquareMesh* square = new SquareMesh();
-    // scene->addMesh(square);
+    SquareMesh* square = new SquareMesh(shaderPrograms[1]);
+    scene->addMesh(square);
+    
+    TriangleMesh* triangle = new TriangleMesh(shaderPrograms[0]);
+    scene->addMesh(triangle);    
 
     printf("Models Created\n");
 }

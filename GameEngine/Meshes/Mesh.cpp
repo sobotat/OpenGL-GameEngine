@@ -4,6 +4,10 @@
 #include <utility>
 #include <GL/glew.h>
 
+Mesh::Mesh(ShaderProgram* shaderProgram) {
+    this->shaderProgram = shaderProgram;
+}
+
 Mesh::~Mesh() {
     points.clear();
 }
@@ -27,6 +31,7 @@ void Mesh::setPoints(vector<float> meshPoints) {
 void Mesh::tick() {}
 
 void Mesh::draw() {
+    shaderProgram->useProgram();
     glBindVertexArray(VAO);        
     glDrawArrays(GL_TRIANGLES, 0, points.size()); //mode,first,count
 }

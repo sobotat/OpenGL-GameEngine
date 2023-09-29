@@ -3,5 +3,5 @@
 
 class SquareMesh : public Mesh {
 public:
-    SquareMesh();
+    SquareMesh(ShaderProgram* shaderProgram);
 };
