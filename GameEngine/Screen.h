@@ -11,8 +11,8 @@ protected:
     string title = "ZPG";
     int width = 800;
     int height = 800;
-    float ratio;
-    GLFWwindow* window;
+    float ratio = 1;
+    GLFWwindow* window = nullptr;
 
     bool isFocus = true;
     bool isIconified = false;
