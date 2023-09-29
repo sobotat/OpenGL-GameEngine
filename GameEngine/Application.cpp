@@ -4,7 +4,6 @@
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Inputs/Input.h"
 #include "Meshes/SquareMesh.h"
-#include "Meshes/TriangleMesh.h"
 #include "Shaders/FragmentShader.h"
 #include "Shaders/VertexShader.h"
 
@@ -78,8 +77,6 @@ void Application::createShaders() {
 
 void Application::createModels() {
     printf("Creating Models ...\n");
-    TriangleMesh* triangle = new TriangleMesh();
-    scene->addMesh(triangle);
 
     SquareMesh* square = new SquareMesh();
     scene->addMesh(square);
