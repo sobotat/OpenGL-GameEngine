@@ -16,6 +16,7 @@ protected:
     void onExit();
     
 public:
+    ~Application();
     static Application* getInstance();
     void init();
     void createShaders();

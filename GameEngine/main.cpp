@@ -14,4 +14,7 @@ int main(void) {
 	Input::getInstance()->addListenerOnKey(new TestKeyListener());
 	
 	application->run();
+	
+	delete application;
+	exit(EXIT_SUCCESS);
 }

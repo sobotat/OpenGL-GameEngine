@@ -83,3 +83,19 @@ void Input::notifyOnMouse(GLFWwindow* window, int button, int action, int mode) 
         listener->onMouseChanged(input);
     }
 }
+
+Input::~Input() {
+    for (OnKeyListener* listener : onKeyListeners) {
+        delete listener;
+    }
+    for (OnCursorListener* listener : onCursorListeners) {
+        delete listener;
+    }
+    for (OnMouseListener* listener : onMouseListeners) {
+        delete listener;
+    }
+
+    onKeyListeners.clear();
+    onCursorListeners.clear();
+    onMouseListeners.clear();
+}

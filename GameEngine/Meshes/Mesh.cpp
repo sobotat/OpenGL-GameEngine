@@ -4,6 +4,10 @@
 #include <utility>
 #include <GL/glew.h>
 
+Mesh::~Mesh() {
+    points.clear();
+}
+
 void Mesh::setPoints(vector<float> meshPoints) {
     points = std::move(meshPoints);
         

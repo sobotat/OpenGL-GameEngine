@@ -26,16 +26,19 @@ struct MouseInput {
 
 class OnKeyListener {
 public:
+    virtual ~OnKeyListener() = default;
     virtual void onKeyChanged(KeyInput keyInput) = 0;
 };
 
 class OnCursorListener {
 public:
+    virtual ~OnCursorListener() = default;
     virtual void onCursorChanged(CursorInput cursorInput) = 0;
 };
 
 class OnMouseListener {
 public:
+    virtual ~OnMouseListener() = default;
     virtual void onMouseChanged(MouseInput mouseInput) = 0;
 };
 
@@ -55,6 +58,7 @@ protected:
     void notifyOnMouse(GLFWwindow* window, int button, int action, int mode) const;
     
 public:
+    ~Input();
     void init(GLFWwindow* window);
 
     static Input* getInstance();

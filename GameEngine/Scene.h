@@ -9,6 +9,7 @@ protected:
     vector<Mesh*> meshes;
     
 public:
+    ~Scene();
     void draw();
     void addMesh(Mesh* mesh);
     void destroyMesh(Mesh* mesh);

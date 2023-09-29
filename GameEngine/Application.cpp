@@ -97,10 +97,13 @@ void Application::run() {
     
     glfwDestroyWindow(Screen::getInstance()->getWindow());
     glfwTerminate();
-    exit(EXIT_SUCCESS);
 }
 
 
 void Application::onExit() {
     printf("Exiting ...");
+}
+
+Application::~Application() {
+    delete scene;
 }

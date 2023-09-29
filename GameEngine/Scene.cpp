@@ -4,6 +4,12 @@
 
 #include "Screen.h"
 
+Scene::~Scene() {
+    for (Mesh* mesh : meshes) {
+        delete mesh;
+    }
+}
+
 void Scene::draw() {
     // clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
