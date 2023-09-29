@@ -11,7 +11,7 @@ int main(void) {
 	application->createShaders();
 	application->createModels();
 	
-	application->getInput()->addListenerOnKey(new TestKeyListener());
+	Input::getInstance()->addListenerOnKey(new TestKeyListener());
 	
 	application->run();
 }

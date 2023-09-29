@@ -44,6 +44,8 @@ using namespace std;
 class Input
 {
 protected:
+    static Input* instance;
+    
     vector<OnKeyListener*> onKeyListeners;
     vector<OnCursorListener*> onCursorListeners;
     vector<OnMouseListener*> onMouseListeners;
@@ -53,7 +55,9 @@ protected:
     void notifyOnMouse(GLFWwindow* window, int button, int action, int mode) const;
     
 public:
-    Input(GLFWwindow* window);
+    void init(GLFWwindow* window);
+
+    static Input* getInstance();
 
     void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) const;
     void onCursor(GLFWwindow* window, double x, double y);

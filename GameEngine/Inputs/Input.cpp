@@ -4,10 +4,16 @@
 #include <GLFW/glfw3.h>
 #include "../GLFWCallbacks/InputGLFWCallbacks.hpp"
 
-Input::Input(GLFWwindow* window) {
+Input* Input::instance = new Input();
+
+void Input::init(GLFWwindow* window) {
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_callback);
     glfwSetMouseButtonCallback(window, button_callback);
+}
+
+Input* Input::getInstance() {
+    return instance;
 }
 
 void Input::addListenerOnKey(OnKeyListener* listener) {

@@ -34,7 +34,7 @@ void Application::init() {
     glfwGetVersion(&major, &minor, &revision);
     printf("Using GLFW %i.%i.%i\n", major, minor, revision);   
 
-    input = new Input(Screen::getInstance()->getWindow());
+    Input::getInstance()->init(Screen::getInstance()->getWindow());
     scene = new Scene();
 }
 
@@ -100,8 +100,4 @@ void Application::run() {
 
 void Application::onExit() {
     printf("Exiting ...");
-}
-
-Input* Application::getInput() {
-    return input;
 }

@@ -14,7 +14,6 @@ class Application {
 protected:
     static Application* instance_;
     
-    Input* input = nullptr;
     Scene* scene = nullptr;
 
     void onExit();
@@ -25,5 +24,4 @@ public:
     void createShaders();
     void createModels();
     void run();
-    Input* getInput();
 };
