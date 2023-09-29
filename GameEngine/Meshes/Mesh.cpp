@@ -14,7 +14,7 @@ void Mesh::setPoints(vector<float> meshPoints) {
     //vertex buffer object (VBO)
     glGenBuffers(1, &VBO); // generate the VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(float) * 3, &points.front(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(float), &points.front(), GL_STATIC_DRAW);
 	
     //Vertex Array Object (VAO
     glGenVertexArrays(1, &VAO); //generate the VAO
