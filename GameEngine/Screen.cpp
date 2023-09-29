@@ -60,6 +60,7 @@ void Screen::onIconify(GLFWwindow* window, int iconified) {
 void Screen::onSizeChanged(GLFWwindow* window, int width, int height) {
     this->width = width;
     this->height = height;
+    this->ratio = float(width) / float(height);
     
     printf("Size [%d, %d]\n", width, height);
     glViewport(0, 0, width, height);
