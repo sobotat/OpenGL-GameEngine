@@ -1,12 +1,12 @@
 ﻿#include "SquareMesh.h"
 
-SquareMesh::SquareMesh(ShaderProgram* shaderProgram) : Mesh(shaderProgram) {
+SquareMesh::SquareMesh(ShaderProgram* shaderProgram) : Mesh(shaderProgram) {    
     setPoints({
-        -0.4f, 0.4f, 0.0f,
-        -0.4f, -0.4f, 0.0f,
-         0.4f, 0.4f, 0.0f,
-         0.4f, 0.4f, 0.0f,
-         0.4f, -0.4f, 0.0f,
-        -0.4f, -0.4f, 0.0f,
+        { { -.5f, -.5f, .5f, 1 }, { 1, 1, 0, 1 } },
+        { { -.5f,  .5f, .5f, 1 }, { 1, 0, 0, 1 } },
+        { {  .5f,  .5f, .5f, 1 }, { 0, 0, 0, 1 } },
+        { {  .5f, -.5f, .5f, 1 }, { 0, 1, 0, 1 } },
+        { { -.5f, -.5f, .5f, 1 }, { 0, 0, 0, 1 } },
+        { {  .5f,  .5f, .5f, 1 }, { 0, 0, 0, 1 } },
     });
 }

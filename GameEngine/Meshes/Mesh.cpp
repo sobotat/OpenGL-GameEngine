@@ -12,8 +12,20 @@ Mesh::~Mesh() {
     points.clear();
 }
 
-void Mesh::setPoints(vector<float> meshPoints) {
-    points = std::move(meshPoints);
+void Mesh::setPoints(vector<vector<vector<float>>> meshPoints) {
+
+    //Number of Points
+    pointCount = meshPoints.size();
+
+    // Convert 3d to 1d vector
+    points = vector<float>();
+    for (vector<vector<float>> row : meshPoints) {
+        for (vector<float> item : row) {            
+            for (float value : item) {
+                points.push_back(value);
+            }
+        }
+    }
         
     //vertex buffer object (VBO)
     glGenBuffers(1, &VBO); 
@@ -25,7 +37,7 @@ void Mesh::setPoints(vector<float> meshPoints) {
     glBindVertexArray(VAO);
     glEnableVertexAttribArray(0); 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, meshPoints[0].size() * meshPoints[0][0].size() * sizeof(float), (GLvoid*) 0);
 }
 
 void Mesh::tick() {}

@@ -2,8 +2,8 @@
 
 TriangleMesh::TriangleMesh(ShaderProgram* shaderProgram) : Mesh(shaderProgram) {
     setPoints({
-        0.0f, 0.2f, 0.0f,
-        0.2f, -0.2f, 0.0f,
-       -0.2f, -0.2f, 0.0f
+        { { -.3f, -.3f, .5f, 1 }, { 1, 1, 0, 1 } },
+        { { 0.0f,  .3f, .5f, 1 }, { 1, 0, 0, 1 } },
+        { {  .3f, -.3f, .5f, 1 }, { 0, 0, 0, 1 } },
     });
 }
