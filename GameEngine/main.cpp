@@ -16,5 +16,6 @@ int main(void) {
 	application->run();
 	
 	delete application;
+	delete Input::getInstance();
 	exit(EXIT_SUCCESS);
 }
