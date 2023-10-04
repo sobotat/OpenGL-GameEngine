@@ -4,10 +4,6 @@
 #include <utility>
 #include <GL/glew.h>
 
-Mesh::Mesh(ShaderProgram* shaderProgram) {
-    this->shaderProgram = shaderProgram;
-}
-
 Mesh::~Mesh() {
     points.clear();
 }
@@ -35,19 +31,16 @@ void Mesh::setPoints(vector<vector<vector<float>>> meshPoints) {
     //Vertex Array Object (VAO)
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
-    glEnableVertexAttribArray(0); 
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, meshPoints[0].size() * meshPoints[0][0].size() * sizeof(float), (GLvoid*) 0);
+    
+    const int sizeOf0 = meshPoints[0].size() * meshPoints[0][0].size() * sizeof(float);    
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) sizeOf0);
 }
-
-void Mesh::tick() {}
 
 void Mesh::draw() {
-    shaderProgram->useProgram();
     glBindVertexArray(VAO);        
     glDrawArrays(GL_TRIANGLES, 0, points.size());
-}
-
-bool operator==(const Mesh& mesh1, const Mesh& mesh2) {
-    return mesh1.VAO == mesh2.VAO;
 }
