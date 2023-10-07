@@ -84,21 +84,26 @@ void Application::createModels() {
     SphereMesh* sphere = new SphereMesh(); 
 
     Actor* squareActor = new Actor(square, shaderPrograms[1]);
-    Actor* suziActor = new Actor(suzi, shaderPrograms[0]);
+    Actor* suziActor1 = new Actor(suzi, shaderPrograms[0]);
+    Actor* suziActor2 = new Actor(suzi, shaderPrograms[0]);
     Actor* sphereActor = new Actor(sphere, shaderPrograms[0]);
 
     squareActor
         ->addTransform(new Location({-.5, 0, 0}))
         ->addTransform(new Scale({.3, .3, .3}));
-    suziActor
-        ->addTransform(new Location({.5, 0, 0}))
+    suziActor1
+        ->addTransform(new Location({0, .5, 0}))
+        ->addTransform(new Scale({.2, .2, .2}));
+    suziActor2
+        ->addTransform(new Location({0, -.5, 0}))
         ->addTransform(new Scale({.2, .2, .2}));
     sphereActor
-        ->addTransform(new Location({0, .5, 0}))
+        ->addTransform(new Location({.5, 0, 0}))
         ->addTransform(new Scale({.2, .2, .2}));
     
     scene->addActor(squareActor);
-    scene->addActor(suziActor);
+    scene->addActor(suziActor1);
+    scene->addActor(suziActor2);
     scene->addActor(sphereActor);
 
     printf("Models Created\n");
