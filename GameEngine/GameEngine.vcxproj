@@ -295,6 +295,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Meshes\SquareMesh.cpp" />
+    <ClCompile Include="Meshes\SuziMesh.cpp" />
     <ClCompile Include="Meshes\TriangleMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -377,6 +378,10 @@
     </ClCompile>
     <ClCompile Include="Shaders\ShaderProgram.cpp" />
     <ClCompile Include="Shaders\VertexShader.cpp" />
+    <ClCompile Include="Transformations\Location.cpp" />
+    <ClCompile Include="Transformations\Rotation.cpp" />
+    <ClCompile Include="Transformations\Scale.cpp" />
+    <ClCompile Include="Transformations\TransformComposite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\Actor.h" />
@@ -389,6 +394,7 @@
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\SphereMesh.h" />
     <ClInclude Include="Meshes\SquareMesh.h" />
+    <ClInclude Include="Meshes\SuziMesh.h" />
     <ClInclude Include="Meshes\TriangleMesh.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
@@ -397,6 +403,11 @@
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Shaders\ShaderProgram.h" />
     <ClInclude Include="Shaders\VertexShader.h" />
+    <ClInclude Include="Transformations\Location.h" />
+    <ClInclude Include="Transformations\Rotation.h" />
+    <ClInclude Include="Transformations\Scale.h" />
+    <ClInclude Include="Transformations\Transform.hpp" />
+    <ClInclude Include="Transformations\TransformComposite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,21 +5,22 @@
 #include "Screen.h"
 
 Scene::~Scene() {
-    for (Mesh* mesh : meshes) {
-        delete mesh;
+    for (Actor* actor : actors) {
+        delete actor;
     }
+    actors.clear();
 }
 
 void Scene::draw() {
     // clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    for (Mesh* mesh : meshes) {
-        mesh->tick();
+    
+    for (Actor* actor : actors) {        
+        actor->tick();
     }
     
-    for (Mesh* mesh : meshes) {
-        mesh->draw();
+    for (Actor* actor : actors) {
+        actor->draw();
     }
 
     // update other events like input handling
@@ -28,10 +29,6 @@ void Scene::draw() {
     glfwSwapBuffers(Screen::getInstance()->getWindow());
 }
 
-void Scene::addMesh(Mesh* mesh) {
-    meshes.push_back(mesh);
-}
-
-void Scene::destroyMesh(Mesh* mesh) {
-    meshes.erase(remove(meshes.begin(), meshes.end(), mesh), meshes.end());
+void Scene::addActor(Actor* actor) {
+    actors.push_back(actor);
 }

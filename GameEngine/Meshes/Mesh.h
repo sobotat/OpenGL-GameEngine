@@ -2,8 +2,6 @@
 #include <GL/glew.h>
 #include <vector>
 
-#include "../Shaders/ShaderProgram.h"
-
 using namespace std;
 class Mesh {
 protected:
@@ -14,6 +12,7 @@ protected:
     
 public:
     virtual ~Mesh();
+    virtual void setPoints(vector<float> meshPoints);
     virtual void setPoints(vector<vector<vector<float>>> meshPoints);
     virtual void draw();
 };

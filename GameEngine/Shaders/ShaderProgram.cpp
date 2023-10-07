@@ -1,5 +1,7 @@
 ﻿#include "ShaderProgram.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
     this->shaders = move(shaders);
     
@@ -34,3 +36,13 @@ ShaderProgram::~ShaderProgram() {
 void ShaderProgram::useProgram() {
     glUseProgram(program);
 }
+
+void ShaderProgram::resetProgram() {
+    glUseProgram(0);
+}
+
+void ShaderProgram::setPropertyMatrix(mat4 value, string property) {
+    const GLint propertyId = glGetUniformLocation(program, property.c_str());
+    glUniformMatrix4fv(propertyId , 1, GL_FALSE, value_ptr(value));
+}
+

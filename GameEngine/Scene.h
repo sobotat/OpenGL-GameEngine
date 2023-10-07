@@ -1,16 +1,15 @@
 ﻿#pragma once
 #include <vector>
 
-#include "Meshes/Mesh.h"
+#include "Actors/Actor.h"
 
 using namespace std;
 class Scene {
 protected:
-    vector<Mesh*> meshes;
+    vector<Actor*> actors;
     
 public:
     ~Scene();
     void draw();
-    void addMesh(Mesh* mesh);
-    void destroyMesh(Mesh* mesh);
+    void addActor(Actor* actor);
 };

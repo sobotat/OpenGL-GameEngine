@@ -3,10 +3,11 @@
 VertexShader::VertexShader() {
     printf("Creating Vertex Shader ...\n");
     source = "#version 330\n"
-             "layout(location=0) in vec3 vp;"
-             "out vec4 pos;"
+             "layout(location=0) in vec3 vp;\n"
+             "uniform mat4 modelMatrix;\n"
+             "out vec4 pos;\n"
              "void main () {"
-             "     pos = vec4 (vp, 1.0);"
+             "     pos = modelMatrix * vec4 (vp, 1.0);"
              "     gl_Position = pos;"
              "}";
 

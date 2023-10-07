@@ -3,12 +3,18 @@
 #include "Screen.h"
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Inputs/Input.h"
+#include "Meshes/SphereMesh.h"
 #include "Meshes/SquareMesh.h"
+#include "Meshes\SuziMesh.h"
 #include "Meshes/TriangleMesh.h"
 #include "Shaders/ColorFragmentShader.h"
 #include "Shaders/PositionFragmentShader.h"
 #include "Shaders/ShaderProgram.h"
 #include "Shaders/VertexShader.h"
+#include "Transformations/Location.h"
+#include "Transformations/Rotation.h"
+#include "Transformations/Scale.h"
+#include "Transformations/TransformComposite.h"
 
 Application* Application::instance_ = new Application();
 
@@ -72,11 +78,28 @@ void Application::createShaders() {
 void Application::createModels() {
     printf("Creating Models ...\n");
 
-    SquareMesh* square = new SquareMesh(shaderPrograms[1]);
-    scene->addMesh(square);
+    SquareMesh* square = new SquareMesh();
+    TriangleMesh* triangle = new TriangleMesh();
+    SuziMesh* suzi = new SuziMesh();
+    SphereMesh* sphere = new SphereMesh(); 
+
+    Actor* squareActor = new Actor(square, shaderPrograms[1]);
+    Actor* suziActor = new Actor(suzi, shaderPrograms[0]);
+    Actor* sphereActor = new Actor(sphere, shaderPrograms[0]);
+
+    squareActor
+        ->addTransform(new Location({-.5, 0, 0}))
+        ->addTransform(new Scale({.3, .3, .3}));
+    suziActor
+        ->addTransform(new Location({.5, 0, 0}))
+        ->addTransform(new Scale({.2, .2, .2}));
+    sphereActor
+        ->addTransform(new Location({0, .5, 0}))
+        ->addTransform(new Scale({.2, .2, .2}));
     
-    TriangleMesh* triangle = new TriangleMesh(shaderPrograms[0]);
-    scene->addMesh(triangle);    
+    scene->addActor(squareActor);
+    scene->addActor(suziActor);
+    scene->addActor(sphereActor);
 
     printf("Models Created\n");
 }

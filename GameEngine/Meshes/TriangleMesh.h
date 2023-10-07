@@ -3,5 +3,5 @@
 
 class TriangleMesh : public Mesh {
 public:
-    TriangleMesh(ShaderProgram* shaderProgram);    
+    TriangleMesh();    
 };

@@ -1,13 +1,31 @@
 ﻿#include "Actor.h"
 
+#include "../Transformations/Rotation.h"
+
 Actor::Actor(Mesh* mesh, ShaderProgram* shaderProgram) {
     this->mesh = mesh;
     this->shaderProgram = shaderProgram;
+    this->transform = new TransformComposite();
 }
 
-void Actor::tick() {}
+Actor::~Actor() {
+    delete transform;
+}
 
-void Actor::draw() {
+Actor* Actor::addTransform(Transform* transform) {
+    this->transform->addTransform(transform);
+    return this;
+}
+
+void Actor::tick() {
+    addTransform(new Rotation(0.01, {0, 1, 0}));
+}
+
+void Actor::draw() {    
     shaderProgram->useProgram();
+    shaderProgram->setPropertyMatrix(transform->transform(), "modelMatrix");
+    
     mesh->draw();
+    
+    ShaderProgram::resetProgram();
 }
