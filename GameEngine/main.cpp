@@ -3,15 +3,13 @@
 // -----------------------------
 
 #include "Application.h"
-#include "Inputs/Listeners/TestKeyListener.h"
+#include "Inputs/Input.h"
 
 int main(void) {
 	Application* application = Application::getInstance();
 	application->init();
 	application->createShaders();
 	application->createModels();
-	
-	Input::getInstance()->addListenerOnKey(new TestKeyListener());
 	
 	application->run();
 	

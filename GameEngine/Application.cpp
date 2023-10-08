@@ -3,6 +3,7 @@
 #include "Screen.h"
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Inputs/Input.h"
+#include "Inputs/Listeners/TransformKeyListener.h"
 #include "Meshes/SphereMesh.h"
 #include "Meshes/SquareMesh.h"
 #include "Meshes\SuziMesh.h"
@@ -47,6 +48,8 @@ void Application::init() {
 
     Input::getInstance()->init(Screen::getInstance()->getWindow());
     scene = new Scene();
+
+    Input::getInstance()->addListenerOnKey(new TransformKeyListener());
 }
 
 void Application::createShaders() {
@@ -119,6 +122,10 @@ void Application::run() {
     
     glfwDestroyWindow(Screen::getInstance()->getWindow());
     glfwTerminate();
+}
+
+Scene* Application::getScene() {
+    return this->scene;
 }
 
 

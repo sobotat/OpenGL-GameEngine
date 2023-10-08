@@ -26,4 +26,6 @@ public:
     void createShaders();
     void createModels();
     void run();
+
+    Scene* getScene();
 };

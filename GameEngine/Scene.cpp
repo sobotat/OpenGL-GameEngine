@@ -32,3 +32,8 @@ void Scene::draw() {
 void Scene::addActor(Actor* actor) {
     actors.push_back(actor);
 }
+
+Actor* Scene::getActor(int index) {
+    if (index >= actors.size() || index < 0) return nullptr;
+    return actors[index];
+}

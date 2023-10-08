@@ -12,4 +12,5 @@ public:
     ~Scene();
     void draw();
     void addActor(Actor* actor);
+    Actor* getActor(int index);
 };

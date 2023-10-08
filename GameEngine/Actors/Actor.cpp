@@ -18,7 +18,6 @@ Actor* Actor::addTransform(Transform* transform) {
 }
 
 void Actor::tick() {
-    addTransform(new Rotation(0.01, {0, 1, 0}));
 }
 
 void Actor::draw() {    
