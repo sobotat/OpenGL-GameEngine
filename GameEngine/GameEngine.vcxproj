@@ -382,6 +382,7 @@
     <ClCompile Include="Transformations\Rotation.cpp" />
     <ClCompile Include="Transformations\Scale.cpp" />
     <ClCompile Include="Transformations\TransformComposite.cpp" />
+    <ClCompile Include="Utils\UtilClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\Actor.h" />
@@ -408,6 +409,7 @@
     <ClInclude Include="Transformations\Scale.h" />
     <ClInclude Include="Transformations\Transform.hpp" />
     <ClInclude Include="Transformations\TransformComposite.h" />
+    <ClInclude Include="Utils\UtilClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

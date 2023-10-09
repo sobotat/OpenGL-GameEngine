@@ -1,7 +1,7 @@
 ﻿#include "PositionFragmentShader.h"
 
 PositionFragmentShader::PositionFragmentShader() {
-    printf("Creating Position Fragment Shader ...\n");
+    printf("Creating [%s] Shader ...\n", getName().c_str());
     source = "#version 330\n"
              "in vec4 pos;"
              "out vec4 frag_colour;"
@@ -12,5 +12,9 @@ PositionFragmentShader::PositionFragmentShader() {
     shader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* cSource = source.c_str(); 
     glShaderSource(shader, 1, &cSource, NULL);
-    printf("Position Fragment Shader Created\n");
+    printf("[%s] Shader Created\n", getName().c_str());
+}
+
+string PositionFragmentShader::getName() {
+    return UtilClass::getClassName(typeid(this));
 }

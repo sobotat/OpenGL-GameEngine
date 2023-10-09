@@ -4,5 +4,7 @@
 class PositionFragmentShader : public Shader {
     
 public:
-    PositionFragmentShader();    
+    PositionFragmentShader();
+
+    string getName() override;
 };

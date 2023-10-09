@@ -1,5 +1,7 @@
 ﻿#include "Application.h"
 
+#include <vcruntime_typeinfo.h>
+
 #include "Screen.h"
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Inputs/Input.h"
@@ -15,7 +17,6 @@
 #include "Transformations/Location.h"
 #include "Transformations/Rotation.h"
 #include "Transformations/Scale.h"
-#include "Transformations/TransformComposite.h"
 
 Application* Application::instance_ = new Application();
 
@@ -44,7 +45,11 @@ void Application::init() {
     printf("GLSL %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
     int major, minor, revision;
     glfwGetVersion(&major, &minor, &revision);
-    printf("Using GLFW %i.%i.%i\n", major, minor, revision);   
+    printf("Using GLFW %i.%i.%i\n", major, minor, revision);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
 
     Input::getInstance()->init(Screen::getInstance()->getWindow());
     scene = new Scene();

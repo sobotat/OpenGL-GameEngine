@@ -4,4 +4,6 @@
 class ColorFragmentShader : public Shader {
 public:
     ColorFragmentShader();
+
+    string getName() override;
 };

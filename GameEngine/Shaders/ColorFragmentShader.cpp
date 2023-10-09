@@ -1,7 +1,7 @@
 ﻿#include "ColorFragmentShader.h"
 
 ColorFragmentShader::ColorFragmentShader() {
-    printf("Creating Color Fragment Shader ...\n");
+    printf("Creating [%s] Shader ...\n", getName().c_str());
     source = "#version 330\n"
              "out vec4 frag_colour;"
              "void main () {"
@@ -11,5 +11,9 @@ ColorFragmentShader::ColorFragmentShader() {
     shader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* cSource = source.c_str(); 
     glShaderSource(shader, 1, &cSource, NULL);
-    printf("Color Fragment Shader Created\n");
+    printf("[%s] Shader Created\n", getName().c_str());
+}
+
+string ColorFragmentShader::getName() {
+    return UtilClass::getClassName(typeid(this));
 }

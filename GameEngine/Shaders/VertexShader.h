@@ -5,4 +5,6 @@ class VertexShader : public Shader {
     
 public:
     VertexShader();
+
+    string getName() override;
 };
