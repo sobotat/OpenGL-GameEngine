@@ -3,10 +3,10 @@
 PositionFragmentShader::PositionFragmentShader() {
     printf("Creating [%s] Shader ...\n", getName().c_str());
     source = "#version 330\n"
-             "in vec4 pos;"
+             "in vec3 color;"
              "out vec4 frag_colour;"
              "void main () {"
-             "  frag_colour = vec4 (pos.x,pos.y,pos.z, 1);"
+             "  frag_colour = vec4(color, 1.0f);"
              "}";
 
     shader = glCreateShader(GL_FRAGMENT_SHADER);

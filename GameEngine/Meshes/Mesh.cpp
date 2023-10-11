@@ -23,7 +23,7 @@ void Mesh::setPoints(vector<float> meshPoints) {
     
     const int sizeOf0 = 6 * sizeof(float);    
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) 0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) 3);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) (sizeOf0 / 2));
 }
 
 void Mesh::setPoints(vector<vector<vector<float>>> meshPoints) {
