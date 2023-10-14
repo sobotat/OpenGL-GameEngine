@@ -55,7 +55,7 @@ void Camera::onCursorChanged(CursorInput cursorInput) {
     float height = Screen::getInstance()->getHeight();
 
     float alpha = (cursorInput.x - width / 2) * cursorSpeed;
-    float phi = -(height / 2 - cursorInput.y) * cursorSpeed;
+    float phi = (height / 2 - cursorInput.y) * cursorSpeed;
     
     while (alpha > 2 * glm::pi<float>()) {
         alpha -= 2 * glm::pi<float>();
@@ -71,18 +71,13 @@ void Camera::onCursorChanged(CursorInput cursorInput) {
     while (phi < -glm::half_pi<float>()) {
         phi += glm::pi<float>();
     }
-
-    // Inverting Up and Down when rotated
-    if (alpha < glm::pi<float>()) {
-        phi *= -1;
-    }
-
+    
     // Clamping Up and Down - Not compatible with Teleporting
     // Not using because long wait time if you go over
     // phi = clamp(phi, -glm::half_pi<float>(), glm::half_pi<float>());
     
-    target.x = cos(alpha);
-    target.y = sin(alpha) * sin(phi);
+    target.x = cos(alpha) * cos(phi);
+    target.y = sin(phi);
     target.z = sin(alpha) * cos(phi);
 
     notifyOnCameraChanged();
