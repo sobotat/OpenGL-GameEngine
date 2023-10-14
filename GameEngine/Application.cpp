@@ -34,6 +34,7 @@ void Application::init() {
     }
     
     Screen::getInstance()->init();
+    camera = new Camera();
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -97,8 +98,9 @@ void Application::createModels() {
     Actor* sphereActor = new Actor(sphere, shaderPrograms[0]);
 
     squareActor
-        ->addTransform(new Location({-.5, 0, 0}))
-        ->addTransform(new Scale({.3, .3, .3}));
+        ->addTransform(new Rotation(radians(90.0f), {1, 0, 0}))
+        ->addTransform(new Location({0, 0, 1}))        
+        ->addTransform(new Scale({4, 4, 4}));
     suziActor1
         ->addTransform(new Location({0, .5, 0}))
         ->addTransform(new Scale({.2, .2, .2}));
@@ -131,6 +133,10 @@ void Application::run() {
 
 Scene* Application::getScene() {
     return this->scene;
+}
+
+Camera* Application::getCamera() {
+    return this->camera;
 }
 
 

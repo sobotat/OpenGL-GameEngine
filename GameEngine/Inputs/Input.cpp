@@ -36,7 +36,7 @@ void Input::onKey(GLFWwindow* window, int key, int scancode, int action, int mod
     notifyOnKey(window, key, scancode, action, mods);
 }
 
-void Input::onCursor(GLFWwindow* window, double x, double y) {
+void Input::onCursor(GLFWwindow* window, double x, double y) {    
     notifyOnCursor(window, x, y);
 }
 

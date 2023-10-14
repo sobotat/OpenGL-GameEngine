@@ -6,11 +6,13 @@ VertexShader::VertexShader() {
              "layout(location=0) in vec3 vp;\n"
              "layout(location=1) in vec3 vp_color;\n"
              "uniform mat4 modelMatrix;\n"
-             "out vec4 pos;\n"
+             "uniform mat4 viewMatrix;\n"
+             "uniform mat4 projectionMatrix;\n"
+             "out vec4 worldPosition;\n"
              "out vec3 color;\n"
              "void main () {"
-             "     pos = modelMatrix * vec4 (vp, 1.0);"
-             "     gl_Position = pos;"
+             "     worldPosition = projectionMatrix * viewMatrix * modelMatrix * vec4 (vp, 1.0);"
+             "     gl_Position = worldPosition;"
              "     color = vp_color;"
              "}";
 

@@ -90,7 +90,7 @@ void TransformKeyListener::onKeyChanged(KeyInput keyInput) {
         printf("Mode set to Rotate\n");
         mode = 'R';
         break;
-    case GLFW_KEY_S:
+    case GLFW_KEY_T:
         printf("Mode set to Scale\n");
         mode = 'S';
         break;

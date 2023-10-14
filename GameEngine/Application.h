@@ -16,6 +16,7 @@ protected:
     vector<Shader*> shaders;
     
     Scene* scene = nullptr;
+    Camera* camera = nullptr;
 
     void onExit();
     
@@ -27,5 +28,6 @@ public:
     void createModels();
     void run();
 
-    Scene* getScene();
+    Scene* getScene();    
+    Camera* getCamera();
 };

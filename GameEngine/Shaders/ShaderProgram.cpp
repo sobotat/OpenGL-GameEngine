@@ -2,8 +2,13 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../Application.h"
+
 ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
     this->shaders = move(shaders);
+
+    Camera* camera = Application::getInstance()->getCamera();
+    camera->addListenerOnCameraChanged(this);
     
     printf("Setting Shader Program ...\n");
     program = glCreateProgram();
@@ -35,6 +40,9 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::useProgram() {
     glUseProgram(program);
+    
+    setPropertyMatrix(viewMatrix, "viewMatrix");
+    setPropertyMatrix(projectionMatrix, "projectionMatrix");
 }
 
 void ShaderProgram::resetProgram() {
@@ -44,5 +52,10 @@ void ShaderProgram::resetProgram() {
 void ShaderProgram::setPropertyMatrix(mat4 value, string property) {
     const GLint propertyId = glGetUniformLocation(program, property.c_str());
     glUniformMatrix4fv(propertyId , 1, GL_FALSE, value_ptr(value));
+}
+
+void ShaderProgram::onCameraChanged(Camera* camera) {
+    viewMatrix = camera->getView();
+    projectionMatrix = camera->getProjection();
 }
 

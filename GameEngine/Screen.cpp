@@ -6,6 +6,12 @@
 
 Screen* Screen::instance = nullptr;
 
+void Screen::notifyScreenChanged() {
+    for(ScreenListener* listener : listeners) {
+        listener->onScreenChanged(this);
+    }
+}
+
 void Screen::init() {    
     ratio = float(width) / float(height);
     
@@ -29,11 +35,13 @@ void Screen::init() {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+    //glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
     glfwSetWindowFocusCallback(window, window_focus_callback);
     glfwSetWindowIconifyCallback(window, window_iconify_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
+    notifyScreenChanged();
 }
 
 Screen* Screen::getInstance() {
@@ -47,14 +55,28 @@ GLFWwindow* Screen::getWindow() {
     return window;
 }
 
+float Screen::getWidth() {
+    return width;
+}
+
+float Screen::getHeight() {
+    return height;
+}
+
+float Screen::getRatio() {
+    return ratio;
+}
+
 void Screen::onFocus(GLFWwindow* window, int focused) {
     isFocus = focused == 1 ? true : false;
     printf("Focus [%d]\n", isFocus);
+    notifyScreenChanged();
 }
 
 void Screen::onIconify(GLFWwindow* window, int iconified) {
     isIconified = iconified == 1 ? true : false;
     printf("Iconified [%d]\n", isIconified);
+    notifyScreenChanged();
 }
 
 void Screen::onSizeChanged(GLFWwindow* window, int width, int height) {
@@ -64,4 +86,9 @@ void Screen::onSizeChanged(GLFWwindow* window, int width, int height) {
     
     printf("Size [%d, %d]\n", width, height);
     glViewport(0, 0, width, height);
+    notifyScreenChanged();
+}
+
+void Screen::addOnScreenChangeListener(ScreenListener* listener) {
+    listeners.push_back(listener);
 }
