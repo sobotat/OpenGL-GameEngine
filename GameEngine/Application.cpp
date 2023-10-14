@@ -8,6 +8,7 @@
 #include "Inputs/Listeners/TransformKeyListener.h"
 #include "Meshes/SphereMesh.h"
 #include "Meshes/SquareMesh.h"
+#include "Meshes/SuziSmoothMesh.h"
 #include "Meshes\SuziMesh.h"
 #include "Meshes/TriangleMesh.h"
 #include "Shaders/ColorFragmentShader.h"
@@ -90,11 +91,12 @@ void Application::createModels() {
     SquareMesh* square = new SquareMesh();
     TriangleMesh* triangle = new TriangleMesh();
     SuziMesh* suzi = new SuziMesh();
+    SuziSmoothMesh* suziSmooth = new SuziSmoothMesh();
     SphereMesh* sphere = new SphereMesh(); 
 
     Actor* squareActor = new Actor(square, shaderPrograms[1]);
     Actor* suziActor1 = new Actor(suzi, shaderPrograms[0]);
-    Actor* suziActor2 = new Actor(suzi, shaderPrograms[0]);
+    Actor* suziActor2 = new Actor(suziSmooth, shaderPrograms[0]);
     Actor* sphereActor = new Actor(sphere, shaderPrograms[0]);
 
     squareActor

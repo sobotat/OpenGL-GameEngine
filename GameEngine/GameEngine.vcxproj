@@ -371,6 +371,7 @@
     </ClCompile>
     <ClCompile Include="Meshes\SquareMesh.cpp" />
     <ClCompile Include="Meshes\SuziMesh.cpp" />
+    <ClCompile Include="Meshes\SuziSmoothMesh.cpp" />
     <ClCompile Include="Meshes\TriangleMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -470,9 +471,13 @@
     <ClInclude Include="Inputs\Input.h" />
     <ClInclude Include="Inputs\Listeners\TransformKeyListener.h" />
     <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\MeshData\SphereData.hpp" />
+    <ClInclude Include="Meshes\MeshData\SuziFlatData.hpp" />
+    <ClInclude Include="Meshes\MeshData\SuziSmoothData.hpp" />
     <ClInclude Include="Meshes\SphereMesh.h" />
     <ClInclude Include="Meshes\SquareMesh.h" />
     <ClInclude Include="Meshes\SuziMesh.h" />
+    <ClInclude Include="Meshes\SuziSmoothMesh.h" />
     <ClInclude Include="Meshes\TriangleMesh.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
