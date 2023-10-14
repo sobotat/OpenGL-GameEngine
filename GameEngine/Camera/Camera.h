@@ -18,11 +18,15 @@ class Camera :
     vector<CameraListener*> listeners;
     
     float fov;
-    float cursorSpeed = 0.005f;
+    float cursorSpeed = 0.1f;
     float moveSpeed = 0.025f;
 
     mat4 projectionMatrix = mat4(1);
     vec3 position, target, up;
+
+    double pitch = -90.0f;
+    double yaw = -90.0f;
+    double lastX, lastY;
 
     void notifyOnCameraChanged();
     

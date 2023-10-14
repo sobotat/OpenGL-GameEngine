@@ -17,8 +17,8 @@ protected:
     vector<ScreenListener*> listeners;
     
     string title = "ZPG";
-    int width = 800;
-    int height = 800;
+    int width = 1920;
+    int height = 1080;
     float ratio = 1;
     GLFWwindow* window = nullptr;
 

@@ -9,6 +9,7 @@ ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
 
     Camera* camera = Application::getInstance()->getCamera();
     camera->addListenerOnCameraChanged(this);
+    onCameraChanged(camera);
     
     printf("Setting Shader Program ...\n");
     program = glCreateProgram();

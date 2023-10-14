@@ -14,11 +14,16 @@ Camera::Camera() {
     position = {0, 0, 3};
     target = {0, 0,  -4};
     up = {0, 1, 0};
+
+    Screen* screen = Screen::getInstance();    
+    screen->addOnScreenChangeListener(this);
+    lastX = screen->getWidth()/2;
+    lastY = screen->getHeight()/2;
     
-    Screen::getInstance()->addOnScreenChangeListener(this);
     Input::getInstance()->addListenerOnKey(this);
     Input::getInstance()->addListenerOnCursor(this);
     onScreenChanged(Screen::getInstance());
+    notifyOnCameraChanged();
 }
 
 mat4 Camera::getView() {
@@ -40,10 +45,22 @@ void Camera::onScreenChanged(Screen* screen) {
 }
 
 void Camera::onKeyChanged(KeyInput keyInput) {
-    if (glfwGetKey(keyInput.window, GLFW_KEY_W) == GLFW_PRESS) position.z -= moveSpeed;            
-    if (glfwGetKey(keyInput.window, GLFW_KEY_S) == GLFW_PRESS) position.z += moveSpeed;
-    if (glfwGetKey(keyInput.window, GLFW_KEY_D) == GLFW_PRESS) position.x += moveSpeed;
-    if (glfwGetKey(keyInput.window, GLFW_KEY_A) == GLFW_PRESS) position.x -= moveSpeed;
+    if (glfwGetKey(keyInput.window, GLFW_KEY_W) == GLFW_PRESS) {
+        position.x += moveSpeed * cos(glm::radians(yaw));
+        position.z += moveSpeed * sin(glm::radians(yaw));
+    }
+    if (glfwGetKey(keyInput.window, GLFW_KEY_S) == GLFW_PRESS) {
+        position.x -= moveSpeed * cos(glm::radians(yaw));
+        position.z -= moveSpeed * sin(glm::radians(yaw));
+    }
+    if (glfwGetKey(keyInput.window, GLFW_KEY_A) == GLFW_PRESS) {
+        position.x += moveSpeed * sin(glm::radians(yaw));
+        position.z -= moveSpeed * cos(glm::radians(yaw));
+    }
+    if (glfwGetKey(keyInput.window, GLFW_KEY_D) == GLFW_PRESS) {
+        position.x -= moveSpeed * sin(glm::radians(yaw));
+        position.z += moveSpeed * cos(glm::radians(yaw));
+    }
     if (glfwGetKey(keyInput.window, GLFW_KEY_SPACE) == GLFW_PRESS) position.y += moveSpeed;
     if (glfwGetKey(keyInput.window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) position.y -= moveSpeed;
 
@@ -51,34 +68,22 @@ void Camera::onKeyChanged(KeyInput keyInput) {
 }
 
 void Camera::onCursorChanged(CursorInput cursorInput) {
-    float width = Screen::getInstance()->getWidth();
-    float height = Screen::getInstance()->getHeight();
+    const double offsetX = (cursorInput.x - lastX) * cursorSpeed;
+    const double offsetY = (lastY - cursorInput.y) * cursorSpeed;
+    lastX = cursorInput.x;
+    lastY = cursorInput.y;
 
-    float alpha = (cursorInput.x - width / 2) * cursorSpeed;
-    float phi = (height / 2 - cursorInput.y) * cursorSpeed;
-    
-    while (alpha > 2 * glm::pi<float>()) {
-        alpha -= 2 * glm::pi<float>();
-    }
-    while (alpha < 0) {
-        alpha += 2 * glm::pi<float>();
-    }
+    yaw += offsetX;
+    pitch += offsetY;
 
-    // Teleporting Up and Down - Not compatible with Clamping
-    while (phi > glm::half_pi<float>()) {
-        phi -= glm::pi<float>();
-    }
-    while (phi < -glm::half_pi<float>()) {
-        phi += glm::pi<float>();
-    }
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
     
-    // Clamping Up and Down - Not compatible with Teleporting
-    // Not using because long wait time if you go over
-    // phi = clamp(phi, -glm::half_pi<float>(), glm::half_pi<float>());
-    
-    target.x = cos(alpha) * cos(phi);
-    target.y = sin(phi);
-    target.z = sin(alpha) * cos(phi);
+    target.x = float(cos(radians(yaw)) * cos(radians(pitch)));
+    target.y = float(sin(radians(pitch)));
+    target.z = float(sin(radians(yaw)) * cos(radians(pitch)));
 
     notifyOnCameraChanged();
 }
