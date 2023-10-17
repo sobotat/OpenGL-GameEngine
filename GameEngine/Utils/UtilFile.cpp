@@ -26,7 +26,7 @@ string UtilFile::readFile(string fileName) {
         }
         inputFile.close();
     } else {
-        printf("Unable to open the file -> %s\n", fileName.c_str());
+        printf("\033[1;31mFile [%s] Failed to Open\033[0m\n", fileName.c_str());
     }
     
     return out;

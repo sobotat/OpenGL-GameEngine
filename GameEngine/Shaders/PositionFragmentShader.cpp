@@ -9,7 +9,7 @@ PositionFragmentShader::PositionFragmentShader() {
     shader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* cSource = source.c_str(); 
     glShaderSource(shader, 1, &cSource, NULL);
-    printf("[%s] Shader Created\n", getName().c_str());
+    printf("\033[0;32m[%s] Shader Created\033[0m\n", getName().c_str());
 }
 
 string PositionFragmentShader::getName() {

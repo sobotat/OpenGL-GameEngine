@@ -27,12 +27,11 @@ ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
-        fprintf(stderr, "Linker failure: %s\n", strInfoLog);
+        fprintf(stderr, "\033[1;31mLinker failure: %s\033[0m\n", strInfoLog);
         delete[] strInfoLog;
         exit(EXIT_FAILURE);
     }
-    printf("Shaders Check\n");
-    printf("Shader Program Set\n");
+    printf("\033[1;32mShader Program Set\033[0m\n");
 }
 
 ShaderProgram::~ShaderProgram() {

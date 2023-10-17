@@ -23,16 +23,20 @@ bool Shader::checkCompile() {
 void Shader::compile() {
     printf("Compiling Shader [%s] ...\n", getName().c_str());
     if (shader == NULL) {
-        printf("Failed to compile Shader [%s] -> shader is null\n", getName().c_str());
+        printf("\033[1;31mFailed to compile Shader [%s] -> shader is null\033[0m\n", getName().c_str());
+        return;
+    }
+    if (source.empty()) {
+        printf("\033[1;31mFailed to compile Shader [%s] -> source is empty\033[0m\n", getName().c_str());
         return;
     }
     glCompileShader(shader);
 
     isCompiled = checkCompile();
     if (isCompiled) {
-        printf("Shader [%s] Successfully Compiled\n", getName().c_str());
+        printf("\033[1;32mShader [%s] Successfully Compiled\033[0m\n", getName().c_str());
     } else {
-        printf("Shader [%s] Failed to Compile\n", getName().c_str());
+        printf("\033[1;31mShader [%s] Failed to Compile\033[0m\n", getName().c_str());
         exit(2);
     }    
 }
@@ -40,15 +44,15 @@ void Shader::compile() {
 void Shader::attach(GLuint shaderProgram) {
     printf("Attaching Shader ...\n");
     if(!isCompiled) {
-        printf("Failed to attach Shader [%s] -> Shader was not compiled", getName().c_str());
+        printf("\033[1;33mFailed to attach Shader [%s] -> Shader was not compiled\033[0m\n", getName().c_str());
         return;
     }
     if (shader == NULL) {
-        printf("Failed to attach Shader [%s] -> shader is null\n", getName().c_str());
+        printf("\033[1;33mFailed to attach Shader [%s] -> shader is null\033[0m\n", getName().c_str());
         return;
     }
     glAttachShader(shaderProgram, shader);
-    printf("Shader [%s] Attached\n", getName().c_str());
+    printf("\033[1;32mShader [%s] Attached\033[0m\n", getName().c_str());
 }
 
 string Shader::getName() {
