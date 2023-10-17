@@ -4,16 +4,12 @@
 
 #include "../Application.h"
 
-ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
+ShaderProgram::ShaderProgram(vector<shared_ptr<Shader>> shaders) {
     this->shaders = move(shaders);
-
-    Camera* camera = Application::getInstance()->getCamera();
-    camera->addListenerOnCameraChanged(shared_ptr<CameraListener>(this));
-    onCameraChanged(camera);
     
     printf("Setting Shader Program ...\n");
     program = glCreateProgram();
-    for (Shader* shader : this->shaders) {
+    for (shared_ptr<Shader>& shader : this->shaders) {
         shader->attach(program);
     }
     glLinkProgram(program);
@@ -38,6 +34,12 @@ ShaderProgram::~ShaderProgram() {
     shaders.clear();
 }
 
+void ShaderProgram::initCameraListener() {
+    shared_ptr<Camera> camera = Application::getInstance()->getCamera();
+    camera->addListenerOnCameraChanged(shared_from_this());
+    onCameraChanged(camera);
+}
+
 void ShaderProgram::useProgram() {
     glUseProgram(program);
     
@@ -54,7 +56,7 @@ void ShaderProgram::setPropertyMatrix(mat4 value, string property) {
     glUniformMatrix4fv(propertyId , 1, GL_FALSE, value_ptr(value));
 }
 
-void ShaderProgram::onCameraChanged(Camera* camera) {
+void ShaderProgram::onCameraChanged(shared_ptr<Camera> camera) {
     viewMatrix = camera->getView();
     projectionMatrix = camera->getProjection();
 }

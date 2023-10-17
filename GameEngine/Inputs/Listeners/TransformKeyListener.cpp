@@ -13,11 +13,11 @@ void TransformKeyListener::onLeft() const {
 
     switch (mode) {
     case 'L':
-        actor->addTransform(new Location({-.1, 0, 0})); break;
+        actor->addTransform(make_shared<Location>(vec3{-.1, 0, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(-1, {0, 1, 0})); break;
+        actor->addTransform(make_shared<Rotation>(-1, vec3{0, 1, 0})); break;
     case 'S':
-        actor->addTransform(new Scale({.9, .9, .9})); break;
+        actor->addTransform(make_shared<Scale>(vec3{.9, .9, .9})); break;
     default: break;
     }
 }
@@ -28,11 +28,11 @@ void TransformKeyListener::onRight() const {
 
     switch (mode) {
     case 'L':
-        actor->addTransform(new Location({.1, 0, 0})); break;
+        actor->addTransform(make_shared<Location>(vec3{.1, 0, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(1, {0, 1, 0})); break;
+        actor->addTransform(make_shared<Rotation>(1, vec3{0, 1, 0})); break;
     case 'S':
-        actor->addTransform(new Scale({1.1, 1.1, 1.1})); break;
+        actor->addTransform(make_shared<Scale>(vec3{1.1, 1.1, 1.1})); break;
     default: break;
     }
 }
@@ -43,11 +43,11 @@ void TransformKeyListener::onUp() const {
 
     switch (mode) {
     case 'L':
-        actor->addTransform(new Location({0, .1, 0})); break;
+        actor->addTransform(make_shared<Location>(vec3{0, .1, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(-1, {1, 0, 0})); break;
+        actor->addTransform(make_shared<Rotation>(-1, vec3{1, 0, 0})); break;
     case 'S':
-        actor->addTransform(new Scale({1.1, 1.1, 1.1})); break;
+        actor->addTransform(make_shared<Scale>(vec3{1.1, 1.1, 1.1})); break;
     default: break;
     }
 }
@@ -58,11 +58,11 @@ void TransformKeyListener::onDown() const {
 
     switch (mode) {
     case 'L':
-        actor->addTransform(new Location({0, -.1, 0})); break;
+        actor->addTransform(make_shared<Location>(vec3{0, -.1, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(1, {1, 0, 0})); break;
+        actor->addTransform(make_shared<Rotation>(1, vec3{1, 0, 0})); break;
     case 'S':
-        actor->addTransform(new Scale({.9, .9, .9})); break;
+        actor->addTransform(make_shared<Scale>(vec3{.9, .9, .9})); break;
     default: break;
     }
 }

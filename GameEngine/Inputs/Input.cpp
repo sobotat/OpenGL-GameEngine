@@ -16,15 +16,15 @@ Input* Input::getInstance() {
     return instance;
 }
 
-void Input::addListenerOnKey(OnKeyListener* listener) {
+void Input::addListenerOnKey(shared_ptr<OnKeyListener> listener) {
     onKeyListeners.push_back(listener);
 }
 
-void Input::addListenerOnCursor(OnCursorListener* listener) {
+void Input::addListenerOnCursor(shared_ptr<OnCursorListener> listener) {
     onCursorListeners.push_back(listener);
 }
 
-void Input::addListenerOnMouse(OnMouseListener* listener) {
+void Input::addListenerOnMouse(shared_ptr<OnMouseListener> listener) {
     onMouseListeners.push_back(listener);
 }
 
@@ -54,7 +54,7 @@ void Input::notifyOnKey(GLFWwindow* window, int key, int scancode, int action, i
     input.action = action;
     input.mods = mods;
     
-    for (OnKeyListener* listener : onKeyListeners) {
+    for (shared_ptr<OnKeyListener> listener : onKeyListeners) {
         listener->onKeyChanged(input);    
     }
 }
@@ -66,7 +66,7 @@ void Input::notifyOnCursor(GLFWwindow* window, double x, double y) const {
     input.x = x;
     input.y = y;
 
-    for (OnCursorListener* listener : onCursorListeners) {
+    for (shared_ptr<OnCursorListener> listener : onCursorListeners) {
         listener->onCursorChanged(input);
     } 
 }
@@ -79,22 +79,12 @@ void Input::notifyOnMouse(GLFWwindow* window, int button, int action, int mode) 
     input.action = action;
     input.mode = mode;
 
-    for (OnMouseListener* listener : onMouseListeners) {
+    for (shared_ptr<OnMouseListener> listener : onMouseListeners) {
         listener->onMouseChanged(input);
     }
 }
 
 Input::~Input() {
-    for (OnKeyListener* listener : onKeyListeners) {
-        delete listener;
-    }
-    for (OnCursorListener* listener : onCursorListeners) {
-        delete listener;
-    }
-    for (OnMouseListener* listener : onMouseListeners) {
-        delete listener;
-    }
-
     onKeyListeners.clear();
     onCursorListeners.clear();
     onMouseListeners.clear();

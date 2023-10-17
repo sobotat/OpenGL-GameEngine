@@ -5,7 +5,7 @@
 
 void Camera::notifyOnCameraChanged() {
     for(shared_ptr<CameraListener>& listener : listeners) {
-        listener->onCameraChanged(this);
+        listener->onCameraChanged(shared_from_this());
     }
 }
 
@@ -20,8 +20,6 @@ Camera::Camera() {
     lastX = screen->getWidth()/2;
     lastY = screen->getHeight()/2;
     
-    Input::getInstance()->addListenerOnKey(this);
-    Input::getInstance()->addListenerOnCursor(this);
     onScreenChanged(Screen::getInstance());
     notifyOnCameraChanged();
 }
@@ -32,6 +30,11 @@ mat4 Camera::getView() {
 
 mat4 Camera::getProjection() {
     return projectionMatrix;
+}
+
+void Camera::initInput() {
+    Input::getInstance()->addListenerOnKey(shared_from_this());
+    Input::getInstance()->addListenerOnCursor(shared_from_this());
 }
 
 void Camera::addListenerOnCameraChanged(shared_ptr<CameraListener> listener) {

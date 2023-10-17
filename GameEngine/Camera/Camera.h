@@ -13,7 +13,8 @@ class CameraListener;
 class Camera :
     public ScreenListener,
     public OnKeyListener,
-    public OnCursorListener {
+    public OnCursorListener,
+    public enable_shared_from_this<Camera> {
 
     vector<shared_ptr<CameraListener>> listeners;
     
@@ -35,6 +36,7 @@ public:
     mat4 getView();
     mat4 getProjection();
 
+    void initInput();
     void addListenerOnCameraChanged(shared_ptr<CameraListener> listener);
 
     void onScreenChanged(shared_ptr<Screen> screen) override;

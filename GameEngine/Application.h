@@ -10,24 +10,24 @@
 
 class Application {
 protected:
-    static Application* instance_;
+    static shared_ptr<Application> instance_;
 
-    vector<ShaderProgram*> shaderPrograms;
-    vector<Shader*> shaders;
+    vector<shared_ptr<ShaderProgram>> shaderPrograms;
+    vector<shared_ptr<Shader>> shaders;
     
-    Scene* scene = nullptr;
-    Camera* camera = nullptr;
+    shared_ptr<Scene> scene = nullptr;
+    shared_ptr<Camera> camera = nullptr;
 
     void onExit();
     
 public:
     ~Application();
-    static Application* getInstance();
+    static shared_ptr<Application> getInstance();
     void init();
     void createShaders();
     void createModels();
     void run();
 
-    Scene* getScene();    
-    Camera* getCamera();
+    shared_ptr<Scene> getScene();    
+    shared_ptr<Camera> getCamera();
 };

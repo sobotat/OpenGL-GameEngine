@@ -5,15 +5,14 @@
 
 class Actor {
 protected:
-    ShaderProgram* shaderProgram;
+    shared_ptr<ShaderProgram> shaderProgram;
     Mesh* mesh;
-    TransformComposite* transform = nullptr;
+    shared_ptr<TransformComposite> transform = nullptr;
     
 public:
-    Actor(Mesh* mesh, ShaderProgram* shaderProgram);
-    virtual ~Actor();
+    Actor(Mesh* mesh, shared_ptr<ShaderProgram> shaderProgram);
 
-    Actor* addTransform(Transform* transform);
+    Actor* addTransform(shared_ptr<Transform> transform);
     
     virtual void tick();
     virtual void draw();    

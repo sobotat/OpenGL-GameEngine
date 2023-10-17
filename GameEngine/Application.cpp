@@ -19,9 +19,9 @@
 #include "Transformations/Rotation.h"
 #include "Transformations/Scale.h"
 
-Application* Application::instance_ = new Application();
+shared_ptr<Application> Application::instance_ = make_shared<Application>();
 
-Application* Application::getInstance() {
+shared_ptr<Application> Application::getInstance() {
     return instance_;
 }
 
@@ -35,7 +35,8 @@ void Application::init() {
     }
     
     Screen::getInstance()->init();
-    camera = new Camera();
+    camera = make_shared<Camera>();
+    camera->initInput();
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -54,35 +55,39 @@ void Application::init() {
     glEnable(GL_DEPTH_TEST);
 
     Input::getInstance()->init(Screen::getInstance()->getWindow());
-    scene = new Scene();
+    scene = make_shared<Scene>();
 
-    Input::getInstance()->addListenerOnKey(new TransformKeyListener());
+    Input::getInstance()->addListenerOnKey(make_shared<TransformKeyListener>());
 }
 
 void Application::createShaders() {
     printf("Creating Shaders ...\n");
-    PositionFragmentShader* positionFragmentShader = new PositionFragmentShader();
+    shared_ptr<PositionFragmentShader> positionFragmentShader = make_shared<PositionFragmentShader>();
     positionFragmentShader->compile();
     shaders.push_back(positionFragmentShader);
 
-    ColorFragmentShader* colorFragmentShader = new ColorFragmentShader();
+    shared_ptr<ColorFragmentShader> colorFragmentShader = make_shared<ColorFragmentShader>();
     colorFragmentShader->compile();
     shaders.push_back(colorFragmentShader);
     
-    VertexShader* vertexShader = new VertexShader();
+    shared_ptr<VertexShader> vertexShader = make_shared<VertexShader>();
     vertexShader->compile();
     shaders.push_back(vertexShader);
     printf("Shaders Created\n");
-    
-    shaderPrograms.push_back(new ShaderProgram({
+
+    shared_ptr<ShaderProgram> sharedProgram1 = make_shared<ShaderProgram>(vector<shared_ptr<Shader>>{
         positionFragmentShader,
         vertexShader,
-    }));
+    });
+    sharedProgram1->initCameraListener();
+    shaderPrograms.push_back(sharedProgram1);
 
-    shaderPrograms.push_back(new ShaderProgram({
+    shared_ptr<ShaderProgram> shaderProgram2 = make_shared<ShaderProgram>(vector<shared_ptr<Shader>>{
         colorFragmentShader,
         vertexShader,
-    }));
+    });
+    shaderProgram2->initCameraListener();
+    shaderPrograms.push_back(shaderProgram2);
 }
 
 void Application::createModels() {
@@ -100,18 +105,18 @@ void Application::createModels() {
     shared_ptr<Actor> sphereActor = make_shared<Actor>(sphere, shaderPrograms[0]);
 
     squareActor
-        ->addTransform(new Rotation(90.0f, {1, 0, 0}))
-        ->addTransform(new Location({0, 0, 1}))        
-        ->addTransform(new Scale({4, 4, 4}));
+        ->addTransform(make_shared<Rotation>(90.0f, vec3{1, 0, 0}))
+        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))        
+        ->addTransform(make_shared<Scale>(vec3{4, 4, 4}));
     suziActor1
-        ->addTransform(new Location({0, .5, 0}))
-        ->addTransform(new Scale({.2, .2, .2}));
+        ->addTransform(make_shared<Location>(vec3{0, .5, 0}))
+        ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
     suziActor2
-        ->addTransform(new Location({0, -.5, 0}))
-        ->addTransform(new Scale({.2, .2, .2}));
+        ->addTransform(make_shared<Location>(vec3{0, -.5, 0}))
+        ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
     sphereActor
-        ->addTransform(new Location({.5, 0, 0}))
-        ->addTransform(new Scale({.2, .2, .2}));
+        ->addTransform(make_shared<Location>(vec3{.5, 0, 0}))
+        ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
     
     scene->addActor(squareActor);
     scene->addActor(suziActor1);
@@ -133,11 +138,11 @@ void Application::run() {
     glfwTerminate();
 }
 
-Scene* Application::getScene() {
+shared_ptr<Scene> Application::getScene() {
     return this->scene;
 }
 
-Camera* Application::getCamera() {
+shared_ptr<Camera> Application::getCamera() {
     return this->camera;
 }
 
@@ -147,13 +152,6 @@ void Application::onExit() {
 }
 
 Application::~Application() {
-    for(ShaderProgram* program : shaderPrograms) {
-        delete program;
-    }
     shaderPrograms.clear();
-    for(Shader* shader : shaders) {
-        delete shader;
-    }
     shaders.clear();
-    delete scene;
 }

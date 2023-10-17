@@ -6,14 +6,12 @@
 #include "Inputs/Input.h"
 
 int main(void) {
-	Application* application = Application::getInstance();
+	shared_ptr<Application> application = Application::getInstance();
 	application->init();
 	application->createShaders();
 	application->createModels();
 	
 	application->run();
 	
-	delete application;
-	delete Input::getInstance();
 	exit(EXIT_SUCCESS);
 }

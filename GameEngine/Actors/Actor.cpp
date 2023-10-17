@@ -2,17 +2,13 @@
 
 #include "../Transformations/Rotation.h"
 
-Actor::Actor(Mesh* mesh, ShaderProgram* shaderProgram) {
+Actor::Actor(Mesh* mesh, shared_ptr<ShaderProgram> shaderProgram) {
     this->mesh = mesh;
     this->shaderProgram = shaderProgram;
-    this->transform = new TransformComposite();
+    this->transform = make_shared<TransformComposite>();
 }
 
-Actor::~Actor() {
-    delete transform;
-}
-
-Actor* Actor::addTransform(Transform* transform) {
+Actor* Actor::addTransform(shared_ptr<Transform> transform) {
     this->transform->addTransform(transform);
     return this;
 }
