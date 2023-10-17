@@ -13,7 +13,7 @@ bool Shader::checkCompile() {
         vector<GLchar> infoLog(infoLogLength);
         glGetShaderInfoLog(shader, infoLogLength, nullptr, infoLog.data());
 
-        printf("\nShader compilation error: %s", infoLog.data());
+        printf("\n%s", infoLog.data());
         return false;
     }
 
@@ -33,6 +33,7 @@ void Shader::compile() {
         printf("Shader [%s] Successfully Compiled\n", getName().c_str());
     } else {
         printf("Shader [%s] Failed to Compile\n", getName().c_str());
+        exit(2);
     }    
 }
 
