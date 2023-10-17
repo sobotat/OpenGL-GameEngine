@@ -4,7 +4,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 void Camera::notifyOnCameraChanged() {
-    for(CameraListener* listener : listeners) {
+    for(shared_ptr<CameraListener>& listener : listeners) {
         listener->onCameraChanged(this);
     }
 }
@@ -34,7 +34,7 @@ mat4 Camera::getProjection() {
     return projectionMatrix;
 }
 
-void Camera::addListenerOnCameraChanged(CameraListener* listener) {
+void Camera::addListenerOnCameraChanged(shared_ptr<CameraListener> listener) {
     listeners.push_back(listener);
 }
 

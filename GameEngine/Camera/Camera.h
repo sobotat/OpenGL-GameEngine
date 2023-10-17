@@ -15,7 +15,7 @@ class Camera :
     public OnKeyListener,
     public OnCursorListener {
 
-    vector<CameraListener*> listeners;
+    vector<shared_ptr<CameraListener>> listeners;
     
     float fov;
     float cursorSpeed = 0.1f;
@@ -35,7 +35,7 @@ public:
     mat4 getView();
     mat4 getProjection();
 
-    void addListenerOnCameraChanged(CameraListener* listener);
+    void addListenerOnCameraChanged(shared_ptr<CameraListener> listener);
 
     void onScreenChanged(shared_ptr<Screen> screen) override;
     void onKeyChanged(KeyInput keyInput) override;

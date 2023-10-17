@@ -8,7 +8,7 @@ ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
     this->shaders = move(shaders);
 
     Camera* camera = Application::getInstance()->getCamera();
-    camera->addListenerOnCameraChanged(this);
+    camera->addListenerOnCameraChanged(shared_ptr<CameraListener>(this));
     onCameraChanged(camera);
     
     printf("Setting Shader Program ...\n");
@@ -27,7 +27,7 @@ ShaderProgram::ShaderProgram(vector<Shader*> shaders) {
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
         glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
-        fprintf(stderr, "\033[1;31mLinker failure: %s\033[0m\n", strInfoLog);
+        fprintf(stderr, "\033[1;31mLinker failure: %s \033[0m\n", strInfoLog);
         delete[] strInfoLog;
         exit(EXIT_FAILURE);
     }
