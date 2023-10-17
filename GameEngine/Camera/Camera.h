@@ -37,7 +37,7 @@ public:
 
     void addListenerOnCameraChanged(CameraListener* listener);
 
-    void onScreenChanged(Screen* screen) override;
+    void onScreenChanged(shared_ptr<Screen> screen) override;
     void onKeyChanged(KeyInput keyInput) override;
     void onCursorChanged(CursorInput cursorInput) override;
 };

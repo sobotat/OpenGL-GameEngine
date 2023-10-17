@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <memory>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -12,9 +13,9 @@ class ScreenListener;
 
 class Screen {
 protected:
-    static Screen* instance;
+    static shared_ptr<Screen> instance;
 
-    vector<ScreenListener*> listeners;
+    vector<shared_ptr<ScreenListener>> listeners;
     
     string title = "ZPG";
     int width = 1920;
@@ -30,7 +31,7 @@ protected:
 public:
     void init();
     
-    static Screen* getInstance(); 
+    static shared_ptr<Screen> getInstance(); 
     GLFWwindow* getWindow();
     float getWidth();
     float getHeight();
@@ -40,5 +41,5 @@ public:
     void onIconify(GLFWwindow* window, int iconified);
     void onSizeChanged(GLFWwindow* window, int width, int height);
 
-    void addOnScreenChangeListener(ScreenListener* listener);
+    void addOnScreenChangeListener(const shared_ptr<ScreenListener>& listener);
 };

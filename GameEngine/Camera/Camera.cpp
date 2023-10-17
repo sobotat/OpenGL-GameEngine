@@ -15,8 +15,8 @@ Camera::Camera() {
     target = {0, 0,  -4};
     up = {0, 1, 0};
 
-    Screen* screen = Screen::getInstance();    
-    screen->addOnScreenChangeListener(this);
+    shared_ptr<Screen> screen = Screen::getInstance();    
+    screen->addOnScreenChangeListener(shared_ptr<ScreenListener>(this));
     lastX = screen->getWidth()/2;
     lastY = screen->getHeight()/2;
     
@@ -38,7 +38,7 @@ void Camera::addListenerOnCameraChanged(CameraListener* listener) {
     listeners.push_back(listener);
 }
 
-void Camera::onScreenChanged(Screen* screen) {
+void Camera::onScreenChanged(shared_ptr<Screen> screen) {
     projectionMatrix = perspective(fov, screen->getRatio(), 0.1f, 100.0f);
     
     notifyOnCameraChanged();

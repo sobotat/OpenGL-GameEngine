@@ -1,14 +1,15 @@
 ﻿#include "Screen.h"
+#include "Screen.h"
 
 #include <cstdlib>
 
 #include "GLFWCallbacks/WindowGLFWCallbacks.hpp"
 
-Screen* Screen::instance = nullptr;
+shared_ptr<Screen> Screen::instance = nullptr;
 
 void Screen::notifyScreenChanged() {
-    for(ScreenListener* listener : listeners) {
-        listener->onScreenChanged(this);
+    for(const shared_ptr<ScreenListener>& listener : listeners) {
+        listener->onScreenChanged(shared_ptr<Screen>(this));
     }
 }
 
@@ -44,9 +45,9 @@ void Screen::init() {
     notifyScreenChanged();
 }
 
-Screen* Screen::getInstance() {
+shared_ptr<Screen> Screen::getInstance() {
     if (instance == nullptr) {
-        instance = new Screen();
+        instance = make_shared<Screen>();
     }
     return instance;
 }
@@ -89,6 +90,6 @@ void Screen::onSizeChanged(GLFWwindow* window, int width, int height) {
     notifyScreenChanged();
 }
 
-void Screen::addOnScreenChangeListener(ScreenListener* listener) {
+void Screen::addOnScreenChangeListener(const shared_ptr<ScreenListener>& listener) {
     listeners.push_back(listener);
 }
