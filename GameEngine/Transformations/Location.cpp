@@ -5,5 +5,5 @@ Location::Location(vec3 moveVector) {
 }
 
 mat4 Location::transform() {
-    return translate(matrix, moveVector);
+    return translate(mat4(1.0f), moveVector);
 }

@@ -6,5 +6,5 @@ Rotation::Rotation(float angle, vec3 axis) {
 }
 
 mat4 Rotation::transform() {
-    return rotate(matrix, angle, axis);
+    return rotate(mat4(1.0f), angle, axis);
 }

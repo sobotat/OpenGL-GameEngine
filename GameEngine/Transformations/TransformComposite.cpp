@@ -8,11 +8,10 @@ TransformComposite::~TransformComposite() {
 }
 
 mat4 TransformComposite::transform() {
+    mat4 matrix = mat4(1.0f);
     for (Transform* transform : transforms) {
         matrix *= transform->transform();
-        delete transform;
     }
-    transforms.clear();
     return matrix;
 }
 

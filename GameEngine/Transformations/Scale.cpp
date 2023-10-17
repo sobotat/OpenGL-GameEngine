@@ -5,5 +5,5 @@ Scale::Scale(vec3 scaleVector) {
 }
 
 mat4 Scale::transform() {
-    return scale(matrix, scaleVector);
+    return scale(mat4(1.0f), scaleVector);
 }
