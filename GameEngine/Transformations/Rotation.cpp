@@ -1,7 +1,7 @@
 ﻿#include "Rotation.h"
 
 Rotation::Rotation(float angle, vec3 axis) {
-    this->angle = angle;
+    this->angle = radians(angle);
     this->axis = axis;
 }
 

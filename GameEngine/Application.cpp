@@ -100,7 +100,7 @@ void Application::createModels() {
     Actor* sphereActor = new Actor(sphere, shaderPrograms[0]);
 
     squareActor
-        ->addTransform(new Rotation(radians(90.0f), {1, 0, 0}))
+        ->addTransform(new Rotation(90.0f, {1, 0, 0}))
         ->addTransform(new Location({0, 0, 1}))        
         ->addTransform(new Scale({4, 4, 4}));
     suziActor1

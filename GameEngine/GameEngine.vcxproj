@@ -459,6 +459,7 @@
     <ClCompile Include="Transformations\Scale.cpp" />
     <ClCompile Include="Transformations\TransformComposite.cpp" />
     <ClCompile Include="Utils\UtilClass.cpp" />
+    <ClCompile Include="Utils\UtilFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\Actor.h" />
@@ -493,6 +494,12 @@
     <ClInclude Include="Transformations\Transform.hpp" />
     <ClInclude Include="Transformations\TransformComposite.h" />
     <ClInclude Include="Utils\UtilClass.h" />
+    <ClInclude Include="Utils\UtilFile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shaders\ShadersFiles\Color.frag" />
+    <Content Include="Shaders\ShadersFiles\Position.frag" />
+    <Content Include="Shaders\ShadersFiles\Vertex.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
