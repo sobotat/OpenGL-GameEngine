@@ -94,10 +94,10 @@ void Application::createModels() {
     SuziSmoothMesh* suziSmooth = new SuziSmoothMesh();
     SphereMesh* sphere = new SphereMesh(); 
 
-    Actor* squareActor = new Actor(square, shaderPrograms[1]);
-    Actor* suziActor1 = new Actor(suzi, shaderPrograms[0]);
-    Actor* suziActor2 = new Actor(suziSmooth, shaderPrograms[0]);
-    Actor* sphereActor = new Actor(sphere, shaderPrograms[0]);
+    shared_ptr<Actor> squareActor = make_shared<Actor>(square, shaderPrograms[1]);
+    shared_ptr<Actor> suziActor1  = make_shared<Actor>(suzi, shaderPrograms[0]);
+    shared_ptr<Actor> suziActor2  = make_shared<Actor>(suziSmooth, shaderPrograms[0]);
+    shared_ptr<Actor> sphereActor = make_shared<Actor>(sphere, shaderPrograms[0]);
 
     squareActor
         ->addTransform(new Rotation(90.0f, {1, 0, 0}))

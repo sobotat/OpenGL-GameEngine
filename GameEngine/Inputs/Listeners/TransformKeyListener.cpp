@@ -7,66 +7,70 @@
 
 class Actor;
 
-void TransformKeyListener::onLeft() {
-    Actor* actor = Application::getInstance()->getScene()->getActor(selectedIndex);
+void TransformKeyListener::onLeft() const {
+    const shared_ptr<Actor> actor = Application::getInstance()->getScene()->getActor(selectedIndex);
     if (actor == nullptr) return;
 
     switch (mode) {
     case 'L':
         actor->addTransform(new Location({-.1, 0, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(-.1, {0, 1, 0})); break;
+        actor->addTransform(new Rotation(-1, {0, 1, 0})); break;
     case 'S':
         actor->addTransform(new Scale({.9, .9, .9})); break;
+    default: break;
     }
 }
 
-void TransformKeyListener::onRight() {
-    Actor* actor = Application::getInstance()->getScene()->getActor(selectedIndex);
+void TransformKeyListener::onRight() const {
+    const shared_ptr<Actor> actor = Application::getInstance()->getScene()->getActor(selectedIndex);
     if (actor == nullptr) return;
 
     switch (mode) {
     case 'L':
         actor->addTransform(new Location({.1, 0, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(.1, {0, 1, 0})); break;
+        actor->addTransform(new Rotation(1, {0, 1, 0})); break;
     case 'S':
         actor->addTransform(new Scale({1.1, 1.1, 1.1})); break;
+    default: break;
     }
 }
 
-void TransformKeyListener::onUp() {
-    Actor* actor = Application::getInstance()->getScene()->getActor(selectedIndex);
+void TransformKeyListener::onUp() const {
+    const shared_ptr<Actor> actor = Application::getInstance()->getScene()->getActor(selectedIndex);
     if (actor == nullptr) return;
 
     switch (mode) {
     case 'L':
         actor->addTransform(new Location({0, .1, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(-.1, {1, 0, 0})); break;
+        actor->addTransform(new Rotation(-1, {1, 0, 0})); break;
     case 'S':
         actor->addTransform(new Scale({1.1, 1.1, 1.1})); break;
+    default: break;
     }
 }
 
-void TransformKeyListener::onDown() {
-    Actor* actor = Application::getInstance()->getScene()->getActor(selectedIndex);
+void TransformKeyListener::onDown() const {
+    const shared_ptr<Actor> actor = Application::getInstance()->getScene()->getActor(selectedIndex);
     if (actor == nullptr) return;
 
     switch (mode) {
     case 'L':
         actor->addTransform(new Location({0, -.1, 0})); break;
     case 'R':
-        actor->addTransform(new Rotation(.1, {1, 0, 0})); break;
+        actor->addTransform(new Rotation(1, {1, 0, 0})); break;
     case 'S':
         actor->addTransform(new Scale({.9, .9, .9})); break;
+    default: break;
     }
 }
 
 void TransformKeyListener::onKeyChanged(KeyInput keyInput) {
     if (keyInput.action == 0) return;
 
-    int num = keyInput.key - 48;
+    const int num = keyInput.key - 48;
     if (num >= 0 && num <= 9) {
         printf("Set current to [%d]\n", num);
         selectedIndex = num;
@@ -94,5 +98,6 @@ void TransformKeyListener::onKeyChanged(KeyInput keyInput) {
         printf("Mode set to Scale\n");
         mode = 'S';
         break;
+    default: break;
     }
 }

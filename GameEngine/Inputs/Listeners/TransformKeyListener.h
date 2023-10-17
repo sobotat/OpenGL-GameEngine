@@ -6,10 +6,10 @@ protected:
     int selectedIndex = 0;
     char mode = 'L';
 
-    void onLeft();
-    void onRight();
-    void onUp();
-    void onDown();
+    void onLeft() const;
+    void onRight() const;
+    void onUp() const;
+    void onDown() const;
     
 public:
     void onKeyChanged(KeyInput keyInput) override;

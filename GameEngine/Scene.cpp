@@ -5,9 +5,6 @@
 #include "Screen.h"
 
 Scene::~Scene() {
-    for (Actor* actor : actors) {
-        delete actor;
-    }
     actors.clear();
 }
 
@@ -15,11 +12,11 @@ void Scene::draw() {
     // clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    for (Actor* actor : actors) {        
+    for (const shared_ptr<Actor>& actor : actors) {        
         actor->tick();
     }
     
-    for (Actor* actor : actors) {
+    for (const shared_ptr<Actor>& actor : actors) {
         actor->draw();
     }
 
@@ -29,11 +26,11 @@ void Scene::draw() {
     glfwSwapBuffers(Screen::getInstance()->getWindow());
 }
 
-void Scene::addActor(Actor* actor) {
+void Scene::addActor(const shared_ptr<Actor>& actor) {
     actors.push_back(actor);
 }
 
-Actor* Scene::getActor(int index) {
+shared_ptr<Actor> Scene::getActor(int index) {
     if (index >= actors.size() || index < 0) return nullptr;
     return actors[index];
 }
