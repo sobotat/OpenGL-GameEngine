@@ -1,13 +1,10 @@
 ﻿#include "PositionFragmentShader.h"
 
+#include "../Utils/UtilFile.h"
+
 PositionFragmentShader::PositionFragmentShader() {
     printf("Creating [%s] Shader ...\n", getName().c_str());
-    source = "#version 330\n"
-             "in vec3 color;"
-             "out vec4 frag_colour;"
-             "void main () {"
-             "  frag_colour = vec4(color, 1.0f);"
-             "}";
+    source = UtilFile::readFile("Shaders/ShadersFiles/Position.frag");
 
     shader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* cSource = source.c_str(); 

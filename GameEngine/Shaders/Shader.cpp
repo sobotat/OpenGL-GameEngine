@@ -1,5 +1,25 @@
 ﻿#include "Shader.h"
 
+#include <vector>
+
+bool Shader::checkCompile() {
+    GLint compileStatus;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatus);
+
+    if (compileStatus == GL_FALSE) {
+        GLint infoLogLength;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+        vector<GLchar> infoLog(infoLogLength);
+        glGetShaderInfoLog(shader, infoLogLength, nullptr, infoLog.data());
+
+        printf("\nShader compilation error: %s", infoLog.data());
+        return false;
+    }
+
+    return true;
+}
+
 void Shader::compile() {
     printf("Compiling Shader [%s] ...\n", getName().c_str());
     if (shader == NULL) {
@@ -7,8 +27,13 @@ void Shader::compile() {
         return;
     }
     glCompileShader(shader);
-    isCompiled = true;
-    printf("Shader [%s] Compiled\n", getName().c_str());
+
+    isCompiled = checkCompile();
+    if (isCompiled) {
+        printf("Shader [%s] Successfully Compiled\n", getName().c_str());
+    } else {
+        printf("Shader [%s] Failed to Compile\n", getName().c_str());
+    }    
 }
 
 void Shader::attach(GLuint shaderProgram) {

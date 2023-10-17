@@ -1,13 +1,10 @@
 ﻿#include "ColorFragmentShader.h"
 
+#include "../Utils/UtilFile.h"
+
 ColorFragmentShader::ColorFragmentShader() {
     printf("Creating [%s] Shader ...\n", getName().c_str());
-    source = "#version 330\n"
-             "in vec4 worldPosition;"
-             "out vec4 frag_colour;"
-             "void main () {"
-             "     frag_colour = vec4 (0.431, 0.584, 0.776, 1);"
-             "}";
+    source = UtilFile::readFile("Shaders/ShadersFiles/Color.frag");
 
     shader = glCreateShader(GL_FRAGMENT_SHADER);
     const char* cSource = source.c_str(); 

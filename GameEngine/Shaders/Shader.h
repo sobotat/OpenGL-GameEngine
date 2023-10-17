@@ -11,6 +11,8 @@ protected:
     GLuint shader;
     bool isCompiled = false;
 
+    bool checkCompile();
+
 public:
     virtual ~Shader() = default;
     virtual void compile();
