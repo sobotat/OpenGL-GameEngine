@@ -29,6 +29,7 @@ protected:
     void notifyScreenChanged();
     
 public:
+    ~Screen();
     void init();
     
     static shared_ptr<Screen> getInstance(); 

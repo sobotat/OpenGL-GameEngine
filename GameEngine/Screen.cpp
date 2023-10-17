@@ -13,6 +13,10 @@ void Screen::notifyScreenChanged() {
     }
 }
 
+Screen::~Screen() {
+    listeners.clear();
+}
+
 void Screen::init() {    
     ratio = float(width) / float(height);
     
