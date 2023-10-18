@@ -17,8 +17,7 @@ ShaderProgram::ShaderProgram(vector<shared_ptr<Shader>> shaders) {
     printf("Checking Shaders ...\n");
     GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE)
-    {
+    if (status == GL_FALSE) {
         GLint infoLogLength;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
         GLchar *strInfoLog = new GLchar[infoLogLength + 1];
