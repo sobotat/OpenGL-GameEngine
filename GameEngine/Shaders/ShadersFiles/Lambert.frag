@@ -5,6 +5,7 @@ in vec3 worldNormal;
 
 uniform vec3 lightPosition;
 uniform vec4 lightColor;
+uniform vec4 meshColor;
 
 out vec4 fragColor;
 
@@ -14,6 +15,5 @@ void main () {
   float diff = max( dot(lightVector, worldNormal), 0);  
   vec4 diffuse = diff * lightColor;
   vec4 ambient = vec4( 0.1, 0.1, 0.1, 1.0);
-  vec4 objectColor = vec4( 0.385, 0.647, 0.812, 1.0);
-  fragColor = (ambient + diffuse) * objectColor;
+  fragColor = (ambient + diffuse) * meshColor;
 }

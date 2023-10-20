@@ -11,6 +11,7 @@
 #include "Meshes/SuziSmoothMesh.h"
 #include "Meshes\SuziMesh.h"
 #include "Meshes/TriangleMesh.h"
+#include "Shaders/BlinnShader.h"
 #include "Shaders/ColorFragmentShader.h"
 #include "Shaders/LambertShader.h"
 #include "Shaders/PhongShader.h"
@@ -83,6 +84,10 @@ void Application::createShaders() {
     shared_ptr<PhongShader> phongShader = make_shared<PhongShader>();
     phongShader->compile();
     shaders.push_back(phongShader);
+
+    shared_ptr<BlinnShader> blinnShader = make_shared<BlinnShader>();
+    blinnShader->compile();
+    shaders.push_back(blinnShader);
     
     printf("Shaders Created\n");
 
@@ -102,7 +107,7 @@ void Application::createShaders() {
     })));
 
     shaderPrograms.insert(make_pair("blinn", make_shared<ShaderProgram>(vector<shared_ptr<Shader>>{
-        phongShader,
+        blinnShader,
         vertexShader,
     })));
 }
@@ -178,7 +183,7 @@ void Application::loadSceneA(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh) {
     shared_ptr<Scene> scene = make_shared<Scene>();
     
     shared_ptr<Actor> squareActor = make_shared<Actor>(plane.get(), shaderPrograms["color"]);    
-    shared_ptr<Actor> sphereActor1  = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
+    shared_ptr<Actor> sphereActor1  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
 
     squareActor
         ->addTransform(make_shared<Rotation>(90.0f, vec3{1, 0, 0}))
@@ -201,10 +206,10 @@ void Application::loadSceneB(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh) {
     shared_ptr<Scene> scene = make_shared<Scene>();
     
     shared_ptr<Actor> squareActor = make_shared<Actor>(plane.get(), shaderPrograms["color"]);    
-    shared_ptr<Actor> sphereActor1  = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
-    shared_ptr<Actor> sphereActor2  = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
-    shared_ptr<Actor> sphereActor3  = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
-    shared_ptr<Actor> sphereActor4 = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
+    shared_ptr<Actor> sphereActor1  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
+    shared_ptr<Actor> sphereActor2  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
+    shared_ptr<Actor> sphereActor3  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
+    shared_ptr<Actor> sphereActor4 = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
 
     squareActor
         ->addTransform(make_shared<Rotation>(90.0f, vec3{1, 0, 0}))
@@ -241,24 +246,28 @@ void Application::loadSceneC(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh1, sha
     shared_ptr<Scene> scene = make_shared<Scene>();
     
     shared_ptr<Actor> squareActor = make_shared<Actor>(plane.get(), shaderPrograms["color"]);    
-    shared_ptr<Actor> actor1  = make_shared<Actor>(mesh1.get(), shaderPrograms["lambert"]);
+    shared_ptr<Actor> actor1  = make_shared<Actor>(mesh1.get(), shaderPrograms["blinn"]);
     shared_ptr<Actor> actor2  = make_shared<Actor>(mesh2.get(), shaderPrograms["phong"]);
-    shared_ptr<Actor> actor3  = make_shared<Actor>(mesh3.get(), shaderPrograms["blinn"]);
+    shared_ptr<Actor> actor3  = make_shared<Actor>(mesh3.get(), shaderPrograms["lambert"]);
 
     squareActor
         ->addTransform(make_shared<Rotation>(90.0f, vec3{1, 0, 0}))
         ->addTransform(make_shared<Location>(vec3{0, 0, 1}))        
         ->addTransform(make_shared<Scale>(vec3{4, 4, 4}));
+    squareActor->setColor({.2,.2,.2,1});
     
     actor1
         ->addTransform(make_shared<Location>(vec3{0, .5, 0}))
         ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
+    actor1->setColor({1, 1, 1, 1});
     actor2
         ->addTransform(make_shared<Location>(vec3{0, -.5, 0}))
         ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
+    actor1->setColor({.2, .2, .2, 1});
     actor3
         ->addTransform(make_shared<Location>(vec3{.5, 0, 0}))
         ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
+    actor1->setColor({.5, .5, .5, 1});
     
     scene->addActor(squareActor);
     scene->addActor(actor1);

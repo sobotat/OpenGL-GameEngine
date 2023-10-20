@@ -1,8 +1,8 @@
 ﻿#version 330
 
-in vec3 worldPosition;
+uniform vec4 meshColor;
 out vec4 fragColor;
 
 void main () {
-     fragColor = vec4 (0.431, 0.584, 0.776, 1);
+     fragColor = meshColor;
 }
