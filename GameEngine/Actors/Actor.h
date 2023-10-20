@@ -3,6 +3,8 @@
 #include "../Meshes/Mesh.h"
 #include "../Transformations/TransformComposite.h"
 
+class ShaderProgram;
+
 class Actor {
 protected:
     shared_ptr<ShaderProgram> shaderProgram;

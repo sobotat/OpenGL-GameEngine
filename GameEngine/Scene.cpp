@@ -30,6 +30,14 @@ void Scene::addActor(const shared_ptr<Actor>& actor) {
     actors.push_back(actor);
 }
 
+void Scene::addLight(const shared_ptr<Light>& light) {
+    lights.push_back(light);
+}
+
+vector<shared_ptr<Light>> Scene::getLights() {
+    return this->lights;
+}
+
 shared_ptr<Actor> Scene::getActor(int index) {
     if (index >= actors.size() || index < 0) return nullptr;
     return actors[index];

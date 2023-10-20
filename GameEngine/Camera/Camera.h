@@ -16,7 +16,7 @@ class Camera :
     public OnCursorListener,
     public enable_shared_from_this<Camera> {
 
-    vector<shared_ptr<CameraListener>> listeners;
+    vector<CameraListener*> listeners;
     
     float fov;
     float cursorSpeed = 0.1f;
@@ -35,11 +35,14 @@ public:
     Camera();
     mat4 getView();
     mat4 getProjection();
+    vec3 getPosition();
 
-    void initInput();
-    void addListenerOnCameraChanged(shared_ptr<CameraListener> listener);
+    double getLastX();
+    double getLastY();
 
-    void onScreenChanged(shared_ptr<Screen> screen) override;
+    void addListenerOnCameraChanged(CameraListener* listener);
+
+    void onScreenChanged(Screen* screen) override;
     void onKeyChanged(KeyInput keyInput) override;
     void onCursorChanged(CursorInput cursorInput) override;
 };

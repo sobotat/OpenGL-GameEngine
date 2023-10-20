@@ -4,7 +4,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 void Camera::notifyOnCameraChanged() {
-    for(shared_ptr<CameraListener>& listener : listeners) {
+    for(CameraListener* listener : listeners) {
         listener->onCameraChanged(shared_from_this());
     }
 }
@@ -16,12 +16,15 @@ Camera::Camera() {
     up = {0, 1, 0};
 
     shared_ptr<Screen> screen = Screen::getInstance();    
-    screen->addOnScreenChangeListener(shared_ptr<ScreenListener>(this));
+    screen->addOnScreenChangeListener(this);
     lastX = screen->getWidth()/2;
     lastY = screen->getHeight()/2;
     
-    onScreenChanged(Screen::getInstance());
+    onScreenChanged(Screen::getInstance().get());
     notifyOnCameraChanged();
+
+    Input::getInstance()->addListenerOnKey(this);
+    Input::getInstance()->addListenerOnCursor(this);
 }
 
 mat4 Camera::getView() {
@@ -32,18 +35,24 @@ mat4 Camera::getProjection() {
     return projectionMatrix;
 }
 
-void Camera::initInput() {
-    Input::getInstance()->addListenerOnKey(shared_from_this());
-    Input::getInstance()->addListenerOnCursor(shared_from_this());
+vec3 Camera::getPosition() {
+    return position;
 }
 
-void Camera::addListenerOnCameraChanged(shared_ptr<CameraListener> listener) {
+double Camera::getLastX() {
+    return lastX;
+}
+
+double Camera::getLastY() {
+    return lastY;
+}
+
+void Camera::addListenerOnCameraChanged(CameraListener* listener) {
     listeners.push_back(listener);
 }
 
-void Camera::onScreenChanged(shared_ptr<Screen> screen) {
-    projectionMatrix = perspective(fov, screen->getRatio(), 0.1f, 100.0f);
-    
+void Camera::onScreenChanged(Screen* screen) {
+    projectionMatrix = perspective(fov, screen->getRatio(), 0.1f, 100.0f);    
     notifyOnCameraChanged();
 }
 
@@ -71,6 +80,9 @@ void Camera::onKeyChanged(KeyInput keyInput) {
 }
 
 void Camera::onCursorChanged(CursorInput cursorInput) {
+    bool isMouseLocked = Screen::getInstance()->getIsMouseLocked();
+    if (!isMouseLocked) return;
+    
     const double offsetX = (cursorInput.x - lastX) * cursorSpeed;
     const double offsetY = (lastY - cursorInput.y) * cursorSpeed;
     lastX = cursorInput.x;

@@ -10,6 +10,7 @@ int main(void) {
 	application->init();
 	application->createShaders();
 	application->createModels();
+	application->createScenes();
 	
 	application->run();
 	

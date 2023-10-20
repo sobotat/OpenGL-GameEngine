@@ -8,8 +8,8 @@
 shared_ptr<Screen> Screen::instance = nullptr;
 
 void Screen::notifyScreenChanged() {
-    for(const shared_ptr<ScreenListener>& listener : listeners) {
-        listener->onScreenChanged(shared_ptr<Screen>(this));
+    for(ScreenListener* listener : listeners) {
+        listener->onScreenChanged(this);
     }
 }
 
@@ -41,12 +41,13 @@ void Screen::init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     //glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
     glfwSetWindowFocusCallback(window, window_focus_callback);
     glfwSetWindowIconifyCallback(window, window_iconify_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
     notifyScreenChanged();
+
+    Input::getInstance()->addListenerOnMouse(this);
 }
 
 shared_ptr<Screen> Screen::getInstance() {
@@ -72,6 +73,14 @@ float Screen::getRatio() {
     return ratio;
 }
 
+bool Screen::getIsMouseLocked() {
+    return isMouseLocked;
+}
+
+bool Screen::getIsIconified() {
+    return isIconified;
+}
+
 void Screen::onFocus(GLFWwindow* window, int focused) {
     isFocus = focused == 1 ? true : false;
     printf("Focus [%d]\n", isFocus);
@@ -85,6 +94,8 @@ void Screen::onIconify(GLFWwindow* window, int iconified) {
 }
 
 void Screen::onSizeChanged(GLFWwindow* window, int width, int height) {
+    if (height == 0) return;
+    
     this->width = width;
     this->height = height;
     this->ratio = float(width) / float(height);
@@ -94,6 +105,20 @@ void Screen::onSizeChanged(GLFWwindow* window, int width, int height) {
     notifyScreenChanged();
 }
 
-void Screen::addOnScreenChangeListener(const shared_ptr<ScreenListener>& listener) {
+void Screen::onMouseChanged(MouseInput mouseInput) {
+    if (mouseInput.button == GLFW_MOUSE_BUTTON_2) {
+        if (mouseInput.action == GLFW_PRESS) {
+            shared_ptr<Camera> camera = Application::getInstance()->getCamera();
+            glfwSetCursorPos(window, camera->getLastX(), camera->getLastY());
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            isMouseLocked = true;
+        } else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            isMouseLocked = false;
+        }
+    }
+}
+
+void Screen::addOnScreenChangeListener(ScreenListener* listener) {
     listeners.push_back(listener);
 }

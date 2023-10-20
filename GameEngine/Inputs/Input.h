@@ -50,9 +50,9 @@ class Input
 protected:
     static Input* instance;
     
-    vector<shared_ptr<OnKeyListener>> onKeyListeners;
-    vector<shared_ptr<OnCursorListener>> onCursorListeners;
-    vector<shared_ptr<OnMouseListener>> onMouseListeners;
+    vector<OnKeyListener*> onKeyListeners;
+    vector<OnCursorListener*> onCursorListeners;
+    vector<OnMouseListener*> onMouseListeners;
 
     void notifyOnKey(GLFWwindow* window, int key, int scancode, int action, int mods) const;
     void notifyOnCursor(GLFWwindow* window, double x, double y) const;
@@ -68,7 +68,7 @@ public:
     void onCursor(GLFWwindow* window, double x, double y);
     void onMouse(GLFWwindow* window, int button, int action, int mode);
     
-    void addListenerOnKey(shared_ptr<OnKeyListener> listener);
-    void addListenerOnCursor(shared_ptr<OnCursorListener> listener);
-    void addListenerOnMouse(shared_ptr<OnMouseListener> listener);
+    void addListenerOnKey(OnKeyListener* listener);
+    void addListenerOnCursor(OnCursorListener* listener);
+    void addListenerOnMouse(OnMouseListener* listener);
 };

@@ -6,16 +6,17 @@
 #include <vector>
 
 #include "ScreenListener.hpp"
+#include "Inputs/Input.h"
 
 using namespace std;
 
 class ScreenListener;
 
-class Screen {
+class Screen : public OnMouseListener {
 protected:
     static shared_ptr<Screen> instance;
 
-    vector<shared_ptr<ScreenListener>> listeners;
+    vector<ScreenListener*> listeners;
     
     string title = "ZPG";
     int width = 1920;
@@ -25,6 +26,7 @@ protected:
 
     bool isFocus = true;
     bool isIconified = false;
+    bool isMouseLocked = false;
 
     void notifyScreenChanged();
     
@@ -37,10 +39,15 @@ public:
     float getWidth();
     float getHeight();
     float getRatio();
+    bool getIsMouseLocked();
+
+    bool getIsIconified();
     
     void onFocus(GLFWwindow* window, int focused);
     void onIconify(GLFWwindow* window, int iconified);
     void onSizeChanged(GLFWwindow* window, int width, int height);
 
-    void addOnScreenChangeListener(const shared_ptr<ScreenListener>& listener);
+    void onMouseChanged(MouseInput mouseInput) override;
+
+    void addOnScreenChangeListener(ScreenListener* listener);
 };
