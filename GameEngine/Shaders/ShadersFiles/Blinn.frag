@@ -16,8 +16,8 @@ void main () {
 
   vec3 halfwayVector = normalize(lightVector + cameraVector);
   
-  float spec = pow( max( dot(cameraVector, halfwayVector), 0.0), 32);
-  float specularStrength = .5;
+  float spec = pow( max( dot(worldNormal, halfwayVector), 0.0), 32);
+  float specularStrength = .75f;
   vec4 specular = specularStrength * spec * lightColor;
   
   float diff = max( dot(lightVector, worldNormal), 0);

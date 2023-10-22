@@ -206,8 +206,8 @@ void Application::loadSceneB(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh) {
     shared_ptr<Scene> scene = make_shared<Scene>();
     
     shared_ptr<Actor> squareActor = make_shared<Actor>(plane.get(), shaderPrograms["color"]);    
-    shared_ptr<Actor> sphereActor1  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
-    shared_ptr<Actor> sphereActor2  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
+    shared_ptr<Actor> sphereActor1  = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
+    shared_ptr<Actor> sphereActor2  = make_shared<Actor>(mesh.get(), shaderPrograms["phong"]);
     shared_ptr<Actor> sphereActor3  = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
     shared_ptr<Actor> sphereActor4 = make_shared<Actor>(mesh.get(), shaderPrograms["blinn"]);
 
