@@ -1,8 +1,10 @@
 ﻿#pragma once
 #include "../Shaders/ShaderProgram.h"
 #include "../Meshes/Mesh.h"
+#include "../Shaders/Materials/Material.h"
 #include "../Transformations/TransformComposite.h"
 
+class Material;
 class ShaderProgram;
 
 class Actor {
@@ -10,16 +12,16 @@ protected:
     shared_ptr<ShaderProgram> shaderProgram;
     Mesh* mesh;
     shared_ptr<TransformComposite> transform = nullptr;
-    
-    vec4 color = vec4{0.15, 0.73, 0.45, 1};
+    shared_ptr<Material> material;
     
 public:
-    Actor(Mesh* mesh, shared_ptr<ShaderProgram> shaderProgram);
+    Actor(Mesh* mesh, shared_ptr<ShaderProgram> shaderProgram, shared_ptr<Material> material);
 
     Actor* addTransform(shared_ptr<Transform> transform);
+    mat4 getActorMatrix();
+    mat4 getActorMatrixBefore(Transform* transform);
 
-    void setColor(vec4 color);
-    vec4 getColor();
+    shared_ptr<Material> getMaterial();
     
     virtual void tick();
     virtual void draw();    

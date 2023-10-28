@@ -17,6 +17,7 @@ protected:
     static shared_ptr<Application> instance_;
 
     map<string, shared_ptr<ShaderProgram>> shaderPrograms;
+    map<string, shared_ptr<Material>> materials;
     vector<shared_ptr<Shader>> shaders;
     map<string, shared_ptr<Mesh>> meshes;
     vector<shared_ptr<Scene>> scenes;
@@ -28,9 +29,12 @@ protected:
     shared_ptr<TransformKeyListener> transformKeyListener;
 
     void onExit();
-    void loadSceneA(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh);
-    void loadSceneB(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh);
-    void loadSceneC(shared_ptr<Mesh> plane, shared_ptr<Mesh> mesh1, shared_ptr<Mesh> mesh2, shared_ptr<Mesh> mesh3);
+    void loadSceneA();
+    void loadSceneB();
+    void loadSceneC();
+    void loadSceneD();
+    void loadSceneE();
+    void loadSceneF();
 
     void notifyActiveSceneChanged();
     
@@ -39,11 +43,13 @@ public:
     static shared_ptr<Application> getInstance();
     void init();
     void createShaders();
+    void createMaterials();
     void createModels();
     void createScenes();
     void run();
 
-    shared_ptr<Scene> getScene();    
+    shared_ptr<Scene> getScene();
+    vector<shared_ptr<Scene>> getAllScenes();
     shared_ptr<Camera> getCamera();
 
     void onKeyChanged(KeyInput keyInput) override;

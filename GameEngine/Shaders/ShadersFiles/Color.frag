@@ -1,4 +1,4 @@
-﻿#version 330
+﻿#version 400
 
 uniform vec4 meshColor;
 out vec4 fragColor;

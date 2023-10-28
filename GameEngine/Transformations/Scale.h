@@ -11,5 +11,6 @@ protected:
     
 public:
     Scale(vec3 scaleVector);
+    void tick() override;
     mat4 transform() override;
 };

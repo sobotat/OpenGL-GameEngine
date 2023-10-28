@@ -20,7 +20,7 @@ class Camera :
     
     float fov;
     float cursorSpeed = 0.1f;
-    float moveSpeed = 0.05f;
+    float moveSpeed = 0.1f;
 
     mat4 projectionMatrix = mat4(1);
     vec3 position, target, up;

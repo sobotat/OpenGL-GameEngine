@@ -14,14 +14,11 @@ using namespace glm;
 
 class ShaderProgram :
     public CameraListener,
-    public ActiveSceneListener {
+    public ActiveSceneListener,
+    public LightChangedInSceneListener {
 protected:
     GLuint program;
     vector<shared_ptr<Shader>> shaders;
-
-    mat4 viewMatrix = mat4(1);
-    mat4 projectionMatrix = mat4(1);
-    vec3 cameraPosition = vec3(1);
     
 public:
     ShaderProgram(vector<shared_ptr<Shader>> shaders);
@@ -30,10 +27,13 @@ public:
     void useProgram();
     static void resetProgram();
     
-    void setPropertyMatrix(mat4 value, string property);
-    void setPropertyVec3(vec3 value, string property);
-    void setPropertyVec4(vec4 value, string property);
+    void setProperty(mat4 value, string property);
+    void setProperty(vec3 value, string property);
+    void setProperty(vec4 value, string property);
+    void setProperty(float value, string property);
+    void setProperty(int value, string property);
 
     void onCameraChanged(shared_ptr<Camera> camera) override;
     void onActiveSceneChanged(shared_ptr<Scene> scene) override;
+    void onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared_ptr<Light> light) override;
 };

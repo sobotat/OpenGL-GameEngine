@@ -9,13 +9,17 @@
 using namespace glm;
 using namespace std;
 
-class TransformComposite : public  Transform, public enable_shared_from_this<TransformComposite>{
+class TransformComposite : public  Transform {
 protected:
     vector<shared_ptr<Transform>> transforms;
 public:
     ~TransformComposite();
+    void tick() override;
+    
     mat4 transform() override;
-    shared_ptr<TransformComposite> addTransform(shared_ptr<Transform> transform);
+    mat4 transformBefore(Transform* transform);
+    
+    void addTransform(shared_ptr<Transform> transform);
 };
 
 

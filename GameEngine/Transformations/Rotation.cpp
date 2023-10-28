@@ -5,6 +5,9 @@ Rotation::Rotation(float angle, vec3 axis) {
     this->axis = axis;
 }
 
+void Rotation::tick() {
+}
+
 mat4 Rotation::transform() {
     return rotate(mat4(1.0f), angle, axis);
 }

@@ -41,49 +41,74 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::useProgram() {
     glUseProgram(program);
-    
-    setPropertyMatrix(viewMatrix, "viewMatrix");
-    setPropertyMatrix(projectionMatrix, "projectionMatrix");
-    setPropertyVec3(cameraPosition, "cameraPosition");
 }
 
 void ShaderProgram::resetProgram() {
     glUseProgram(0);
 }
 
-void ShaderProgram::setPropertyMatrix(mat4 value, string property) {
+void ShaderProgram::setProperty(mat4 value, string property) {
     const GLint propertyId = glGetUniformLocation(program, property.c_str());
     glProgramUniformMatrix4fv(program,propertyId , 1, GL_FALSE, value_ptr(value));
 }
 
-void ShaderProgram::setPropertyVec3(vec3 value, string property) {
+void ShaderProgram::setProperty(vec3 value, string property) {
     const GLint propertyId = glGetUniformLocation(program, property.c_str());
     glProgramUniform3fv(program,propertyId, 1, value_ptr(value));
 }
 
-void ShaderProgram::setPropertyVec4(vec4 value, string property) {
+void ShaderProgram::setProperty(vec4 value, string property) {
     const GLint propertyId = glGetUniformLocation(program, property.c_str());
     glProgramUniform4fv(program,propertyId, 1, value_ptr(value));
 }
 
+void ShaderProgram::setProperty(float value, string property) {
+    const GLint propertyId = glGetUniformLocation(program, property.c_str());
+    glProgramUniform1f(program, propertyId, value);
+}
+
+void ShaderProgram::setProperty(int value, string property) {
+    const GLint propertyId = glGetUniformLocation(program, property.c_str());
+    glProgramUniform1i(program, propertyId, value);
+}
+
 void ShaderProgram::onCameraChanged(shared_ptr<Camera> camera) {
-    viewMatrix = camera->getView();
-    projectionMatrix = camera->getProjection();
-    cameraPosition = camera->getPosition();
+    setProperty(camera->getView(), "viewMatrix");
+    setProperty(camera->getProjection(), "projectionMatrix");
+    setProperty(camera->getPosition(), "cameraPosition");
 }
 
 void ShaderProgram::onActiveSceneChanged(shared_ptr<Scene> scene) {
     vector<shared_ptr<Light>> lights = scene->getLights();
 
     if(lights.empty()) {
-        setPropertyVec3({0,0,0}, "lightPosition");
-        setPropertyVec4({0,0,0, 0}, "lightColor");
+        setProperty({0,0,0}, "lightPosition");
+        setProperty({0,0,0, 0}, "lightColor");
+        setProperty(0, "lightDimmingFactor");
         return;
     }
     
     for (auto& light : lights) {
-        setPropertyVec3(light->getPosition(), "lightPosition");
-        setPropertyVec4(light->getColor(), "lightColor");
+        setProperty(light->getPosition(), "lightPosition");
+        setProperty(light->getColor(), "lightColor");
+        setProperty(light->getDimmingFactor(), "lightDimmingFactor");
+    }
+}
+
+void ShaderProgram::onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared_ptr<Light> light) {
+    vector<shared_ptr<Light>> lights = scene->getLights();
+
+    if(lights.empty()) {
+        setProperty({0,0,0}, "lightPosition");
+        setProperty({0,0,0, 0}, "lightColor");
+        setProperty(0, "lightDimmingFactor");
+        return;
+    }
+    
+    for (auto& light : lights) {
+        setProperty(light->getPosition(), "lightPosition");
+        setProperty(light->getColor(), "lightColor");
+        setProperty(light->getDimmingFactor(), "lightDimmingFactor");
     }
 }
 

@@ -6,7 +6,11 @@ in vec3 worldNormal;
 uniform vec3 cameraPosition;
 uniform vec3 lightPosition;
 uniform vec4 lightColor;
+uniform float lightDimmingFactor;
+
 uniform vec4 meshColor;
+uniform float shininess;
+uniform float specular;
 
 out vec4 fragColor;
 
@@ -15,14 +19,20 @@ void main () {
   vec3 cameraVector = normalize(cameraPosition - worldPosition);
 
   vec3 reflectVector = reflect( -lightVector, worldNormal);
-  float spec = pow( max( dot(cameraVector, reflectVector), 0.0), 32);
-  float specularStrength = .75f;
-  vec4 specular = specularStrength * spec * lightColor;
+  float spec = pow( max( dot(cameraVector, reflectVector), 0), shininess);
+
+  vec4 specularVector = specular * spec * lightColor;
+  if ( dot ( worldNormal , lightVector ) < 0.0) {
+    specularVector = vec4(0);
+  }
   
   float diff = max( dot(lightVector, worldNormal), 0);
   
   vec4 diffuse = diff * lightColor;
-  vec4 ambient = vec4( 0.1, 0.1, 0.1, 1.0);
+  vec4 ambient = vec4( 0.05, 0.05, 0.05, 1.0);
+
+  float distance = length(lightPosition - worldPosition);
+  float attenuation = 1.0 / (1.0 + lightDimmingFactor * distance * distance);
   
-  fragColor = (ambient + diffuse + specular) * meshColor;
+  fragColor = (ambient + attenuation * (diffuse + specularVector)) * meshColor;
 }

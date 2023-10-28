@@ -11,5 +11,6 @@ protected:
     
 public:
     Location(vec3 moveVector);
+    void tick() override;
     mat4 transform() override;
 };

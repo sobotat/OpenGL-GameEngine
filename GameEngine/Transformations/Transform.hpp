@@ -7,5 +7,6 @@ using namespace std;
 class Transform {
 public:
     virtual ~Transform() = default;
+    virtual void tick() = 0;
     virtual mat4 transform() = 0;
 };

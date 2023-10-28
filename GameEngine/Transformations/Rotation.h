@@ -12,5 +12,6 @@ protected:
     
 public:
     Rotation(float angle, vec3 axis);
+    void tick() override;
     mat4 transform() override;
 };
