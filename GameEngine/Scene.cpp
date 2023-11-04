@@ -6,8 +6,10 @@
 #include "Screen.h"
 
 void Scene::notifyLightChangedInSceneChanged(shared_ptr<Light> light) {
+    int index = 0; 
     for (shared_ptr<LightChangedInSceneListener> listener : lightListeners) {
-        listener->onLightChangedInSceneChanged(shared_ptr<Scene>(this), light);
+        listener->onLightChangedInSceneChanged(shared_ptr<Scene>(this), light, index);
+        index++;
     }
 }
 

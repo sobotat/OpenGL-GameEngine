@@ -8,10 +8,11 @@ void Light::notifyLightChanged() {
     }
 }
 
-Light::Light(vec3 position, vec4 color, float dimmingFactor) {
+Light::Light(vec3 position, vec4 color, float dimmingFactor, float diffuseFactor) {
     this->position = position;
     this->color = color;
     this->dimmingFactor = dimmingFactor;
+    this->diffuseFactor = diffuseFactor;
 }
 
 void Light::setPosition(vec3 position) {
@@ -38,6 +39,10 @@ vec4 Light::getColor() {
 
 float Light::getDimmingFactor() {
     return this->dimmingFactor;
+}
+
+float Light::getDiffuseFactor() {
+    return this->diffuseFactor;
 }
 
 void Light::addOnLightChangeListener(LightListener* listener) {

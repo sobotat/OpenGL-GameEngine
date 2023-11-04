@@ -35,5 +35,5 @@ public:
 
     void onCameraChanged(shared_ptr<Camera> camera) override;
     void onActiveSceneChanged(shared_ptr<Scene> scene) override;
-    void onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared_ptr<Light> light) override;
+    void onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared_ptr<Light> light, int index) override;
 };

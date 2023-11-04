@@ -82,33 +82,40 @@ void ShaderProgram::onActiveSceneChanged(shared_ptr<Scene> scene) {
     vector<shared_ptr<Light>> lights = scene->getLights();
 
     if(lights.empty()) {
-        setProperty({0,0,0}, "lightPosition");
-        setProperty({0,0,0, 0}, "lightColor");
-        setProperty(0, "lightDimmingFactor");
+        setProperty({0,0,0}, "lights[0].position");
+        setProperty({0,0,0, 0}, "lights[0].color");
+        setProperty(0, "lights[0].dimmingFactor");
+        setProperty(0, "lights[0].diffuseFactor");
+        setProperty(1, "numberOfLights");
         return;
     }
     
-    for (auto& light : lights) {
-        setProperty(light->getPosition(), "lightPosition");
-        setProperty(light->getColor(), "lightColor");
-        setProperty(light->getDimmingFactor(), "lightDimmingFactor");
+    for (int i = 0; i < lights.size(); i++) {
+        shared_ptr<Light>& light = lights.at(i);
+        setProperty(light->getPosition(), "lights[" + std::to_string(i) + "].position");
+        setProperty(light->getColor(), "lights[" + std::to_string(i) + "].color");
+        setProperty(light->getDimmingFactor(), "lights[" + std::to_string(i) + "].dimmingFactor");
+        setProperty(light->getDiffuseFactor(), "lights[" + std::to_string(i) + "].diffuseFactor");
     }
+    setProperty(static_cast<int>(lights.size()), "numberOfLights");
 }
 
-void ShaderProgram::onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared_ptr<Light> light) {
-    vector<shared_ptr<Light>> lights = scene->getLights();
+void ShaderProgram::onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared_ptr<Light> light, int index) {
+    const vector<shared_ptr<Light>> lights = scene->getLights();
 
     if(lights.empty()) {
-        setProperty({0,0,0}, "lightPosition");
-        setProperty({0,0,0, 0}, "lightColor");
-        setProperty(0, "lightDimmingFactor");
+        setProperty({0,0,0}, "lights[0].position");
+        setProperty({0,0,0, 0}, "lights[0].color");
+        setProperty(0, "lights[0].dimmingFactor");
+        setProperty(0, "lights[0].diffuseFactor");
+        setProperty(1, "numberOfLights");
         return;
     }
     
-    for (auto& light : lights) {
-        setProperty(light->getPosition(), "lightPosition");
-        setProperty(light->getColor(), "lightColor");
-        setProperty(light->getDimmingFactor(), "lightDimmingFactor");
-    }
+    setProperty(light->getPosition(), "lights[" + std::to_string(index) + "].position");
+    setProperty(light->getColor(), "lights[" + std::to_string(index) + "].color");
+    setProperty(light->getDimmingFactor(), "lights[" + std::to_string(index) + "].dimmingFactor");
+    setProperty(light->getDiffuseFactor(), "lights[" + std::to_string(index) + "].diffuseFactor");
+    setProperty(static_cast<int>(lights.size()), "numberOfLights");
 }
 
