@@ -4,6 +4,7 @@
 #include "CameraListener.hpp"
 #include "../ScreenListener.hpp"
 #include "../Inputs/Input.h"
+#include "../Lights/SpotLight.h"
 
 using namespace std;
 using namespace glm;
@@ -17,6 +18,7 @@ class Camera :
     public enable_shared_from_this<Camera> {
 
     vector<CameraListener*> listeners;
+    shared_ptr<SpotLight> light;
     
     float fov;
     float cursorSpeed = 0.1f;
@@ -41,6 +43,7 @@ public:
     double getLastY();
 
     void addListenerOnCameraChanged(CameraListener* listener);
+    void attachLight(shared_ptr<SpotLight> light);
 
     void onScreenChanged(Screen* screen) override;
     void onKeyChanged(KeyInput keyInput) override;

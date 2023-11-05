@@ -6,10 +6,9 @@
 #include "Screen.h"
 
 void Scene::notifyLightChangedInSceneChanged(shared_ptr<Light> light) {
-    int index = 0; 
+    int index = std::distance(lights.begin(), std::find_if(lights.begin(), lights.end(), [&](std::shared_ptr<Light> l) { return l.get() == light.get(); })); 
     for (shared_ptr<LightChangedInSceneListener> listener : lightListeners) {
-        listener->onLightChangedInSceneChanged(shared_ptr<Scene>(this), light, index);
-        index++;
+        listener->onLightChangedInSceneChanged(shared_from_this(), light, index);
     }
 }
 
@@ -44,6 +43,12 @@ void Scene::addLight(const shared_ptr<Light>& light) {
     light->addOnLightChangeListener(this);
 }
 
+void Scene::removeLight(const shared_ptr<Light>& light) {
+    int index = std::distance(lights.begin(), std::find_if(lights.begin(), lights.end(), [&](std::shared_ptr<Light> l) { return l.get() == light.get(); }));
+    lights.erase(lights.begin() + index);
+    //TODO: create notify for allLights
+}
+
 void Scene::onLightChanged(shared_ptr<Light> light) {
     notifyLightChangedInSceneChanged(light);
 }
@@ -63,4 +68,9 @@ vector<shared_ptr<Light>> Scene::getLights() {
 shared_ptr<Actor> Scene::getActor(int index) {
     if (index >= actors.size() || index < 0) return nullptr;
     return actors[index];
+}
+
+shared_ptr<Light> Scene::getLight(int index) {
+    if (index >= lights.size() || index < 0) return nullptr;
+    return lights[index];
 }

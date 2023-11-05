@@ -5,6 +5,7 @@ class TransformKeyListener : public OnKeyListener{
 protected:
     int selectedIndex = 0;
     char mode = 'L';
+    bool selectingActors = true;
 
     void onLeft() const;
     void onRight() const;

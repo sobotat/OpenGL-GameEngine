@@ -51,32 +51,58 @@ void Camera::addListenerOnCameraChanged(CameraListener* listener) {
     listeners.push_back(listener);
 }
 
+void Camera::attachLight(shared_ptr<SpotLight> light) {
+    this->light = light;
+    light->setPosition(position);
+    light->setDirection(target);
+}
+
 void Camera::onScreenChanged(Screen* screen) {
     projectionMatrix = perspective(fov, screen->getRatio(), 0.1f, 100.0f);    
     notifyOnCameraChanged();
 }
 
 void Camera::onKeyChanged(KeyInput keyInput) {
+    bool moved = false;
     if (glfwGetKey(keyInput.window, GLFW_KEY_W) == GLFW_PRESS) {
         position.x += moveSpeed * cos(glm::radians(yaw));
         position.z += moveSpeed * sin(glm::radians(yaw));
+        moved = true;
     }
     if (glfwGetKey(keyInput.window, GLFW_KEY_S) == GLFW_PRESS) {
         position.x -= moveSpeed * cos(glm::radians(yaw));
         position.z -= moveSpeed * sin(glm::radians(yaw));
+        moved = true;
     }
     if (glfwGetKey(keyInput.window, GLFW_KEY_A) == GLFW_PRESS) {
         position.x += moveSpeed * sin(glm::radians(yaw));
         position.z -= moveSpeed * cos(glm::radians(yaw));
+        moved = true;
     }
     if (glfwGetKey(keyInput.window, GLFW_KEY_D) == GLFW_PRESS) {
         position.x -= moveSpeed * sin(glm::radians(yaw));
         position.z += moveSpeed * cos(glm::radians(yaw));
+        moved = true;
     }
-    if (glfwGetKey(keyInput.window, GLFW_KEY_SPACE) == GLFW_PRESS) position.y += moveSpeed;
-    if (glfwGetKey(keyInput.window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) position.y -= moveSpeed;
+    if (glfwGetKey(keyInput.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        position.y += moveSpeed;
+        moved = true;
+    }
+    if (glfwGetKey(keyInput.window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+        position.y -= moveSpeed;
+        moved = true;
+    }
+    if (glfwGetKey(keyInput.window, GLFW_KEY_F) == GLFW_PRESS) {
+        light->setOn(!light->isOn());
+        moved = true;
+    }
 
-    notifyOnCameraChanged();
+    if (moved) {
+        notifyOnCameraChanged();
+        if (light) {
+            light->setPosition(position);
+        }
+    }
 }
 
 void Camera::onCursorChanged(CursorInput cursorInput) {
@@ -101,4 +127,7 @@ void Camera::onCursorChanged(CursorInput cursorInput) {
     target.z = float(sin(radians(yaw)) * cos(radians(pitch)));
 
     notifyOnCameraChanged();
+    if (light) {
+        light->setDirection(target);
+    }
 }

@@ -292,7 +292,10 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Inputs\Listeners\TransformKeyListener.cpp" />
+    <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\Light.cpp" />
+    <ClCompile Include="Lights\PointLight.cpp" />
+    <ClCompile Include="Lights\SpotLight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Meshes\BushesMesh.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -1226,8 +1229,11 @@
     <ClInclude Include="Inputs\Input.h" />
     <ClInclude Include="Inputs\Listeners\TransformKeyListener.h" />
     <ClInclude Include="LightChangedInSceneListener.hpp" />
+    <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="Lights\Light.h" />
     <ClInclude Include="Lights\LightListener.hpp" />
+    <ClInclude Include="Lights\PointLight.h" />
+    <ClInclude Include="Lights\SpotLight.h" />
     <ClInclude Include="Meshes\BushesMesh.h" />
     <ClInclude Include="Meshes\GiftMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />

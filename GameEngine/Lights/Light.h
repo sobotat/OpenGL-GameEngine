@@ -9,25 +9,26 @@ class LightListener;
 
 using namespace glm;
 using namespace std;
-class Light {
-    vec3 position;
-    vec4 color;
-    float dimmingFactor;
-    float diffuseFactor;
+class Light : public enable_shared_from_this<Light> {
+protected:
+    bool on = true;
+    vec4 color = vec4{.7, .7, .7, 1};
+    float intensity = 1.0f;
+    float diffuseFactor = 0.5f;
 
     vector<LightListener*> listeners;
     void notifyLightChanged();
-    
-public:
-    Light(vec3 position, vec4 color = vec4{.7, .7, .7, 1}, float dimmingFactor = 0.01f, float diffuseFactor = 0.5f);
 
-    void setPosition(vec3 position);
-    void setColor(vec4 color);
-    void setDimmingFactor(float factor);
-    vec3 getPosition();
-    vec4 getColor();
-    float getDimmingFactor();
-    float getDiffuseFactor();
+public:
+    virtual ~Light() = default;
+    virtual void setOn(bool on);
+    virtual bool isOn();
+    virtual void setColor(vec4 color);
+    virtual vec4 getColor();
+    virtual void setDiffuseFactor(float factor);
+    virtual float getDiffuseFactor();
+    virtual void setIntensity(float intensity);
+    virtual float getIntensity();
 
     void addOnLightChangeListener(LightListener* listener);
 };

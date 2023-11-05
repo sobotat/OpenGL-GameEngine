@@ -5,11 +5,20 @@ in vec3 worldNormal;
 
 #define MAX_LIGHTS 16
 struct light {
+  int type;
   vec3 position;
   vec4 color;
   float dimmingFactor;
   float diffuseFactor;
+  vec3 direction;
+  float angle;
+  float fadeStartAngle;
 };
+
+#define LIGHT_NOTSET       -1
+#define LIGHT_POINT         0
+#define LIGHT_SPOT          1
+#define LIGHT_DIRECTIONAL   2
 
 uniform light lights[MAX_LIGHTS];
 uniform int numberOfLights;
@@ -25,24 +34,41 @@ void main () {
   vec3 cameraVector = normalize(cameraPosition - worldPosition);
   
   for (int index = 0; index < numberOfLights; index++) {
-    vec3 lightVector = normalize(lights[index].position - worldPosition);      
+    vec3 lightVector;
+    if (lights[index].type == LIGHT_DIRECTIONAL)
+      lightVector = normalize(lights[index].direction);
+    else
+      lightVector = normalize(lights[index].position - worldPosition);    
   
     vec3 reflectVector = reflect( -lightVector, worldNormal);
     float spec = pow( max( dot(cameraVector, reflectVector), 0), shininess);
   
-    vec4 specularVector = specular * spec * lights[index].color;
+    vec4 specularColor = specular * spec * lights[index].color;
     if ( dot ( worldNormal , lightVector ) < 0.0) {
-      specularVector = vec4(0);
+      specularColor = vec4(0);
     }
     
     float diff = max( dot(lightVector, worldNormal), 0);
+    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color + meshColor);
 
-    vec4 ambient = vec4( 0.05, 0.05, 0.05, 1) * meshColor;
-    vec4 diffuse = lights[index].diffuseFactor * diff * (lights[index].color + meshColor);    
-  
-    float distance = length(lights[index].position - worldPosition);
-    float attenuation = 1.0 / (1.0 + lights[index].dimmingFactor * distance * distance);
-  
-    fragColor += (ambient + attenuation * (diffuse + specularVector));
+    float attenuation = 1;
+    if (lights[index].type != LIGHT_DIRECTIONAL) { 
+      float distance = length(lights[index].position - worldPosition);
+      attenuation = 1.0 / (1.0 + lights[index].dimmingFactor * distance * distance);
+    }
+    
+    if (lights[index].type == LIGHT_SPOT) {
+      float spotCosine = dot(normalize(-lights[index].direction), lightVector);
+      float cosLightAngle = cos(radians(lights[index].angle));
+      if (spotCosine > cosLightAngle) {
+        float intensity = (spotCosine - cosLightAngle) / (cos(radians(lights[index].fadeStartAngle)) - cosLightAngle);
+        intensity = clamp(intensity, 0.0, 1.0);        
+        fragColor += attenuation * intensity * (diffuseColor + specularColor);
+      }
+    } else
+      fragColor += attenuation * (diffuseColor + specularColor);
   }
+
+  vec4 ambientColor = vec4( 0.05, 0.05, 0.05, 1) * meshColor;
+  fragColor += ambientColor;
 }

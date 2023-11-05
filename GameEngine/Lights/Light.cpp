@@ -1,48 +1,48 @@
 ﻿#include "Light.h"
 
+#include <iso646.h>
 #include <memory>
 
 void Light::notifyLightChanged() {
     for(LightListener* listener : listeners) {
-        listener->onLightChanged(shared_ptr<Light>(this));
+        listener->onLightChanged(shared_from_this());
     }
 }
 
-Light::Light(vec3 position, vec4 color, float dimmingFactor, float diffuseFactor) {
-    this->position = position;
-    this->color = color;
-    this->dimmingFactor = dimmingFactor;
-    this->diffuseFactor = diffuseFactor;
+void Light::setOn(bool on) {
+    this->on = on;
+    notifyLightChanged();
 }
 
-void Light::setPosition(vec3 position) {
-    this->position = position;
-    
+bool Light::isOn() {
+    return this->on;
 }
 
 void Light::setColor(vec4 color) {
     this->color = color;
-    
-}
-
-void Light::setDimmingFactor(float factor) {
-    this->dimmingFactor = factor;
-}
-
-vec3 Light::getPosition() {
-    return this->position;
+    notifyLightChanged();
 }
 
 vec4 Light::getColor() {
-    return this->color;
+    return this->color * (intensity * (on ? 1 : 0));
 }
 
-float Light::getDimmingFactor() {
-    return this->dimmingFactor;
+void Light::setDiffuseFactor(float factor) {
+    this->diffuseFactor = factor;
+    notifyLightChanged();
 }
 
 float Light::getDiffuseFactor() {
-    return this->diffuseFactor;
+    return this->diffuseFactor * (on ? 1 : 0);
+}
+
+void Light::setIntensity(float intensity) {
+    this->intensity = intensity;
+    notifyLightChanged();
+}
+
+float Light::getIntensity() {
+    return this->intensity;
 }
 
 void Light::addOnLightChangeListener(LightListener* listener) {

@@ -26,6 +26,7 @@ protected:
 
     int activeScene = 0;
     shared_ptr<Camera> camera = nullptr;
+    shared_ptr<SpotLight> cameraLight = nullptr;
     shared_ptr<TransformKeyListener> transformKeyListener;
 
     void onExit();

@@ -6,6 +6,9 @@
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Inputs/Input.h"
 #include "Inputs/Listeners/TransformKeyListener.h"
+#include "Lights/DirectionalLight.h"
+#include "Lights/PointLight.h"
+#include "Lights/SpotLight.h"
 #include "Meshes/BushesMesh.h"
 #include "Meshes/GiftMesh.h"
 #include "Meshes/SphereMesh.h"
@@ -48,6 +51,13 @@ void Application::init() {
     
     Screen::getInstance()->init();
     camera = make_shared<Camera>();
+    cameraLight = make_shared<SpotLight>();
+    cameraLight->setOn(false);
+    cameraLight->setColor({.7, .7, 1, 1});
+    cameraLight->setAngle(15);
+    cameraLight->setFadeStartAngle(10);
+    cameraLight->setDimmingFactor(0.005f);
+    cameraLight->setDiffuseFactor(.9f);
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -151,6 +161,7 @@ void Application::createMaterials() {
     materials.insert(make_pair("green-mat", make_shared<Material>(vec4{0.6627, 0.8118, 0.3294, 1}, 8, 1)));
     materials.insert(make_pair("green-shiny", make_shared<Material>(vec4{0.6627, 0.8118, 0.3294, 1}, 48, 1)));
     materials.insert(make_pair("dark-green-mat", make_shared<Material>(vec4{0.6588, 0.7725, 0.2706, 1}, 8, 1)));
+    materials.insert(make_pair("grey-shiny", make_shared<Material>(vec4{0.5, 0.5, 0.5, 1}, 48, 1)));
     materials.insert(make_pair("grey-mat", make_shared<Material>(vec4{0.5, 0.5, 0.5, 1}, 8, 1)));
     materials.insert(make_pair("brown-mat", make_shared<Material>(vec4{0.4980, 0.2745, 0.1020, 1}, 8, 1)));
     materials.insert(make_pair("dark-red-mat", make_shared<Material>(vec4{0.4588, 0.1020, 0.0706, 1}, 8, 1)));
@@ -189,8 +200,20 @@ void Application::createScenes() {
     loadSceneD();
     loadSceneE();
     loadSceneF();
+
+    if (cameraLight) {
+        for (shared_ptr<Scene> scenes : scenes) {
+            scenes->addLight(cameraLight);
+        }
+
+        camera->attachLight(cameraLight);
+    }
     
     notifyActiveSceneChanged();
+    shared_ptr<Scene> activeScene = getScene();
+    for(auto shaderProgram : shaderPrograms) {
+        activeScene->addLightChangedInSceneChanged(shaderProgram.second);
+    }
     
     printf("Scenes Created\n");
 }
@@ -254,11 +277,11 @@ void Application::loadSceneA() {
     shared_ptr<Actor> sphereActor2  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
     shared_ptr<Actor> sphereActor3  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
     shared_ptr<Actor> sphereActor4 = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
+    shared_ptr<Actor> sphereActor5 = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["grey-shiny"]);
     
     sphereActor1
         ->addTransform(make_shared<Location>(vec3{0, .5, 0}))
-        ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
-    
+        ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));    
     sphereActor2
         ->addTransform(make_shared<Location>(vec3{0, -.5, 0}))
         ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
@@ -268,15 +291,40 @@ void Application::loadSceneA() {
     sphereActor4
         ->addTransform(make_shared<Location>(vec3{-.5, 0, 0}))
         ->addTransform(make_shared<Scale>(vec3{.2, .2, .2}));
+    sphereActor5
+        ->addTransform(make_shared<Location>(vec3{0, 0, -4}))
+        ->addTransform(make_shared<Scale>(vec3{2, 2, 2}));
     
     scene->addActor(sphereActor1);
     scene->addActor(sphereActor2);
     scene->addActor(sphereActor3);
     scene->addActor(sphereActor4);
+    scene->addActor(sphereActor5);
 
-    scene->addLight(make_shared<Light>(vec3{0, 0, -1}, vec4{.1, .1, 1, 1}));
-    scene->addLight(make_shared<Light>(vec3{0, 0, 0}, vec4{.5, 0, .5, 1}));
-    scene->addLight(make_shared<Light>(vec3{0, 0, 1}, vec4{1, .1, .1, 1}));
+    shared_ptr<PointLight> light1 = make_shared<PointLight>();
+    light1->setPosition({0, 0, -1});
+    light1->setColor({.1, .1, 1, 1});
+    light1->setIntensity(0.5f);
+    light1->setDimmingFactor(.005f);
+    scene->addLight(light1);
+    
+    shared_ptr<PointLight> light2 = make_shared<PointLight>();
+    light2->setPosition({0, 0, 1});
+    light2->setColor({1, .1, .1, 1});
+    light2->setIntensity(0.5);
+    light2->setDimmingFactor(.005f);
+    scene->addLight(light2);
+    
+    shared_ptr<DirectionalLight> light3 = make_shared<DirectionalLight>();
+    light3->setColor({.3, .3, .3, 1});
+    light3->setDirection({0, 1, 1});
+    light3->setColor({.1, .1, .7, 1});
+    scene->addLight(light3);
+    
+    shared_ptr<SpotLight> light4 = make_shared<SpotLight>();
+    light4->setPosition({0, 0, 1});
+    light4->setDirection({.3, .3, -1});
+    scene->addLight(light4);
     
     scenes.push_back(scene);
 }
@@ -344,8 +392,11 @@ void Application::loadSceneB() {
     scene->addActor(saturn);
     scene->addActor(uranus);
     scene->addActor(neptune);
-
-    scene->addLight(make_shared<Light>(vec3{0, 0, 0}, vec4{.7, .7, .5, 1}, .001));
+    
+    shared_ptr<PointLight> light1 = make_shared<PointLight>();
+    light1->setColor({.7, .7, .5, 1});
+    light1->setDimmingFactor(.001f);
+    scene->addLight(light1);
     
     scenes.push_back(scene);
 }
@@ -360,7 +411,9 @@ void Application::loadSceneC() {
     
     scene->addActor(sphereActor1);
     
-    scene->addLight(make_shared<Light>(vec3{0, 0, -1}));
+    shared_ptr<PointLight> light1 = make_shared<PointLight>();
+    light1->setPosition({0, 0, 1});
+    scene->addLight(light1);
     
     scenes.push_back(scene);
 }
@@ -375,7 +428,9 @@ void Application::loadSceneD() {
     
     scene->addActor(sphereActor1);
     
-    scene->addLight(make_shared<Light>(vec3{0, 0, -1}));
+    shared_ptr<PointLight> light1 = make_shared<PointLight>();
+    light1->setPosition({0, 0, -1});
+    scene->addLight(light1);
     
     scenes.push_back(scene);
 }
@@ -410,8 +465,11 @@ void Application::loadSceneE() {
     scene->addActor(actor1);
     scene->addActor(actor2);
     scene->addActor(actor3);
-
-    scene->addLight(make_shared<Light>(vec3{0, 0, .5}, vec4{1, .5, .5, 1}));
+    
+    shared_ptr<PointLight> light1 = make_shared<PointLight>();
+    light1->setPosition({0, 0, .5});
+    light1->setColor({1, .5, .5, 1});
+    scene->addLight(light1);
     
     scenes.push_back(scene);
 }
@@ -425,7 +483,7 @@ void Application::loadSceneF() {
 
     int countOfTrees = 150;
     for(int i = 0; i < countOfTrees; i++) {
-        shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
+        shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["phong"], materials["green-shiny"]);
         float scale = UtilClass::randomFloatRange(.4f, .6f);
         tree
             ->addTransform(make_shared<Location>(vec3{UtilClass::randomFloatRange(-20, 20), 0, UtilClass::randomFloatRange(-20, 20)}))
@@ -461,7 +519,9 @@ void Application::loadSceneF() {
     scene->addActor(skybox);
     scene->addActor(gift);
 
-    scene->addLight(make_shared<Light>(vec3{0, 1, 0}, vec4{.5, .5, .5, 1}, 0.001));
+    
+    shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
+    scene->addLight(light1);
     
     scenes.push_back(scene);
 }

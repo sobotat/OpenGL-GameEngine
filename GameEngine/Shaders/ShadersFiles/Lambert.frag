@@ -5,10 +5,13 @@ in vec3 worldNormal;
 
 #define MAX_LIGHTS 16
 struct light {
+  int type;
   vec3 position;
   vec4 color;
   float dimmingFactor;
   float diffuseFactor;
+  vec3 direction;
+  float angle;
 };
 
 uniform light lights[MAX_LIGHTS];

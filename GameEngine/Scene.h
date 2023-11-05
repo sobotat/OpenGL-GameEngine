@@ -10,7 +10,7 @@ class Actor;
 class LightChangedInSceneListener;
 
 using namespace std;
-class Scene : public LightListener {
+class Scene : public LightListener, public enable_shared_from_this<Scene> {
 protected:
     vector<shared_ptr<Actor>> actors;
     vector<shared_ptr<Light>> lights;
@@ -23,6 +23,7 @@ public:
     void draw();
     void addActor(const shared_ptr<Actor>& actor);
     void addLight(const shared_ptr<Light>& light);
+    void removeLight(const shared_ptr<Light>& light);
 
     void onLightChanged(shared_ptr<Light> light) override;
 
@@ -31,4 +32,5 @@ public:
 
     vector<shared_ptr<Light>> getLights();
     shared_ptr<Actor> getActor(int index);
+    shared_ptr<Light> getLight(int index);
 };
