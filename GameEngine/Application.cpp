@@ -483,7 +483,7 @@ void Application::loadSceneF() {
 
     int countOfTrees = 150;
     for(int i = 0; i < countOfTrees; i++) {
-        shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["phong"], materials["green-shiny"]);
+        shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
         float scale = UtilClass::randomFloatRange(.4f, .6f);
         tree
             ->addTransform(make_shared<Location>(vec3{UtilClass::randomFloatRange(-20, 20), 0, UtilClass::randomFloatRange(-20, 20)}))
