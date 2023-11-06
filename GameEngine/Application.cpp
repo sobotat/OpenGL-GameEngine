@@ -477,7 +477,7 @@ void Application::loadSceneE() {
 void Application::loadSceneF() {
     shared_ptr<Scene> scene = make_shared<Scene>();
     
-    shared_ptr<Actor> floor = make_shared<Actor>(meshes["square"].get(), shaderPrograms["color"], materials["dark-green-mat"]);
+    shared_ptr<Actor> floor = make_shared<Actor>(meshes["square"].get(), shaderPrograms["phong"], materials["dark-green-mat"]);
     shared_ptr<Actor> skybox = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["color"], materials["light-blue-mat"]);
     shared_ptr<Actor> gift = make_shared<Actor>(meshes["gift"].get(), shaderPrograms["phong"], materials["red-shiny"]);
 
@@ -507,7 +507,7 @@ void Application::loadSceneF() {
     
     floor
         ->addTransform(make_shared<Location>(vec3{0, 0, 1}))
-        ->addTransform(make_shared<Rotation>(90.0f, vec3{1, 0, 0}))                
+        ->addTransform(make_shared<Rotation>(-90.0f, vec3{1, 0, 0}))                
         ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));
 
     skybox->addTransform(make_shared<Scale>(vec3{20, 20, 20}));
@@ -521,8 +521,13 @@ void Application::loadSceneF() {
 
     
     shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
-    light1->setIntensity(.1f);
+    light1->setDirection({1, 1, 0});
     scene->addLight(light1);
+
+    // shared_ptr<PointLight> light2 = make_shared<PointLight>();
+    // light2->setDimmingFactor(0);
+    // light2->setPosition({0, 2, 0});
+    // scene->addLight(light2);
     
     scenes.push_back(scene);
 }
