@@ -24,7 +24,7 @@ void Light::setColor(vec4 color) {
 }
 
 vec4 Light::getColor() {
-    return this->color * (intensity * (on ? 1 : 0));
+    return this->color * (intensity * static_cast<float>(on ? 1 : 0));
 }
 
 void Light::setDiffuseFactor(float factor) {
@@ -33,7 +33,7 @@ void Light::setDiffuseFactor(float factor) {
 }
 
 float Light::getDiffuseFactor() {
-    return this->diffuseFactor * (on ? 1 : 0);
+    return this->diffuseFactor * static_cast<float>(on ? 1 : 0);
 }
 
 void Light::setIntensity(float intensity) {

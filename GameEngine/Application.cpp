@@ -56,7 +56,7 @@ void Application::init() {
     cameraLight->setColor({.7, .7, 1, 1});
     cameraLight->setAngle(15);
     cameraLight->setFadeStartAngle(10);
-    cameraLight->setDimmingFactor(0.005f);
+    cameraLight->setDimmingFactor(0.05f);
     cameraLight->setDiffuseFactor(.9f);
 
     glewExperimental = GL_TRUE;
@@ -521,6 +521,7 @@ void Application::loadSceneF() {
 
     
     shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
+    light1->setIntensity(.1f);
     scene->addLight(light1);
     
     scenes.push_back(scene);

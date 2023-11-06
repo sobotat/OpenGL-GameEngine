@@ -27,10 +27,19 @@ void TransformKeyListener::onLeft() const {
         if (light == nullptr) return;
 
         const shared_ptr<PointLight> pointLight = dynamic_pointer_cast<PointLight>(light);
-        if (pointLight) {
-            vec3 position = pointLight->getPosition();
-            position.x -= .5f;
-            pointLight->setPosition(position);
+
+        switch (mode) {
+        case 'L':
+            if (pointLight) {
+                vec3 position = pointLight->getPosition();
+                position.x -= .5f;
+                pointLight->setPosition(position);
+            }
+            break;
+        case 'O':
+            light->setOn(false);
+            break;
+        default: break;
         }
     }
 }
@@ -54,10 +63,19 @@ void TransformKeyListener::onRight() const {
         if (light == nullptr) return;
 
         const shared_ptr<PointLight> pointLight = dynamic_pointer_cast<PointLight>(light);
-        if (pointLight) {
-            vec3 position = pointLight->getPosition();
-            position.x += .5f;
-            pointLight->setPosition(position);
+        
+        switch (mode) {
+        case 'L':
+            if (pointLight) {
+                vec3 position = pointLight->getPosition();
+                position.x += .5f;
+                pointLight->setPosition(position);
+            }
+            break;
+        case 'O':
+            light->setOn(true);
+            break;
+        default: break;
         }
     }
 }
@@ -146,6 +164,10 @@ void TransformKeyListener::onKeyChanged(KeyInput keyInput) {
     case GLFW_KEY_T:
         printf("Mode set to Scale\n");
         mode = 'S';
+        break;
+    case GLFW_KEY_O:
+        printf("Mode set to On/Off\n");
+        mode = 'O';
         break;
     case GLFW_KEY_P:
         printf(selectingActors ? "Selecting Lights\n" : "Selecting Actors\n");
