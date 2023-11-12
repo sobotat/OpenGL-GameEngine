@@ -4,6 +4,8 @@
 
 #include "Application.h"
 #include "Screen.h"
+#include "Meshes/CubeMesh.h"
+#include "Shaders\Materials\Texture\CubeMapTexture.h"
 
 void Scene::notifyLightChangedInSceneChanged(shared_ptr<Light> light) {
     int index = std::distance(lights.begin(), std::find_if(lights.begin(), lights.end(), [&](std::shared_ptr<Light> l) { return l.get() == light.get(); })); 
@@ -17,8 +19,14 @@ Scene::~Scene() {
 }
 
 void Scene::draw() {
+    
+    
     // clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if(skybox) {
+        skybox->draw();
+    }
+    glClear(GL_DEPTH_BUFFER_BIT);
     
     for (const shared_ptr<Actor>& actor : actors) {        
         actor->tick();
@@ -59,6 +67,11 @@ void Scene::addLightChangedInSceneChanged(shared_ptr<LightChangedInSceneListener
 
 void Scene::clearLightChangedInSceneChanged() {
     lightListeners.clear();
+}
+
+void Scene::setSkybox(shared_ptr<Actor> skybox) {
+    glActiveTexture(GL_TEXTURE0);
+    this->skybox = skybox;
 }
 
 vector<shared_ptr<Light>> Scene::getLights() {

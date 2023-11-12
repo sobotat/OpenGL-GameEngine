@@ -53,8 +53,14 @@ public:
     vector<shared_ptr<Scene>> getAllScenes();
     shared_ptr<Camera> getCamera();
     shared_ptr<Mesh> getMesh(string name);
+    shared_ptr<ShaderProgram> getShaderProgram(string name);
+    shared_ptr<Material> getMaterial(string name);
 
     void onKeyChanged(KeyInput keyInput) override;
 
     void addOnActiveSceneChanged(ActiveSceneListener* listener);
 };
+
+inline shared_ptr<Material> Application::getMaterial(string name) {
+    return materials[name];
+}

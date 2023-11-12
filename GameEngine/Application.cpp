@@ -1,7 +1,5 @@
 ﻿#include "Application.h"
 
-#include <vcruntime_typeinfo.h>
-
 #include "Screen.h"
 #include "GLFWCallbacks/ErrorGLFWCallback.hpp"
 #include "Inputs/Input.h"
@@ -10,6 +8,7 @@
 #include "Lights/PointLight.h"
 #include "Lights/SpotLight.h"
 #include "Meshes/BushesMesh.h"
+#include "Meshes/CubeMesh.h"
 #include "Meshes/GiftMesh.h"
 #include "Meshes/SphereMesh.h"
 #include "Meshes/SquareMesh.h"
@@ -33,6 +32,11 @@
 #include "Transformations/RotationAroundAxis.h"
 #include "Transformations/Scale.h"
 #include "Utils/UtilClass.h"
+#include "Meshes/PlaneMesh.h"
+#include "Shaders\TextureSkyboxShader.h"
+#include "Shaders/TextureShader.h"
+#include "Shaders\VertexSkyboxShader.h"
+#include "Shaders\Materials\Texture\CubeMapTexture.h"
 
 shared_ptr<Application> Application::instance_ = make_shared<Application>();
 
@@ -70,10 +74,11 @@ void Application::init() {
     int major, minor, revision;
     glfwGetVersion(&major, &minor, &revision);
     printf("Using GLFW %i.%i.%i\n", major, minor, revision);
-
-    glEnable(GL_BLEND);
+    
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
     Input::getInstance()->init(Screen::getInstance()->getWindow());
     Input::getInstance()->addListenerOnKey(this);
@@ -115,6 +120,18 @@ void Application::createShaders() {
     shared_ptr<BlinnUnlimitedShader> blinnUnlimitedShader = make_shared<BlinnUnlimitedShader>();
     blinnUnlimitedShader->compile();
     shaders.push_back(blinnUnlimitedShader);
+
+    shared_ptr<TextureShader> textureShader = make_shared<TextureShader>();
+    textureShader->compile();
+    shaders.push_back(textureShader);
+
+    shared_ptr<TextureSkyboxShader> textureSkyboxShader = make_shared<TextureSkyboxShader>();
+    textureSkyboxShader->compile();
+    shaders.push_back(textureSkyboxShader);
+    
+    shared_ptr<VertexSkyboxShader> vertexSkyboxShader = make_shared<VertexSkyboxShader>();
+    vertexSkyboxShader->compile();
+    shaders.push_back(vertexSkyboxShader);
     
     printf("Shaders Created\n");
 
@@ -147,6 +164,17 @@ void Application::createShaders() {
         blinnUnlimitedShader,
         vertexShader,
     })));
+
+    shaderPrograms.insert(make_pair("texture", make_shared<ShaderProgram>(vector<shared_ptr<Shader>>{
+        textureShader,
+        vertexShader,
+    })));
+
+    shaderPrograms.insert(make_pair("texture-skybox", make_shared<ShaderProgram>(vector<shared_ptr<Shader>>{
+        textureSkyboxShader,
+        vertexSkyboxShader,
+    })));
+    shaderPrograms["texture-skybox"]->setProperty(0, "textureUnitID");
 }
 
 void Application::createMaterials() {
@@ -166,6 +194,13 @@ void Application::createMaterials() {
     materials.insert(make_pair("brown-mat", make_shared<Material>(vec4{0.4980, 0.2745, 0.1020, 1}, 8, 1)));
     materials.insert(make_pair("dark-red-mat", make_shared<Material>(vec4{0.4588, 0.1020, 0.0706, 1}, 8, 1)));
     materials.insert(make_pair("light-blue-mat", make_shared<Material>(vec4{0.5, 0.5765, 1, 1}, 8, 1)));
+    materials.insert(make_pair("grass-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["grass-texture"]->setTexture(make_shared<Texture>("../res/grass.png"));
+    materials.insert(make_pair("grass-texture-scaled", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["grass-texture-scaled"]->setTexture(make_shared<Texture>("../res/grass.png"));
+    materials["grass-texture-scaled"]->getTexture()->setTextureScale(200);
+    materials.insert(make_pair("wood-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["wood-texture"]->setTexture(make_shared<Texture>("../res/wood.png"));
 }
 
 void Application::createModels() {
@@ -187,6 +222,10 @@ void Application::createModels() {
     meshes.insert(make_pair("bushes", bushes));
     shared_ptr<GiftMesh> gift = make_shared<GiftMesh>();
     meshes.insert(make_pair("gift", gift));
+    shared_ptr<PlaneMesh> plane = make_shared<PlaneMesh>();
+    meshes.insert(make_pair("plane", plane));
+    shared_ptr<CubeMesh> cubeMesh = make_shared<CubeMesh>();
+    meshes.insert(make_pair("cube", cubeMesh));
 
     printf("Models Created\n");
 }
@@ -218,7 +257,7 @@ void Application::createScenes() {
     printf("Scenes Created\n");
 }
 
-void Application::run() {
+void Application::run() {    
     printf("Running ...\n");
     while (!glfwWindowShouldClose(Screen::getInstance()->getWindow())) {
         getScene()->draw();
@@ -244,6 +283,10 @@ shared_ptr<Camera> Application::getCamera() {
 
 shared_ptr<Mesh> Application::getMesh(string name) {
     return meshes[name];
+}
+
+shared_ptr<ShaderProgram> Application::getShaderProgram(string name) {
+    return shaderPrograms[name];
 }
 
 void Application::onKeyChanged(KeyInput keyInput) {
@@ -278,6 +321,9 @@ void Application::loadSceneA() {
     shared_ptr<Actor> sphereActor3  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
     shared_ptr<Actor> sphereActor4 = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
     shared_ptr<Actor> sphereActor5 = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["grey-shiny"]);
+    shared_ptr<Actor> plane1 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["grass-texture"]);
+    shared_ptr<Actor> plane2 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["wood-texture"]);
+    shared_ptr<Actor> plane3 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["grass-texture"]);
     
     sphereActor1
         ->addTransform(make_shared<Location>(vec3{0, .5, 0}))
@@ -294,12 +340,19 @@ void Application::loadSceneA() {
     sphereActor5
         ->addTransform(make_shared<Location>(vec3{0, 0, -4}))
         ->addTransform(make_shared<Scale>(vec3{2, 2, 2}));
+
+    plane1->addTransform(make_shared<Location>(vec3{0, -1, 0}));
+    plane2->addTransform(make_shared<Location>(vec3{0, -2, 0}));
+    plane3->addTransform(make_shared<Location>(vec3{0, -3, 0}));
     
     scene->addActor(sphereActor1);
     scene->addActor(sphereActor2);
     scene->addActor(sphereActor3);
     scene->addActor(sphereActor4);
     scene->addActor(sphereActor5);
+    scene->addActor(plane1);
+    scene->addActor(plane2);
+    scene->addActor(plane3);
 
     shared_ptr<PointLight> light1 = make_shared<PointLight>();
     light1->setPosition({0, 0, -1});
@@ -476,9 +529,12 @@ void Application::loadSceneE() {
 
 void Application::loadSceneF() {
     shared_ptr<Scene> scene = make_shared<Scene>();
+
+    shared_ptr<Actor> skybox = make_shared<Actor>(meshes["cube"].get(), shaderPrograms["texture-skybox"], materials["grey-mat"]);    
+    skybox->getMaterial()->setTexture(make_shared<CubeMapTexture>(vector<string>{"../res/posx.jpg", "../res/negx.jpg", "../res/posy.jpg", "../res/negy.jpg", "../res/posz.jpg", "../res/negz.jpg"}));
+    scene->setSkybox(skybox);
     
-    shared_ptr<Actor> floor = make_shared<Actor>(meshes["square"].get(), shaderPrograms["phong"], materials["dark-green-mat"]);
-    shared_ptr<Actor> skybox = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["color"], materials["light-blue-mat"]);
+    shared_ptr<Actor> floor = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["grass-texture-scaled"]);
     shared_ptr<Actor> gift = make_shared<Actor>(meshes["gift"].get(), shaderPrograms["phong"], materials["red-shiny"]);
 
     int countOfTrees = 150;
@@ -506,17 +562,13 @@ void Application::loadSceneF() {
     }
     
     floor
-        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))
-        ->addTransform(make_shared<Rotation>(-90.0f, vec3{1, 0, 0}))                
+        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))                
         ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));
-
-    skybox->addTransform(make_shared<Scale>(vec3{20, 20, 20}));
     
     gift
         ->addTransform(make_shared<Location>(vec3{0, 0, 1}));
     
     scene->addActor(floor);
-    scene->addActor(skybox);
     scene->addActor(gift);
 
     
