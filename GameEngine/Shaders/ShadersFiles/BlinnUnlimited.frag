@@ -28,6 +28,11 @@ uniform vec4 meshColor;
 uniform float shininess;
 uniform float specular;
 
+uniform int hasTexture;
+uniform sampler2D textureUnitID;
+uniform float textureScale;
+in vec2 uv;
+
 out vec4 fragColor;
 
 void main () {
@@ -67,6 +72,11 @@ void main () {
     fragColor += attenuation * (diffuseColor + specularColor);
   }
 
-  vec4 ambientColor = vec4( 0.05, 0.05, 0.05, 1) * meshColor;
+  vec4 ambientColor;
+  if (hasTexture == 1) {
+    ambientColor = vec4( 0.01, 0.01, 0.01, 1) * texture(textureUnitID, uv * textureScale);
+  } else {
+    ambientColor = vec4( 0.05, 0.05, 0.05, 1) * meshColor;
+  }
   fragColor += ambientColor;
 }

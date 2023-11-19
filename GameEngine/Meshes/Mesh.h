@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 #include <GL/glew.h>
 #include <vector>
 
@@ -15,4 +16,6 @@ public:
     virtual void setPoints(vector<float> meshPoints);
     virtual void setPoints(vector<vector<vector<float>>> meshPoints);
     virtual void draw();
+
+    static vector<float> loadPointsFromFile(string filename);
 };

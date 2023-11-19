@@ -24,7 +24,7 @@ protected:
 
     vector<ActiveSceneListener*> activeSceneListeners;
 
-    int activeScene = 0;
+    int activeScene = 5;
     shared_ptr<Camera> camera = nullptr;
     shared_ptr<SpotLight> cameraLight = nullptr;
     shared_ptr<TransformKeyListener> transformKeyListener;

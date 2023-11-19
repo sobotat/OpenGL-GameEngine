@@ -13,9 +13,13 @@ void Material::applyMaterial(shared_ptr<ShaderProgram> shaderProgram) {
     shaderProgram->setProperty(specular, "specular");
     
     if (texture) {
+        shaderProgram->setProperty(1, "hasTexture");
         texture->apply();
         shaderProgram->setProperty(0, "textureUnitID");
         shaderProgram->setProperty(texture->getTextureScale(), "textureScale");
+    }
+    else {
+        shaderProgram->setProperty(0, "hasTexture");
     }
 }
 

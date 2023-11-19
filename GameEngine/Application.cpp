@@ -10,6 +10,7 @@
 #include "Meshes/BushesMesh.h"
 #include "Meshes/CubeMesh.h"
 #include "Meshes/GiftMesh.h"
+#include "Meshes/HouseMesh.h"
 #include "Meshes/SphereMesh.h"
 #include "Meshes/SquareMesh.h"
 #include "Meshes/SuziSmoothMesh.h"
@@ -201,6 +202,9 @@ void Application::createMaterials() {
     materials["grass-texture-scaled"]->getTexture()->setTextureScale(200);
     materials.insert(make_pair("wood-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
     materials["wood-texture"]->setTexture(make_shared<Texture>("../res/wood.png"));
+    materials.insert(make_pair("house-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["house-texture"]->setTexture(make_shared<Texture>("../res/obj/house/house.png"));
+    materials["house-texture"]->getTexture()->setTextureScale(1);
 }
 
 void Application::createModels() {
@@ -226,6 +230,14 @@ void Application::createModels() {
     meshes.insert(make_pair("plane", plane));
     shared_ptr<CubeMesh> cubeMesh = make_shared<CubeMesh>();
     meshes.insert(make_pair("cube", cubeMesh));
+    shared_ptr<HouseMesh> houseMesh = make_shared<HouseMesh>();
+    meshes.insert(make_pair("house", houseMesh));
+    shared_ptr<TextureMesh> containerLargeMesh = make_shared<TextureMesh>();
+    containerLargeMesh->setPoints(Mesh::loadPointsFromFile("../res/fbx/Container_v1_large.fbx"));
+    meshes.insert(make_pair("container-large", containerLargeMesh));
+    shared_ptr<TextureMesh> containerMediumMesh = make_shared<TextureMesh>();
+    containerMediumMesh->setPoints(Mesh::loadPointsFromFile("../res/fbx/Container_v1_medium.fbx"));
+    meshes.insert(make_pair("container-medium", containerMediumMesh));
 
     printf("Models Created\n");
 }
@@ -321,9 +333,9 @@ void Application::loadSceneA() {
     shared_ptr<Actor> sphereActor3  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
     shared_ptr<Actor> sphereActor4 = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
     shared_ptr<Actor> sphereActor5 = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["grey-shiny"]);
-    shared_ptr<Actor> plane1 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["grass-texture"]);
-    shared_ptr<Actor> plane2 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["wood-texture"]);
-    shared_ptr<Actor> plane3 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["grass-texture"]);
+    shared_ptr<Actor> plane1 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["phong"], materials["grass-texture"]);
+    shared_ptr<Actor> plane2 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["phong"], materials["wood-texture"]);
+    shared_ptr<Actor> plane3 = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["phong"], materials["house-texture"]);
     
     sphereActor1
         ->addTransform(make_shared<Location>(vec3{0, .5, 0}))
@@ -531,18 +543,27 @@ void Application::loadSceneF() {
     shared_ptr<Scene> scene = make_shared<Scene>();
 
     shared_ptr<Actor> skybox = make_shared<Actor>(meshes["cube"].get(), shaderPrograms["texture-skybox"], materials["grey-mat"]);    
-    skybox->getMaterial()->setTexture(make_shared<CubeMapTexture>(vector<string>{"../res/posx.jpg", "../res/negx.jpg", "../res/posy.jpg", "../res/negy.jpg", "../res/posz.jpg", "../res/negz.jpg"}));
+    skybox->getMaterial()->setTexture(make_shared<CubeMapTexture>("../res/night/", ".png"));
     scene->setSkybox(skybox);
     
-    shared_ptr<Actor> floor = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["texture"], materials["grass-texture-scaled"]);
+    shared_ptr<Actor> floor = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["phong"], materials["grass-texture-scaled"]);
     shared_ptr<Actor> gift = make_shared<Actor>(meshes["gift"].get(), shaderPrograms["phong"], materials["red-shiny"]);
+    shared_ptr<Actor> house = make_shared<Actor>(meshes["house"].get(), shaderPrograms["phong"], materials["house-texture"]);
+    shared_ptr<Actor> container_large = make_shared<Actor>(meshes["container-large"].get(), shaderPrograms["phong"], materials["red-shiny"]);
+    shared_ptr<Actor> container_medium = make_shared<Actor>(meshes["container-medium"].get(), shaderPrograms["phong"], materials["red-shiny"]);
 
-    int countOfTrees = 150;
+    int countOfTrees = 300;
     for(int i = 0; i < countOfTrees; i++) {
         shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
-        float scale = UtilClass::randomFloatRange(.4f, .6f);
+        float scale = UtilClass::randomFloatRange(0.8f, 1.2f);
+        float x = UtilClass::randomFloatRange(-50, 50);
+        float y = UtilClass::randomFloatRange(-50, 50);
+        if (x < 15 && x > -15 && y < 15 && y > -15) {
+            i--;
+            continue;
+        }
         tree
-            ->addTransform(make_shared<Location>(vec3{UtilClass::randomFloatRange(-20, 20), 0, UtilClass::randomFloatRange(-20, 20)}))
+            ->addTransform(make_shared<Location>(vec3{x, 0, y}))
             ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}))
             ->addTransform(make_shared<Scale>(vec3{scale,  scale, scale}));
 
@@ -554,7 +575,7 @@ void Application::loadSceneF() {
         shared_ptr<Actor> bush = make_shared<Actor>(meshes["bushes"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
         float scale = UtilClass::randomFloatRange(0.3f, 0.5f);
         bush
-            ->addTransform(make_shared<Location>(vec3{UtilClass::randomFloatRange(-20, 20), 0, UtilClass::randomFloatRange(-20, 20)}))
+            ->addTransform(make_shared<Location>(vec3{UtilClass::randomFloatRange(-50, 50), 0, UtilClass::randomFloatRange(-50, 50)}))
             ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}))
             ->addTransform(make_shared<Scale>(vec3{scale,  scale, scale}));
 
@@ -563,23 +584,36 @@ void Application::loadSceneF() {
     
     floor
         ->addTransform(make_shared<Location>(vec3{0, 0, 1}))                
-        ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));
-    
+        ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));    
     gift
-        ->addTransform(make_shared<Location>(vec3{0, 0, 1}));
+        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))
+        ->addTransform(make_shared<Scale>(vec3{3, 3, 3}));
+    house
+        ->addTransform(make_shared<Location>(vec3{0, 0,0}));
+    container_large
+        ->addTransform(make_shared<Location>(vec3{13, 1.27, 0}))
+        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}))
+        ->addTransform(make_shared<Rotation>(25, vec3{0, 0, 1}));
+    container_medium
+        ->addTransform(make_shared<Location>(vec3{10, .325, 0}))
+        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));
     
     scene->addActor(floor);
     scene->addActor(gift);
-
+    scene->addActor(house);
+    scene->addActor(container_large);
+    scene->addActor(container_medium);
     
     shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
     light1->setDirection({1, 1, 0});
+    light1->setIntensity(.2f);
     scene->addLight(light1);
 
-    // shared_ptr<PointLight> light2 = make_shared<PointLight>();
-    // light2->setDimmingFactor(0);
-    // light2->setPosition({0, 2, 0});
-    // scene->addLight(light2);
+    shared_ptr<PointLight> light2 = make_shared<PointLight>();
+    light2->setPosition({10, 2, 0});
+    light2->setColor({.8, .8, 1, 1});
+    light2->setDimmingFactor(.5);
+    scene->addLight(light2);
     
     scenes.push_back(scene);
 }

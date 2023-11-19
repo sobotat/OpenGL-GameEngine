@@ -1,6 +1,9 @@
 ﻿#include "Mesh.h"
 
 #include <GL/glew.h>
+#include <assimp/Importer.hpp>// C++ importerinterface
+#include <assimp/scene.h>// aiSceneoutputdata structure
+#include <assimp/postprocess.h>// Post processingflags
 
 Mesh::~Mesh() {
     points.clear();
@@ -56,6 +59,50 @@ void Mesh::setPoints(vector<vector<vector<float>>> meshPoints) {
     const int sizeOf0 = meshPoints[0].size() * meshPoints[0][0].size() * sizeof(float);    
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) 0);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeOf0, (GLvoid*) 4);
+}
+
+vector<float> Mesh::loadPointsFromFile(string filename) {
+    Assimp::Importer importer;
+    unsigned int importOptions = aiProcess_Triangulate
+        | aiProcess_OptimizeMeshes              // sloučení malých plošek
+        | aiProcess_JoinIdenticalVertices       // NUTNÉ jinak hodně duplikuje
+        | aiProcess_Triangulate                 // prevod vsech ploch na trojuhelniky
+        | aiProcess_CalcTangentSpace;           // vypocet tangenty, nutny pro spravne pouziti normalove mapy
+    const aiScene* scene = importer.ReadFile(filename.c_str(), importOptions);
+    int count = 0;
+    std::vector<float> data;
+    if (scene) {
+        aiMesh* mesh = scene->mMeshes[0];
+        count = mesh->mNumFaces * 3;
+        for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+            aiFace face = mesh->mFaces[i];
+            for (unsigned int j = 0; j < 3; j++)
+            {
+                int id = face.mIndices[j];
+
+                //Vertex position
+                aiVector3D pos = mesh->mVertices[id];
+                data.push_back(pos.x);
+                data.push_back(pos.y);
+                data.push_back(pos.z);
+
+                //Vertex normal
+                aiVector3D nor = mesh->mNormals[id];
+                data.push_back(nor.x);
+                data.push_back(nor.y);
+                data.push_back(nor.z);
+
+                //Vertex uv
+                aiVector3D uv = mesh->mTextureCoords[0][id];
+                data.push_back(uv.x);
+                data.push_back(uv.y);
+            }
+        }
+    }else {
+        printf("Failed to load Model [%s]\n", filename.c_str());
+    }
+
+    return data;
 }
 
 void Mesh::draw() {

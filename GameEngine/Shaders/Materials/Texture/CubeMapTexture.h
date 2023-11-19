@@ -9,6 +9,6 @@
 using namespace std;
 class CubeMapTexture : public Texture {
 public:
-    CubeMapTexture(vector<string> filenames);
+    CubeMapTexture(string path, string extension);
     void apply() override;
 };

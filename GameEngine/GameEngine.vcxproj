@@ -76,13 +76,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\GameEngine;$(SolutionDir)\lib\glm-0.9.9.8\glm;$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0;$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\GameEngine;$(SolutionDir)\lib\glm-0.9.9.8\glm;$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0;$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN32\include;$(SolutionDir)\lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN32\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;glew32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN32\lib-vc2022;$(SolutionDir)\lib\assimp\lib\Win32\v141\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;glew32.lib;assimp-vc140-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,13 +110,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\GameEngine;$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)\lib\glm-0.9.9.8\glm;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\GameEngine;$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)\lib\glm-0.9.9.8\glm;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)\lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(SolutionDir)\lib\glfw-3.3.8.bin.WIN64\lib-vc2022;$(SolutionDir)\lib\assimp\lib\x64\v141\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;glew32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -524,6 +524,7 @@
       <AdditionalIncludeDirectories>C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glew-2.1.0\include;C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glm;C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glfw-3.3.8.bin.WIN64\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Meshes\HouseMesh.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\PlaneMesh.cpp" />
     <ClCompile Include="Meshes\SphereMesh.cpp">
@@ -1473,6 +1474,7 @@
     <ClInclude Include="Meshes\BushesMesh.h" />
     <ClInclude Include="Meshes\CubeMesh.h" />
     <ClInclude Include="Meshes\GiftMesh.h" />
+    <ClInclude Include="Meshes\HouseMesh.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\MeshData\Bushes.hpp" />
     <ClInclude Include="Meshes\MeshData\Gift.hpp" />
