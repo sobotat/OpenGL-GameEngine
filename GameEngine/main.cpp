@@ -3,7 +3,6 @@
 // -----------------------------
 
 #include "Application.h"
-#include "Inputs/Input.h"
 
 int main(void) {
 	shared_ptr<Application> application = Application::getInstance();
