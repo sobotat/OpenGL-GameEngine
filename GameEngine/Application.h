@@ -10,9 +10,11 @@
 #include "Inputs/Listeners/TransformKeyListener.h"
 #include "Shaders/ShaderProgram.h"
 #include "ActiveSceneListener.hpp"
+#include "Inputs/Listeners/SelectListener.h"
 
 class Application :
-    public OnKeyListener {
+    public OnKeyListener,
+    public OnSelectListener {
 protected:
     static shared_ptr<Application> instance_;
 
@@ -28,6 +30,7 @@ protected:
     shared_ptr<Camera> camera = nullptr;
     shared_ptr<SpotLight> cameraLight = nullptr;
     shared_ptr<TransformKeyListener> transformKeyListener;
+    shared_ptr<SelectListener> selectListener;
 
     void onExit();
     void loadSceneA();
@@ -57,10 +60,7 @@ public:
     shared_ptr<Material> getMaterial(string name);
 
     void onKeyChanged(KeyInput keyInput) override;
+    void OnSelected(SelectResult result) override;
 
     void addOnActiveSceneChanged(ActiveSceneListener* listener);
 };
-
-inline shared_ptr<Material> Application::getMaterial(string name) {
-    return materials[name];
-}

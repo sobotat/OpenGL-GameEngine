@@ -79,6 +79,8 @@ void Application::init() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
     Input::getInstance()->init(Screen::getInstance()->getWindow());
@@ -86,6 +88,11 @@ void Application::init() {
 
     transformKeyListener = make_shared<TransformKeyListener>();
     Input::getInstance()->addListenerOnKey(transformKeyListener.get());
+    
+    selectListener = make_shared<SelectListener>();
+    Input::getInstance()->addListenerOnMouse(selectListener.get());
+    Input::getInstance()->addListenerOnCursor(selectListener.get());
+    selectListener->addListenerOnSelected(this);
 }
 
 void Application::createShaders() {
@@ -297,6 +304,10 @@ shared_ptr<Mesh> Application::getMesh(string name) {
     return meshes[name];
 }
 
+shared_ptr<Material> Application::getMaterial(string name) {
+    return materials[name];
+}
+
 shared_ptr<ShaderProgram> Application::getShaderProgram(string name) {
     return shaderPrograms[name];
 }
@@ -315,6 +326,20 @@ void Application::onKeyChanged(KeyInput keyInput) {
             activeScene->addLightChangedInSceneChanged(shaderProgram.second);
         }
     }
+}
+
+void Application::OnSelected(SelectResult result) {
+    if (!result.found) return;
+
+    shared_ptr<Scene> scene = getScene();
+    
+    shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["phong"], materials["green-shiny"]);
+    float scale = UtilClass::randomFloatRange(0.8f, 1.2f);
+    tree
+        ->addTransform(make_shared<Location>(result.position))
+        ->addTransform(make_shared<Scale>(vec3{scale, scale, scale}))        
+        ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}));
+    scene->addActor(tree);
 }
 
 void Application::addOnActiveSceneChanged(ActiveSceneListener* listener) {
@@ -552,6 +577,28 @@ void Application::loadSceneF() {
     shared_ptr<Actor> container_large = make_shared<Actor>(meshes["container-large"].get(), shaderPrograms["phong"], materials["red-shiny"]);
     shared_ptr<Actor> container_medium = make_shared<Actor>(meshes["container-medium"].get(), shaderPrograms["phong"], materials["red-shiny"]);
 
+    floor
+        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))                
+        ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));    
+    gift
+        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))
+        ->addTransform(make_shared<Scale>(vec3{3, 3, 3}));
+    house
+        ->addTransform(make_shared<Location>(vec3{0, 0,0}));
+    container_large
+        ->addTransform(make_shared<Location>(vec3{13, 1.27, 0}))
+        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}))
+        ->addTransform(make_shared<Rotation>(25, vec3{0, 0, 1}));
+    container_medium
+        ->addTransform(make_shared<Location>(vec3{10, .325, 0}))
+        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));
+    
+    scene->addActor(floor);
+    scene->addActor(gift);
+    scene->addActor(house);
+    scene->addActor(container_large);
+    scene->addActor(container_medium);
+
     int countOfTrees = 300;
     for(int i = 0; i < countOfTrees; i++) {
         shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
@@ -581,28 +628,6 @@ void Application::loadSceneF() {
 
         scene->addActor(bush);
     }
-    
-    floor
-        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))                
-        ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));    
-    gift
-        ->addTransform(make_shared<Location>(vec3{0, 0, 1}))
-        ->addTransform(make_shared<Scale>(vec3{3, 3, 3}));
-    house
-        ->addTransform(make_shared<Location>(vec3{0, 0,0}));
-    container_large
-        ->addTransform(make_shared<Location>(vec3{13, 1.27, 0}))
-        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}))
-        ->addTransform(make_shared<Rotation>(25, vec3{0, 0, 1}));
-    container_medium
-        ->addTransform(make_shared<Location>(vec3{10, .325, 0}))
-        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));
-    
-    scene->addActor(floor);
-    scene->addActor(gift);
-    scene->addActor(house);
-    scene->addActor(container_large);
-    scene->addActor(container_medium);
     
     shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
     light1->setDirection({1, 1, 0});

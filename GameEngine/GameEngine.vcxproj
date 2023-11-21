@@ -291,6 +291,7 @@
       <AdditionalIncludeDirectories>C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glew-2.1.0\include;C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glm;C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glfw-3.3.8.bin.WIN64\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Inputs\Listeners\SelectListener.cpp" />
     <ClCompile Include="Inputs\Listeners\TransformKeyListener.cpp" />
     <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\Light.cpp" />
@@ -1464,6 +1465,7 @@
     <ClInclude Include="GLFWCallbacks\InputGLFWCallbacks.hpp" />
     <ClInclude Include="GLFWCallbacks\WindowGLFWCallbacks.hpp" />
     <ClInclude Include="Inputs\Input.h" />
+    <ClInclude Include="Inputs\Listeners\SelectListener.h" />
     <ClInclude Include="Inputs\Listeners\TransformKeyListener.h" />
     <ClInclude Include="LightChangedInSceneListener.hpp" />
     <ClInclude Include="Lights\DirectionalLight.h" />

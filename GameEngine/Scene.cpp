@@ -20,25 +20,27 @@ Scene::~Scene() {
 
 void Scene::draw() {
     
-    
-    // clear color and depth buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     if(skybox) {
         skybox->draw();
     }
+    
     glClear(GL_DEPTH_BUFFER_BIT);
     
     for (const shared_ptr<Actor>& actor : actors) {        
         actor->tick();
     }
-    
+
+    int index = 0;
     for (const shared_ptr<Actor>& actor : actors) {
+        if (index < 256) 
+            glStencilFunc(GL_ALWAYS, index, 0xFF);
+        index++;
+        
         actor->draw();
     }
-
-    // update other events like input handling
+    
     glfwPollEvents();
-    // put the stuff we’ve been drawing onto the display
     glfwSwapBuffers(Screen::getInstance()->getWindow());
 }
 
