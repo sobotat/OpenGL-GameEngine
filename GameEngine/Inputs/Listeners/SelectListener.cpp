@@ -35,17 +35,15 @@ void SelectListener::onMouseChanged(MouseInput mouseInput) {
     glReadPixels(lastX, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
     glReadPixels(lastX, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
-    printf("Pixel [%d, %d] - color 0x%02hhx%02hhx%02hhx%02hhx, depth %f, stencil-index %u\n",
-                  lastX, lastY, color[0], color[1], color[2], color[3], depth, index);
-
     const shared_ptr<Camera> camera = Application::getInstance()->getCamera(); 
     const vec3 screenX = vec3(lastX, newY, depth);
     const mat4 view = camera->getView();
     const mat4 projection = camera->getProjection();
     const vec4 viewPort = vec4(0, 0, screen->getWidth(), screen->getHeight());
     position = unProject(screenX, view, projection, viewPort);
- 
-    printf("Selected Position [%f,%f,%f]\n", position.x, position.y, position.z);
+    
+    printf("Pixel [%d,%d] [%f,%f,%f] - color 0x%02hhx%02hhx%02hhx%02hhx, depth %f, index %u\n",
+                  lastX, lastY, position.x, position.y, position.z, color[0], color[1], color[2], color[3], depth, index);
 
     notifyOnSelected();
 }

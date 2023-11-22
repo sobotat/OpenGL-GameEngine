@@ -32,6 +32,8 @@ protected:
     shared_ptr<TransformKeyListener> transformKeyListener;
     shared_ptr<SelectListener> selectListener;
 
+    string spawnActor = "";
+
     void onExit();
     void loadSceneA();
     void loadSceneB();

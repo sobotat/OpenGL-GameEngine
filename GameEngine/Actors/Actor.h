@@ -22,6 +22,7 @@ public:
     mat4 getActorMatrixBefore(Transform* transform);
 
     shared_ptr<Material> getMaterial();
+    Mesh* getMesh();
     
     virtual void tick();
     virtual void draw();    

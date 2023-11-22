@@ -24,6 +24,7 @@ public:
     ~Scene();
     void draw();
     void addActor(const shared_ptr<Actor>& actor);
+    void removeActor(const shared_ptr<Actor>& actor);
     void addLight(const shared_ptr<Light>& light);
     void removeLight(const shared_ptr<Light>& light);
 

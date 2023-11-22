@@ -325,21 +325,43 @@ void Application::onKeyChanged(KeyInput keyInput) {
         for(auto shaderProgram : shaderPrograms) {
             activeScene->addLightChangedInSceneChanged(shaderProgram.second);
         }
+    } else if (keyInput.key == GLFW_KEY_B) {
+        spawnActor = keyInput.action != GLFW_RELEASE ? "tree" : "";
+    } else if (keyInput.key == GLFW_KEY_N) {
+        spawnActor = keyInput.action != GLFW_RELEASE ? "gift" : "";
     }
 }
 
 void Application::OnSelected(SelectResult result) {
     if (!result.found) return;
-
     shared_ptr<Scene> scene = getScene();
     
-    shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["phong"], materials["green-shiny"]);
-    float scale = UtilClass::randomFloatRange(0.8f, 1.2f);
-    tree
-        ->addTransform(make_shared<Location>(result.position))
-        ->addTransform(make_shared<Scale>(vec3{scale, scale, scale}))        
-        ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}));
-    scene->addActor(tree);
+    if (spawnActor == "tree") {        
+        shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["phong"], materials["green-shiny"]);
+        float scale = UtilClass::randomFloatRange(0.8f, 1.2f);
+        tree
+            ->addTransform(make_shared<Location>(result.position))
+            ->addTransform(make_shared<Scale>(vec3{scale, scale, scale}))        
+            ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}));
+        scene->addActor(tree);
+        return;
+    } else if (spawnActor == "gift") {        
+        shared_ptr<Actor> gift = make_shared<Actor>(meshes["gift"].get(), shaderPrograms["phong"], materials["red-shiny"]);
+        gift
+            ->addTransform(make_shared<Location>(result.position))       
+            ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}));
+        scene->addActor(gift);
+        return;
+    }
+
+    shared_ptr<Actor> actor = scene->getActor(result.index);    
+    if (actor) {
+        if (dynamic_cast<GiftMesh*>(actor->getMesh())) {
+            scene->removeActor(actor);
+            printf("Collected Gift\n");
+            return;
+        }
+    }
 }
 
 void Application::addOnActiveSceneChanged(ActiveSceneListener* listener) {
@@ -599,7 +621,7 @@ void Application::loadSceneF() {
     scene->addActor(container_large);
     scene->addActor(container_medium);
 
-    int countOfTrees = 300;
+    int countOfTrees = 100;
     for(int i = 0; i < countOfTrees; i++) {
         shared_ptr<Actor> tree = make_shared<Actor>(meshes["tree"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
         float scale = UtilClass::randomFloatRange(0.8f, 1.2f);
@@ -617,7 +639,7 @@ void Application::loadSceneF() {
         scene->addActor(tree);
     }
 
-    int countOfBushes = 1000;
+    int countOfBushes = 50;
     for(int i = 0; i < countOfBushes; i++) {
         shared_ptr<Actor> bush = make_shared<Actor>(meshes["bushes"].get(), shaderPrograms["blinn"], materials["green-shiny"]);
         float scale = UtilClass::randomFloatRange(0.3f, 0.5f);

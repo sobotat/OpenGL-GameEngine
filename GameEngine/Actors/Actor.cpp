@@ -32,6 +32,10 @@ shared_ptr<Material> Actor::getMaterial() {
     return this->material;
 }
 
+Mesh* Actor::getMesh() {
+    return mesh;
+}
+
 void Actor::tick() {
     transform->tick();
 }

@@ -48,6 +48,11 @@ void Scene::addActor(const shared_ptr<Actor>& actor) {
     actors.push_back(actor);
 }
 
+void Scene::removeActor(const shared_ptr<Actor>& actor) {
+    int index = std::distance(actors.begin(), std::find_if(actors.begin(), actors.end(), [&](std::shared_ptr<Actor> a) { return a.get() == actor.get(); }));
+    actors.erase(actors.begin() + index);
+}
+
 void Scene::addLight(const shared_ptr<Light>& light) {
     lights.push_back(light);
     light->addOnLightChangeListener(this);
