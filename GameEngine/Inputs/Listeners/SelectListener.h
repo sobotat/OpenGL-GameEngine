@@ -25,7 +25,8 @@ public:
 class SelectListener : public OnMouseListener, public OnCursorListener {
 protected:
     vector<OnSelectListener*> listeners;
-    
+
+    bool clicked = false;
     int lastX = 0, lastY = 0;    
     GLbyte color[4] = {0, 0, 0, 0};
     GLfloat depth = 1;
@@ -35,6 +36,8 @@ protected:
     void notifyOnSelected() const;
     
 public:
+    void check();
+    
     void onMouseChanged(MouseInput mouseInput) override;
     void onCursorChanged(CursorInput cursorInput) override;
 

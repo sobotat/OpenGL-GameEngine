@@ -280,6 +280,7 @@ void Application::run() {
     printf("Running ...\n");
     while (!glfwWindowShouldClose(Screen::getInstance()->getWindow())) {
         getScene()->draw();
+        selectListener->check();
     }
 
     onExit();
