@@ -279,7 +279,6 @@ void Application::run() {
     printf("Running ...\n");
     while (!glfwWindowShouldClose(Screen::getInstance()->getWindow())) {
         getScene()->draw();
-        selectListener->check();
     }
 
     onExit();
@@ -620,9 +619,8 @@ void Application::loadSceneF() {
     flyingBall
         ->addTransform(make_shared<Scale>(.5))
         ->addTransform(make_shared<ContinuousMoveOnLine>(vec3{-5, 15, 0}, vec3{10, 10, 0}, 0.005f));
-    flyingBall2
-        ->addTransform(make_shared<Scale>(.5))
-        ->addTransform(make_shared<ContinuousMoveOnCurve>(
+
+    shared_ptr<ContinuousMoveOnCurve> moveOnCurve = make_shared<ContinuousMoveOnCurve>(
             mat4{
                 vec4{-1.0, 3.0, -3.0, 1},
                 vec4{3.0, -6.0, 3.0, 0},
@@ -630,11 +628,18 @@ void Application::loadSceneF() {
                 vec4{1, 0, 0, 0}
             },
             mat4x3{
-                vec3{0, 0, 0},
-                vec3{2, 2, 2},
-                vec3{4, 4, 0},
-                vec3{6, 0, 0}
-            }, 0.005f));
+                vec3{0, 2, 0},
+                vec3{1, 3, 0},
+                vec3{2, 3, 0},
+                vec3{3, 2, 0}
+            }, 0.01f);
+    moveOnCurve->addPoint({5, 1, 0}, {6, 2, 0});
+    moveOnCurve->addPoint({8, 3, 0}, {9, 2, 0});
+    
+    flyingBall2
+        ->addTransform(make_shared<Location>(vec3{7.5, 1, 5}))
+        ->addTransform(make_shared<Scale>(.3))
+        ->addTransform(moveOnCurve);
     
     scene->addActor(floor);
     scene->addActor(gift);

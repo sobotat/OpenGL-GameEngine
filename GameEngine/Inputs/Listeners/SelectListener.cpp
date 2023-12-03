@@ -23,11 +23,7 @@ void SelectListener::notifyOnSelected() const {
     }
 }
 
-void SelectListener::check() {
-
-    if (!clicked) return;
-    clicked = false;
-    
+void SelectListener::check() {    
     const shared_ptr<Screen> screen = Screen::getInstance();
     const int newY = static_cast<int>(screen->getHeight()) - lastY;
  
@@ -53,7 +49,7 @@ void SelectListener::onMouseChanged(MouseInput mouseInput) {
     if (mouseInput.button != GLFW_MOUSE_BUTTON_1 || mouseInput.action != GLFW_PRESS)
         return;
 
-    clicked = true;
+    check();
 }
 
 void SelectListener::onCursorChanged(CursorInput cursorInput) {

@@ -1,16 +1,17 @@
 ﻿#include "ContinuousMoveOnCurve.h"
 
 
-ContinuousMoveOnCurve::ContinuousMoveOnCurve(mat4 coefficients, mat4x3 endLocation, float speed, bool reverse) : MoveOnCurve(coefficients, endLocation, 0) {
+ContinuousMoveOnCurve::ContinuousMoveOnCurve(mat4 coefficients, mat4x3 firstPoints, float speed, bool reverse) : MoveOnCurve(coefficients, firstPoints, 0) {
     this->speed = speed;
     this->reverse = reverse;
 }
 
-void ContinuousMoveOnCurve::tick() {
+void ContinuousMoveOnCurve::tick() {    
+    const int max = static_cast<int>(curvePoints.size());
     if (reverse) {
-        if (progress > 1.0f || progress < 0.0f) speed *= -1;
+        if (progress + speed > static_cast<float>(max) || progress + speed < 0.0f) speed *= -1;
     } else {
-        if (progress >= 1.0f || progress <= 0.0f) return;
+        if (progress + speed > static_cast<float>(max) || progress + speed < 0.0f) return;
     }
     progress += speed;
 }
