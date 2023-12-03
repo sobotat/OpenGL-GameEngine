@@ -8,6 +8,8 @@
 #include "Lights/PointLight.h"
 #include "Lights/SpotLight.h"
 #include "Meshes/BushesMesh.h"
+#include "Meshes/ContainerLargeMesh.h"
+#include "Meshes/ContainerMediumMesh.h"
 #include "Meshes/CubeMesh.h"
 #include "Meshes/GiftMesh.h"
 #include "Meshes/HouseMesh.h"
@@ -34,10 +36,13 @@
 #include "Transformations/Scale.h"
 #include "Utils/UtilClass.h"
 #include "Meshes/PlaneMesh.h"
+#include "Meshes/WallMesh.h"
 #include "Shaders\TextureSkyboxShader.h"
 #include "Shaders/TextureShader.h"
 #include "Shaders\VertexSkyboxShader.h"
 #include "Shaders\Materials\Texture\CubeMapTexture.h"
+#include "Transformations/ContinuousMoveOnCurve.h"
+#include "Transformations/ContinuousMoveOnLine.h"
 
 shared_ptr<Application> Application::instance_ = make_shared<Application>();
 
@@ -212,39 +217,27 @@ void Application::createMaterials() {
     materials.insert(make_pair("house-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
     materials["house-texture"]->setTexture(make_shared<Texture>("../res/obj/house/house.png"));
     materials["house-texture"]->getTexture()->setTextureScale(1);
+    materials.insert(make_pair("wall-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["wall-texture"]->setTexture(make_shared<Texture>("../res/obj/wall/wall.png"));
 }
 
 void Application::createModels() {
     printf("Creating Models ...\n");
 
-    shared_ptr<SquareMesh> square = make_shared<SquareMesh>();
-    meshes.insert(make_pair("square", square));
-    shared_ptr<TriangleMesh> triangle = make_shared<TriangleMesh>();
-    meshes.insert(make_pair("triangle", triangle));
-    shared_ptr<SuziMesh> suzi = make_shared<SuziMesh>();
-    meshes.insert(make_pair("suzi", suzi));
-    shared_ptr<SuziSmoothMesh> suziSmooth = make_shared<SuziSmoothMesh>();
-    meshes.insert(make_pair("suziSmooth", suziSmooth));
-    shared_ptr<SphereMesh> sphere = make_shared<SphereMesh>();
-    meshes.insert(make_pair("sphere", sphere));
-    shared_ptr<TreeMesh> tree = make_shared<TreeMesh>();
-    meshes.insert(make_pair("tree", tree));
-    shared_ptr<BushesMesh> bushes = make_shared<BushesMesh>();
-    meshes.insert(make_pair("bushes", bushes));
-    shared_ptr<GiftMesh> gift = make_shared<GiftMesh>();
-    meshes.insert(make_pair("gift", gift));
-    shared_ptr<PlaneMesh> plane = make_shared<PlaneMesh>();
-    meshes.insert(make_pair("plane", plane));
-    shared_ptr<CubeMesh> cubeMesh = make_shared<CubeMesh>();
-    meshes.insert(make_pair("cube", cubeMesh));
-    shared_ptr<HouseMesh> houseMesh = make_shared<HouseMesh>();
-    meshes.insert(make_pair("house", houseMesh));
-    shared_ptr<TextureMesh> containerLargeMesh = make_shared<TextureMesh>();
-    containerLargeMesh->setPoints(Mesh::loadPointsFromFile("../res/fbx/Container_v1_large.fbx"));
-    meshes.insert(make_pair("container-large", containerLargeMesh));
-    shared_ptr<TextureMesh> containerMediumMesh = make_shared<TextureMesh>();
-    containerMediumMesh->setPoints(Mesh::loadPointsFromFile("../res/fbx/Container_v1_medium.fbx"));
-    meshes.insert(make_pair("container-medium", containerMediumMesh));
+    meshes.insert(make_pair("square", make_shared<SquareMesh>()));
+    meshes.insert(make_pair("triangle", make_shared<TriangleMesh>()));
+    meshes.insert(make_pair("suzi", make_shared<SuziMesh>()));
+    meshes.insert(make_pair("suziSmooth", make_shared<SuziSmoothMesh>()));
+    meshes.insert(make_pair("sphere", make_shared<SphereMesh>()));
+    meshes.insert(make_pair("tree", make_shared<TreeMesh>()));
+    meshes.insert(make_pair("bushes", make_shared<BushesMesh>()));
+    meshes.insert(make_pair("gift", make_shared<GiftMesh>()));
+    meshes.insert(make_pair("plane", make_shared<PlaneMesh>()));
+    meshes.insert(make_pair("cube", make_shared<CubeMesh>()));
+    meshes.insert(make_pair("house", make_shared<HouseMesh>()));
+    meshes.insert(make_pair("container-large", make_shared<ContainerLargeMesh>()));
+    meshes.insert(make_pair("container-medium", make_shared<ContainerMediumMesh>()));
+    meshes.insert(make_pair("wall", make_shared<WallMesh>()));
 
     printf("Models Created\n");
 }
@@ -600,6 +593,9 @@ void Application::loadSceneF() {
     shared_ptr<Actor> container_large = make_shared<Actor>(meshes["container-large"].get(), shaderPrograms["phong"], materials["red-shiny"]);
     shared_ptr<Actor> container_medium = make_shared<Actor>(meshes["container-medium"].get(), shaderPrograms["phong"], materials["red-shiny"]);
 
+    shared_ptr<Actor> flyingBall  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
+    shared_ptr<Actor> flyingBall2  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
+    
     floor
         ->addTransform(make_shared<Location>(vec3{0, 0, 1}))                
         ->addTransform(make_shared<Scale>(vec3{200, 200, 200}));    
@@ -614,13 +610,39 @@ void Application::loadSceneF() {
         ->addTransform(make_shared<Rotation>(25, vec3{0, 0, 1}));
     container_medium
         ->addTransform(make_shared<Location>(vec3{10, .325, 0}))
-        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));
+        ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));    
+    flyingBall
+        ->addTransform(make_shared<Scale>(.5))
+        ->addTransform(make_shared<ContinuousMoveOnLine>(vec3{-5, 15, 0}, vec3{10, 10, 0}, 0.005f));
+    flyingBall2
+        ->addTransform(make_shared<Scale>(.5))
+        ->addTransform(make_shared<ContinuousMoveOnCurve>(
+            mat4{
+                vec4{-1.0, 3.0, -3.0, 1},
+                vec4{3.0, -6.0, 3.0, 0},
+                vec4{-3.0, 3.0, 0, 0},
+                vec4{1, 0, 0, 0}
+            },
+            mat4x3{
+                vec3{0, 0, 0},
+                vec3{2, 2, 2},
+                vec3{4, 4, 0},
+                vec3{6, 0, 0}
+            }, 0.005f));
     
     scene->addActor(floor);
     scene->addActor(gift);
     scene->addActor(house);
     scene->addActor(container_large);
     scene->addActor(container_medium);
+    scene->addActor(flyingBall);
+    scene->addActor(flyingBall2);
+    
+    for(int i = 0; i < 5; i++) {
+        shared_ptr<Actor> wall = make_shared<Actor>(meshes["wall"].get(), shaderPrograms["phong"], materials["wall-texture"]);
+        wall->addTransform(make_shared<Location>(vec3{(i - 2.5) * 8, 0, 20}));
+        scene->addActor(wall);
+    }
 
     int countOfTrees = 100;
     for(int i = 0; i < countOfTrees; i++) {

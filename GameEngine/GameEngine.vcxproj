@@ -373,6 +373,8 @@
       <AdditionalIncludeDirectories>C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glew-2.1.0\include;C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glm;C:\Users\tomas\OneDrive - VSB-TUO\R3-S1\ZPG\Lib\glfw-3.3.8.bin.WIN64\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Meshes\ContainerLargeMesh.cpp" />
+    <ClCompile Include="Meshes\ContainerMediumMesh.cpp" />
     <ClCompile Include="Meshes\CubeMesh.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -683,6 +685,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Meshes\TriangleMesh.cpp" />
+    <ClCompile Include="Meshes\WallMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shaders\BlinnShader.cpp">
@@ -1223,6 +1226,8 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Shaders\VertexShader.cpp" />
+    <ClCompile Include="Transformations\ContinuousMoveOnCurve.cpp" />
+    <ClCompile Include="Transformations\ContinuousMoveOnLine.cpp" />
     <ClCompile Include="Transformations\ContinuousRotation.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -1374,6 +1379,8 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Transformations\Location.cpp" />
+    <ClCompile Include="Transformations\MoveOnCurve.cpp" />
+    <ClCompile Include="Transformations\MoveOnLine.cpp" />
     <ClCompile Include="Transformations\Rotation.cpp" />
     <ClCompile Include="Transformations\RotationAroundAxis.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -1474,6 +1481,8 @@
     <ClInclude Include="Lights\PointLight.h" />
     <ClInclude Include="Lights\SpotLight.h" />
     <ClInclude Include="Meshes\BushesMesh.h" />
+    <ClInclude Include="Meshes\ContainerLargeMesh.h" />
+    <ClInclude Include="Meshes\ContainerMediumMesh.h" />
     <ClInclude Include="Meshes\CubeMesh.h" />
     <ClInclude Include="Meshes\GiftMesh.h" />
     <ClInclude Include="Meshes\HouseMesh.h" />
@@ -1494,6 +1503,7 @@
     <ClInclude Include="Meshes\TextureMesh.h" />
     <ClInclude Include="Meshes\TreeMesh.h" />
     <ClInclude Include="Meshes\TriangleMesh.h" />
+    <ClInclude Include="Meshes\WallMesh.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenListener.hpp" />
@@ -1513,9 +1523,13 @@
     <ClInclude Include="Shaders\TextureShader.h" />
     <ClInclude Include="Shaders\VertexSkyboxShader.h" />
     <ClInclude Include="Shaders\VertexShader.h" />
+    <ClInclude Include="Transformations\ContinuousMoveOnCurve.h" />
+    <ClInclude Include="Transformations\ContinuousMoveOnLine.h" />
     <ClInclude Include="Transformations\ContinuousRotation.h" />
     <ClInclude Include="Transformations\ContinuousRotationAroundAxis.h" />
     <ClInclude Include="Transformations\Location.h" />
+    <ClInclude Include="Transformations\MoveOnCurve.h" />
+    <ClInclude Include="Transformations\MoveOnLine.h" />
     <ClInclude Include="Transformations\Rotation.h" />
     <ClInclude Include="Transformations\RotationAroundAxis.h" />
     <ClInclude Include="Transformations\Scale.h" />
