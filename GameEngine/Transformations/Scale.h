@@ -10,6 +10,7 @@ protected:
     vec3 scaleVector;
     
 public:
+    Scale(float scale);
     Scale(vec3 scaleVector);
     void tick() override;
     mat4 transform() override;

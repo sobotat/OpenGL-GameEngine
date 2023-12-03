@@ -1,5 +1,9 @@
 ﻿#include "Scale.h"
 
+Scale::Scale(float scale) {
+    this->scaleVector = vec3(scale);
+}
+
 Scale::Scale(vec3 scaleVector) {
     this->scaleVector= scaleVector;
 }
