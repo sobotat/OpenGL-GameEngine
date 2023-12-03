@@ -98,6 +98,12 @@ void Application::init() {
     Input::getInstance()->addListenerOnMouse(selectListener.get());
     Input::getInstance()->addListenerOnCursor(selectListener.get());
     selectListener->addListenerOnSelected(this);
+
+
+    createShaders();
+    createMaterials();
+    createModels();
+    createScenes();
 }
 
 void Application::createShaders() {
