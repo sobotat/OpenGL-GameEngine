@@ -12,8 +12,7 @@ out vec3 worldNormal;
 out vec2 uv;
 
 void main () {
-     //worldNormal = normalize(vec3(modelMatrix * vec4(vn, 0.0)));
-     worldNormal = normalize(transpose(inverse(mat3(modelMatrix))) * vn);
+     worldNormal = normalize(transpose(inverse(mat3(modelMatrix) / modelMatrix[3][3])) * vn);
      uv = vt;
      
      worldPosition = vec3(modelMatrix * vec4 (vp, 1.0));
