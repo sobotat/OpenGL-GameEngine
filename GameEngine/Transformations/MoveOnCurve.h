@@ -8,6 +8,7 @@ protected:
     float progress;
     
 public:
+    MoveOnCurve(mat4x3 firstCurve, float progress);
     MoveOnCurve(mat4 coefficients, mat4x3 firstCurve, float progress);
 
     mat4 transform() override;

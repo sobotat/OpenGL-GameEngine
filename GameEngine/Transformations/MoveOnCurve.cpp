@@ -3,6 +3,17 @@
 #include "Application.h"
 #include "Scale.h"
 
+MoveOnCurve::MoveOnCurve(mat4x3 firstCurve, float progress) : Location(vec3(0)) {
+    this->coefficients = mat4{
+        vec4{-1.0, 3.0, -3.0, 1},
+        vec4{3.0, -6.0, 3.0, 0},
+        vec4{-3.0, 3.0, 0, 0},
+        vec4{1, 0, 0, 0}
+    };
+    this->curvePoints.push_back(firstCurve);
+    this->progress = progress;
+}
+
 MoveOnCurve::MoveOnCurve(mat4 coefficients, mat4x3 firstCurve, float progress) : Location(vec3(0)) {
     this->coefficients = coefficients;
     this->curvePoints.push_back(firstCurve);

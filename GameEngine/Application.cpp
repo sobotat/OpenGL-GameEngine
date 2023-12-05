@@ -623,12 +623,6 @@ void Application::loadSceneF() {
         ->addTransform(make_shared<ContinuousMoveOnLine>(vec3{9, 0, 0}, 0.01f));
 
     shared_ptr<ContinuousMoveOnCurve> moveOnCurve = make_shared<ContinuousMoveOnCurve>(
-            mat4{
-                vec4{-1.0, 3.0, -3.0, 1},
-                vec4{3.0, -6.0, 3.0, 0},
-                vec4{-3.0, 3.0, 0, 0},
-                vec4{1, 0, 0, 0}
-            },
             mat4x3{
                 vec3{0, 2, 0},
                 vec3{1, 3, 0},
