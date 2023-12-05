@@ -690,11 +690,6 @@ void Application::loadSceneF() {
 
         scene->addActor(bush);
     }
-    
-    shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
-    light1->setDirection({1, 1, 0});
-    light1->setIntensity(.2f);
-    scene->addLight(light1);
 
     shared_ptr<PointLight> light2 = make_shared<PointLight>();
     light2->setPosition({10, 2, 0});

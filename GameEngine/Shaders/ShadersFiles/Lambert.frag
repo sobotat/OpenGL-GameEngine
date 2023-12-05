@@ -37,7 +37,7 @@ void main () {
       lightVector = normalize(lights[index].position - worldPosition);
 
     float diff = max(dot(lightVector, worldNormal), 0);
-    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color * meshColor);
+    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color + meshColor) / 2;
 
     float attenuation = 1;
     if (lights[index].type != LIGHT_DIRECTIONAL) {

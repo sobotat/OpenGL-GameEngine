@@ -57,9 +57,9 @@ void main () {
     float diff = max( dot(lightVector, worldNormal), 0);
     vec4 diffuseColor;
     if (hasTexture == 1) {
-      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color * texture(textureUnitID, uv * textureScale)));
+      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color + texture(textureUnitID, uv * textureScale)) / 2);
     } else {
-      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color * meshColor)); 
+      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color + meshColor) / 2); 
     }
 
     float attenuation = 1;
