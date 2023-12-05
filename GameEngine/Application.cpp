@@ -545,7 +545,7 @@ void Application::loadSceneC() {
     scene->addActor(sphereActor1);
     
     shared_ptr<PointLight> light1 = make_shared<PointLight>();
-    light1->setPosition({0, 0, 1});
+    light1->setPosition({0, 0, -1});
     scene->addLight(light1);
     
     scenes.push_back(scene);
