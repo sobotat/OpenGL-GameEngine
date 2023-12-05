@@ -27,6 +27,11 @@ uniform int numberOfLights;
 uniform vec4 meshColor;
 uniform vec4 meshAmbientColor;
 
+uniform int hasTexture;
+uniform sampler2D textureUnitID;
+uniform float textureScale;
+in vec2 uv;
+
 out vec4 fragColor;
 
 void main () {
@@ -38,7 +43,12 @@ void main () {
       lightVector = normalize(lights[index].position - worldPosition);
 
     float diff = max(dot(lightVector, worldNormal), 0);
-    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color + meshColor) / 2;
+    vec4 diffuseColor;
+    if (hasTexture == 1) {
+      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color + texture(textureUnitID, uv * textureScale)) / 2);
+    } else {
+      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color + meshColor) / 2);
+    }
 
     float attenuation = 1;
     if (lights[index].type != LIGHT_DIRECTIONAL) {
@@ -58,6 +68,11 @@ void main () {
       fragColor += attenuation * diffuseColor;
   }
 
-  vec4 ambientColor = meshAmbientColor * meshColor;
+  vec4 ambientColor;
+  if (hasTexture == 1) {
+    ambientColor = meshAmbientColor * texture(textureUnitID, uv * textureScale);
+  } else {
+    ambientColor = meshAmbientColor * meshColor;
+  }
   fragColor += ambientColor;
 }
