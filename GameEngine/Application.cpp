@@ -63,10 +63,10 @@ void Application::init() {
     camera = make_shared<Camera>();
     cameraLight = make_shared<SpotLight>();
     cameraLight->setOn(false);
-    cameraLight->setColor({.7, .7, 1, 1});
-    cameraLight->setAngle(15);
-    cameraLight->setFadeStartAngle(10);
-    cameraLight->setDimmingFactor(0.05f);
+    cameraLight->setColor({.9, .9, 1, 1});
+    cameraLight->setAngle(18);
+    cameraLight->setFadeStartAngle(12);
+    cameraLight->setDimmingFactor(0.001f);
     cameraLight->setDiffuseFactor(.9f);
 
     glewExperimental = GL_TRUE;
@@ -347,7 +347,8 @@ void Application::OnSelected(SelectResult result) {
     } else if (spawnActor == "gift") {        
         shared_ptr<Actor> gift = make_shared<Actor>(meshes["gift"].get(), shaderPrograms["phong"], materials["red-shiny"]);
         gift
-            ->addTransform(make_shared<Location>(result.position))       
+            ->addTransform(make_shared<Location>(result.position))
+            ->addTransform(make_shared<Scale>(UtilClass::randomFloatRange(.75f, 3.0f)))
             ->addTransform(make_shared<Rotation>(UtilClass::randomFloatRange(0, 360), vec3{0, 1, 0}));
         scene->addActor(gift);
         return;
@@ -617,8 +618,9 @@ void Application::loadSceneF() {
         ->addTransform(make_shared<Location>(vec3{10, .325, 0}))
         ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));    
     flyingBall
-        ->addTransform(make_shared<Scale>(.5))
-        ->addTransform(make_shared<ContinuousMoveOnLine>(vec3{-5, 15, 0}, vec3{10, 10, 0}, 0.005f));
+        ->addTransform(make_shared<Location>(vec3{7.5, 1, 8}))
+        ->addTransform(make_shared<Scale>(.3))
+        ->addTransform(make_shared<ContinuousMoveOnLine>(vec3{9, 0, 0}, 0.01f));
 
     shared_ptr<ContinuousMoveOnCurve> moveOnCurve = make_shared<ContinuousMoveOnCurve>(
             mat4{
@@ -637,7 +639,7 @@ void Application::loadSceneF() {
     moveOnCurve->addPoint({8, 3, 0}, {9, 2, 0});
     
     flyingBall2
-        ->addTransform(make_shared<Location>(vec3{7.5, 1, 5}))
+        ->addTransform(make_shared<Location>(vec3{7.5, 1, 10}))
         ->addTransform(make_shared<Scale>(.3))
         ->addTransform(moveOnCurve);
     
@@ -649,9 +651,13 @@ void Application::loadSceneF() {
     scene->addActor(flyingBall);
     scene->addActor(flyingBall2);
     
-    for(int i = 0; i < 5; i++) {
+    for(int i = 0; i < 8; i++) {
         shared_ptr<Actor> wall = make_shared<Actor>(meshes["wall"].get(), shaderPrograms["phong"], materials["wall-texture"]);
-        wall->addTransform(make_shared<Location>(vec3{(i - 2.5) * 8, 0, 20}));
+        wall
+            ->addTransform(make_shared<Location>(vec3{0,0,20}))
+            ->addTransform(make_shared<Rotation>(-15, vec3{0, 1, 0}))
+            ->addTransform(make_shared<Scale>(.3f))
+            ->addTransform(make_shared<Location>(vec3{(i - 2.5) * 8, 0, 0}));
         scene->addActor(wall);
     }
 
@@ -687,7 +693,7 @@ void Application::loadSceneF() {
     
     shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
     light1->setDirection({1, 1, 0});
-    light1->setIntensity(.2f);
+    light1->setIntensity(.1f);
     scene->addLight(light1);
 
     shared_ptr<PointLight> light2 = make_shared<PointLight>();
