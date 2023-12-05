@@ -66,7 +66,7 @@ void Application::init() {
     cameraLight->setColor({.9, .9, 1, 1});
     cameraLight->setAngle(18);
     cameraLight->setFadeStartAngle(12);
-    cameraLight->setDimmingFactor(0.001f);
+    cameraLight->setDimmingFactorQuadratic(0.001f);
     cameraLight->setDiffuseFactor(.9f);
 
     glewExperimental = GL_TRUE;
@@ -417,14 +417,14 @@ void Application::loadSceneA() {
     light1->setPosition({0, 0, -1});
     light1->setColor({.3, .3, 1, 1});
     light1->setIntensity(0.5f);
-    light1->setDimmingFactor(.005f);
+    light1->setDimmingFactorQuadratic(.005f);
     scene->addLight(light1);
     
     shared_ptr<PointLight> light2 = make_shared<PointLight>();
     light2->setPosition({0, 0, 1});
     light2->setColor({1, .3, .3, 1});
     light2->setIntensity(0.5);
-    light2->setDimmingFactor(.005f);
+    light2->setDimmingFactorQuadratic(.005f);
     scene->addLight(light2);
     
     shared_ptr<DirectionalLight> light3 = make_shared<DirectionalLight>();
@@ -507,7 +507,7 @@ void Application::loadSceneB() {
     
     shared_ptr<PointLight> light1 = make_shared<PointLight>();
     light1->setColor({.7, .7, .5, 1});
-    light1->setDimmingFactor(.001f);
+    light1->setDimmingFactorQuadratic(.001f);
     scene->addLight(light1);
     
     scenes.push_back(scene);
@@ -693,12 +693,12 @@ void Application::loadSceneF() {
 
     shared_ptr<PointLight> light2 = make_shared<PointLight>();
     light2->setPosition({10, 2, 0});
-    light2->setDimmingFactor(0.1f);
+    light2->setDimmingFactorQuadratic(0.1f);
     scene->addLight(light2);
     
     shared_ptr<PointLight> light3 = make_shared<PointLight>();
     light3->setPosition({8, 1, 9});
-    light3->setDimmingFactor(0.1f);
+    light3->setDimmingFactorQuadratic(0.1f);
     scene->addLight(light3);
     
     scenes.push_back(scene);

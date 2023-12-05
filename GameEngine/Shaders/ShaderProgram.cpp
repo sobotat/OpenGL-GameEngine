@@ -113,7 +113,8 @@ void ShaderProgram::onActiveSceneChanged(shared_ptr<Scene> scene) {
         if (pointLight) {
             setProperty(LightType::POINT, "lights[" + std::to_string(index) + "].type");
             setProperty(pointLight->getPosition(), "lights[" + std::to_string(index) + "].position");
-            setProperty(pointLight->getDimmingFactor(), "lights[" + std::to_string(index) + "].dimmingFactor");
+            setProperty(pointLight->getDimmingFactorLinear(), "lights[" + std::to_string(index) + "].dimmingFactorLinear");
+            setProperty(pointLight->getDimmingFactorQuadratic(), "lights[" + std::to_string(index) + "].dimmingFactorQuadratic");
 
             shared_ptr<SpotLight> spotLight = dynamic_pointer_cast<SpotLight>(light);
             if (spotLight) {
@@ -155,7 +156,8 @@ void ShaderProgram::onLightChangedInSceneChanged(shared_ptr<Scene> scene, shared
     if (pointLight) {
         setProperty(LightType::POINT, "lights[" + std::to_string(index) + "].type");
         setProperty(pointLight->getPosition(), "lights[" + std::to_string(index) + "].position");
-        setProperty(pointLight->getDimmingFactor(), "lights[" + std::to_string(index) + "].dimmingFactor");
+        setProperty(pointLight->getDimmingFactorLinear(), "lights[" + std::to_string(index) + "].dimmingFactorLinear");
+        setProperty(pointLight->getDimmingFactorQuadratic(), "lights[" + std::to_string(index) + "].dimmingFactorQuadratic");
 
         shared_ptr<SpotLight> spotLight = dynamic_pointer_cast<SpotLight>(light);
         if (spotLight) {

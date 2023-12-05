@@ -8,7 +8,8 @@ struct light {
   int type;
   vec3 position;
   vec4 color;
-  float dimmingFactor;
+  float dimmingFactorLinear;
+  float dimmingFactorQuadratic;
   float diffuseFactor;
   vec3 direction;
   float angle;
@@ -66,7 +67,7 @@ void main () {
     float attenuation = 1;
     if (lights[index].type != LIGHT_DIRECTIONAL) {
       float distance = length(lights[index].position - worldPosition);
-      attenuation = 1.0 / (1.0 + lights[index].dimmingFactor * distance * distance);
+      attenuation = 1.0 / (1.0 + lights[index].dimmingFactorLinear * distance + lights[index].dimmingFactorQuadratic * distance * distance);
     }
 
     if (lights[index].type == LIGHT_SPOT) {

@@ -9,11 +9,20 @@ vec3 PointLight::getPosition() {
     return this->position;
 }
 
-void PointLight::setDimmingFactor(float factor) {
-    this->dimmingFactor = factor;
+void PointLight::setDimmingFactorLinear(float factor) {
+    this->dimmingFactorLinear = factor;
     notifyLightChanged();
 }
 
-float PointLight::getDimmingFactor() {
-    return this->dimmingFactor;
+float PointLight::getDimmingFactorLinear() {
+    return this->dimmingFactorLinear;
+}
+
+void PointLight::setDimmingFactorQuadratic(float factor) {
+    this->dimmingFactorQuadratic = factor;
+    notifyLightChanged();
+}
+
+float PointLight::getDimmingFactorQuadratic() {
+    return this->dimmingFactorQuadratic;
 }
