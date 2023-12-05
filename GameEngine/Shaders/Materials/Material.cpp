@@ -9,6 +9,7 @@ Material::Material(vec4 color, float shininess, float specular) {
 
 void Material::applyMaterial(shared_ptr<ShaderProgram> shaderProgram) {
     shaderProgram->setProperty(color, "meshColor");
+    shaderProgram->setProperty(ambient, "meshAmbientColor");
     shaderProgram->setProperty(shininess, "shininess");
     shaderProgram->setProperty(specular, "specular");
     
@@ -29,6 +30,14 @@ vec4 Material::getColor() const {
 
 void Material::setColor(const vec4& color) {
     this->color = color;
+}
+
+vec4 Material::getAmbient() const {
+    return this->ambient;
+}
+
+void Material::setAmbient(const vec4& ambient) {
+    this->ambient = ambient;
 }
 
 float Material::getShininess() const {

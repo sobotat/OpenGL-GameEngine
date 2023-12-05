@@ -197,14 +197,14 @@ void Application::createShaders() {
 }
 
 void Application::createMaterials() {
-    materials.insert(make_pair("red-shiny", make_shared<Material>(vec4{1, 0, 0, 1}, 48, 1)));
+    materials.insert(make_pair("red-shiny", make_shared<Material>(vec4{1, 0.001, 0.001, 1}, 48, 1)));
     materials.insert(make_pair("blue-shiny", make_shared<Material>(vec4{.2, .2, 1, 1}, 48, 1)));
-    materials.insert(make_pair("red-mat", make_shared<Material>(vec4{1, 0, 0, 1}, 8, 1)));
+    materials.insert(make_pair("red-mat", make_shared<Material>(vec4{1, 0.001, 0.001, 1}, 8, 1)));
     materials.insert(make_pair("red-ultra-mat", make_shared<Material>(vec4{1, 0, 0, 1}, 1, 1)));
-    materials.insert(make_pair("blue-mat", make_shared<Material>(vec4{.2, .2, 1, 1}, 8, 1)));
+    materials.insert(make_pair("blue-mat", make_shared<Material>(vec4{0.001, 0.749, 1, 1}, 8, 1)));
     materials.insert(make_pair("light-blue-mat", make_shared<Material>(vec4{0.5569, 0.7804, 0.8235, 1}, 8, 1)));
-    materials.insert(make_pair("yellow-shiny", make_shared<Material>(vec4{1, 1, 0, 1}, 48, 1)));
-    materials.insert(make_pair("yellow-mat", make_shared<Material>(vec4{1, 1, 0, 1}, 8, 1)));
+    materials.insert(make_pair("yellow-shiny", make_shared<Material>(vec4{1, 1, 0.001, 1}, 48, 1)));
+    materials.insert(make_pair("yellow-mat", make_shared<Material>(vec4{1, 1, 0.001, 1}, 8, 1)));
     materials.insert(make_pair("green-mat", make_shared<Material>(vec4{0.6627, 0.8118, 0.3294, 1}, 8, 1)));
     materials.insert(make_pair("green-shiny", make_shared<Material>(vec4{0.6627, 0.8118, 0.3294, 1}, 48, 1)));
     materials.insert(make_pair("dark-green-mat", make_shared<Material>(vec4{0.6588, 0.7725, 0.2706, 1}, 8, 1)));
@@ -415,21 +415,21 @@ void Application::loadSceneA() {
 
     shared_ptr<PointLight> light1 = make_shared<PointLight>();
     light1->setPosition({0, 0, -1});
-    light1->setColor({.1, .1, 1, 1});
+    light1->setColor({.3, .3, 1, 1});
     light1->setIntensity(0.5f);
     light1->setDimmingFactor(.005f);
     scene->addLight(light1);
     
     shared_ptr<PointLight> light2 = make_shared<PointLight>();
     light2->setPosition({0, 0, 1});
-    light2->setColor({1, .1, .1, 1});
+    light2->setColor({1, .3, .3, 1});
     light2->setIntensity(0.5);
     light2->setDimmingFactor(.005f);
     scene->addLight(light2);
     
     shared_ptr<DirectionalLight> light3 = make_shared<DirectionalLight>();
     light3->setColor({.3, .3, .3, 1});
-    light3->setDirection({0, 1, 1});
+    light3->setDirection({.1, 1, 1});
     light3->setColor({.1, .1, .7, 1});
     scene->addLight(light3);
     
@@ -599,8 +599,8 @@ void Application::loadSceneF() {
     shared_ptr<Actor> container_large = make_shared<Actor>(meshes["container-large"].get(), shaderPrograms["phong"], materials["red-shiny"]);
     shared_ptr<Actor> container_medium = make_shared<Actor>(meshes["container-medium"].get(), shaderPrograms["phong"], materials["red-shiny"]);
 
-    shared_ptr<Actor> flyingBall  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
-    shared_ptr<Actor> flyingBall2  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
+    shared_ptr<Actor> flyingBallLine  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
+    shared_ptr<Actor> flyingBallCurve  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
     
     floor
         ->addTransform(make_shared<Location>(vec3{0, 0, 1}))                
@@ -617,7 +617,7 @@ void Application::loadSceneF() {
     container_medium
         ->addTransform(make_shared<Location>(vec3{10, .325, 0}))
         ->addTransform(make_shared<Rotation>(-90, vec3{1, 0, 0}));    
-    flyingBall
+    flyingBallLine
         ->addTransform(make_shared<Location>(vec3{7.5, 1, 8}))
         ->addTransform(make_shared<Scale>(.3))
         ->addTransform(make_shared<ContinuousMoveOnLine>(vec3{9, 0, 0}, 0.01f));
@@ -638,7 +638,7 @@ void Application::loadSceneF() {
     moveOnCurve->addPoint({5, 1, 0}, {6, 2, 0});
     moveOnCurve->addPoint({8, 3, 0}, {9, 2, 0});
     
-    flyingBall2
+    flyingBallCurve
         ->addTransform(make_shared<Location>(vec3{7.5, 1, 10}))
         ->addTransform(make_shared<Scale>(.3))
         ->addTransform(moveOnCurve);
@@ -648,8 +648,8 @@ void Application::loadSceneF() {
     scene->addActor(house);
     scene->addActor(container_large);
     scene->addActor(container_medium);
-    scene->addActor(flyingBall);
-    scene->addActor(flyingBall2);
+    scene->addActor(flyingBallLine);
+    scene->addActor(flyingBallCurve);
     
     for(int i = 0; i < 8; i++) {
         shared_ptr<Actor> wall = make_shared<Actor>(meshes["wall"].get(), shaderPrograms["phong"], materials["wall-texture"]);
@@ -693,14 +693,18 @@ void Application::loadSceneF() {
     
     shared_ptr<DirectionalLight> light1 = make_shared<DirectionalLight>();
     light1->setDirection({1, 1, 0});
-    light1->setIntensity(.1f);
+    light1->setIntensity(.2f);
     scene->addLight(light1);
 
     shared_ptr<PointLight> light2 = make_shared<PointLight>();
     light2->setPosition({10, 2, 0});
-    light2->setColor({.8, .8, 1, 1});
-    light2->setDimmingFactor(.5);
+    light2->setDimmingFactor(0.1f);
     scene->addLight(light2);
+    
+    shared_ptr<PointLight> light3 = make_shared<PointLight>();
+    light3->setPosition({8, 1, 9});
+    light3->setDimmingFactor(0.1f);
+    scene->addLight(light3);
     
     scenes.push_back(scene);
 }

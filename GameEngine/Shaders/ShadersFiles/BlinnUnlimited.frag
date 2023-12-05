@@ -25,6 +25,7 @@ uniform int numberOfLights;
 
 uniform vec3 cameraPosition;
 uniform vec4 meshColor;
+uniform vec4 meshAmbientColor;
 uniform float shininess;
 uniform float specular;
 
@@ -52,7 +53,12 @@ void main () {
     vec4 specularColor = specular * spec * lights[index].color;
 
     float diff = max(dot(lightVector, worldNormal), 0);
-    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color + meshColor);
+    vec4 diffuseColor;
+    if (hasTexture == 1) {
+      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color * texture(textureUnitID, uv * textureScale)));
+    } else {
+      diffuseColor = lights[index].diffuseFactor * diff * ((lights[index].color * meshColor));
+    }
 
     float attenuation = 1;
     if (lights[index].type != LIGHT_DIRECTIONAL) {
@@ -74,9 +80,9 @@ void main () {
 
   vec4 ambientColor;
   if (hasTexture == 1) {
-    ambientColor = vec4( 0.01, 0.01, 0.01, 1) * texture(textureUnitID, uv * textureScale);
+    ambientColor = meshAmbientColor * texture(textureUnitID, uv * textureScale);
   } else {
-    ambientColor = vec4( 0.05, 0.05, 0.05, 1) * meshColor;
+    ambientColor = meshAmbientColor * meshColor;
   }
   fragColor += ambientColor;
 }

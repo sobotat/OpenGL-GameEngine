@@ -10,6 +10,7 @@ using namespace std;
 using namespace glm;
 class Material {
     vec4 color;
+    vec4 ambient = vec4(.02f, .02f, .02f, 1);
     float shininess;
     float specular;
     shared_ptr<Texture> texture = nullptr;
@@ -20,6 +21,8 @@ public:
 
     vec4 getColor() const;
     void setColor(const vec4& color);
+    vec4 getAmbient() const;
+    void setAmbient(const vec4& ambient);
     float getShininess() const;
     void setShininess(float shininess);
     float getSpecular() const;

@@ -24,6 +24,7 @@ uniform light lights[MAX_LIGHTS];
 uniform int numberOfLights;
 
 uniform vec4 meshColor;
+uniform vec4 meshAmbientColor;
 
 out vec4 fragColor;
 
@@ -36,7 +37,7 @@ void main () {
       lightVector = normalize(lights[index].position - worldPosition);
 
     float diff = max(dot(lightVector, worldNormal), 0);
-    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color + meshColor);
+    vec4 diffuseColor = lights[index].diffuseFactor * diff * (lights[index].color * meshColor);
 
     float attenuation = 1;
     if (lights[index].type != LIGHT_DIRECTIONAL) {
@@ -56,6 +57,6 @@ void main () {
       fragColor += attenuation * diffuseColor;
   }
 
-  vec4 ambientColor = vec4( 0.05, 0.05, 0.05, 1) * meshColor;
+  vec4 ambientColor = meshAmbientColor * meshColor;
   fragColor += ambientColor;
 }
