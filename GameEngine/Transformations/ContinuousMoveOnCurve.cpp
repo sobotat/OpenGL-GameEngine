@@ -1,7 +1,7 @@
 ﻿#include "ContinuousMoveOnCurve.h"
 
 
-ContinuousMoveOnCurve::ContinuousMoveOnCurve(mat4x3 firstPoints, float speed, bool reverse) : MoveOnCurve(coefficients, firstPoints, 0) {
+ContinuousMoveOnCurve::ContinuousMoveOnCurve(mat4x3 firstPoints, float speed, bool reverse) : MoveOnCurve(firstPoints, 0) {
     this->speed = speed;
     this->reverse = reverse;
 }
