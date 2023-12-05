@@ -36,9 +36,11 @@
 #include "Transformations/Scale.h"
 #include "Utils/UtilClass.h"
 #include "Meshes/PlaneMesh.h"
+#include "Meshes/SkyDomeMesh.h"
 #include "Meshes/WallMesh.h"
 #include "Shaders\TextureSkyboxShader.h"
 #include "Shaders/TextureShader.h"
+#include "Shaders/TextureSkyboxDomeShader.h"
 #include "Shaders\VertexSkyboxShader.h"
 #include "Shaders\Materials\Texture\CubeMapTexture.h"
 #include "Transformations/ContinuousMoveOnCurve.h"
@@ -147,6 +149,10 @@ void Application::createShaders() {
     shared_ptr<TextureSkyboxShader> textureSkyboxShader = make_shared<TextureSkyboxShader>();
     textureSkyboxShader->compile();
     shaders.push_back(textureSkyboxShader);
+
+    shared_ptr<TextureSkyboxDomeShader> textureSkyboxDomeShader = make_shared<TextureSkyboxDomeShader>();
+    textureSkyboxDomeShader->compile();
+    shaders.push_back(textureSkyboxDomeShader);
     
     shared_ptr<VertexSkyboxShader> vertexSkyboxShader = make_shared<VertexSkyboxShader>();
     vertexSkyboxShader->compile();
@@ -194,6 +200,12 @@ void Application::createShaders() {
         vertexSkyboxShader,
     })));
     shaderPrograms["texture-skybox"]->setProperty(0, "textureUnitID");
+
+    shaderPrograms.insert(make_pair("texture-skybox-dome", make_shared<ShaderProgram>(vector<shared_ptr<Shader>>{
+        textureSkyboxDomeShader,
+        vertexSkyboxShader,
+    })));
+    shaderPrograms["texture-skybox-dome"]->setProperty(0, "textureUnitID");
 }
 
 void Application::createMaterials() {
@@ -225,6 +237,10 @@ void Application::createMaterials() {
     materials["house-texture"]->getTexture()->setTextureScale(1);
     materials.insert(make_pair("wall-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
     materials["wall-texture"]->setTexture(make_shared<Texture>("../res/obj/wall/wall.png"));
+    materials.insert(make_pair("skybox-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["skybox-texture"]->setTexture(make_shared<CubeMapTexture>("../res/night/", ".png"));
+    materials.insert(make_pair("skydome-texture", make_shared<Material>(vec4{0.1, 0.1, 0.1, 1}, 8, 1)));
+    materials["skydome-texture"]->setTexture(make_shared<Texture>("../res/obj/skydome/skydome.png"));
 }
 
 void Application::createModels() {
@@ -244,6 +260,7 @@ void Application::createModels() {
     meshes.insert(make_pair("container-large", make_shared<ContainerLargeMesh>()));
     meshes.insert(make_pair("container-medium", make_shared<ContainerMediumMesh>()));
     meshes.insert(make_pair("wall", make_shared<WallMesh>()));
+    meshes.insert(make_pair("skydome", make_shared<SkyDomeMesh>()));
 
     printf("Models Created\n");
 }
@@ -374,7 +391,11 @@ void Application::onExit() {
 }
 
 void Application::loadSceneA() {
-    shared_ptr<Scene> scene = make_shared<Scene>();    
+    shared_ptr<Scene> scene = make_shared<Scene>();
+    
+    shared_ptr<Actor> skybox = make_shared<Actor>(meshes["skydome"].get(), shaderPrograms["texture-skybox-dome"], materials["skydome-texture"]);
+    scene->setSkybox(skybox);
+    
     shared_ptr<Actor> sphereActor1  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["red-mat"]);
     shared_ptr<Actor> sphereActor2  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
     shared_ptr<Actor> sphereActor3  = make_shared<Actor>(meshes["sphere"].get(), shaderPrograms["phong"], materials["blue-mat"]);
@@ -589,8 +610,7 @@ void Application::loadSceneE() {
 void Application::loadSceneF() {
     shared_ptr<Scene> scene = make_shared<Scene>();
 
-    shared_ptr<Actor> skybox = make_shared<Actor>(meshes["cube"].get(), shaderPrograms["texture-skybox"], materials["grey-mat"]);    
-    skybox->getMaterial()->setTexture(make_shared<CubeMapTexture>("../res/night/", ".png"));
+    shared_ptr<Actor> skybox = make_shared<Actor>(meshes["cube"].get(), shaderPrograms["texture-skybox"], materials["skybox-texture"]);    
     scene->setSkybox(skybox);
     
     shared_ptr<Actor> floor = make_shared<Actor>(meshes["plane"].get(), shaderPrograms["phong"], materials["grass-texture-scaled"]);
