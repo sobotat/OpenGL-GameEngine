@@ -1,11 +1,11 @@
 ﻿#include "ContinuousMoveOnLine.h"
 
-ContinuousMoveOnLine::ContinuousMoveOnLine(vec3 endLocation, float speed, bool reverse) : MoveOnLine(endLocation, 0) {
+ContinuousMoveOnLine::ContinuousMoveOnLine(vec3 direction, float speed, bool reverse) : MoveOnLine(direction, 0) {
     this->speed = speed;
     this->reverse = reverse;
 }
 
-ContinuousMoveOnLine::ContinuousMoveOnLine(vec3 startLocation, vec3 endLocation, float speed, bool reverse) : MoveOnLine(startLocation, endLocation, 0) {    
+ContinuousMoveOnLine::ContinuousMoveOnLine(vec3 startLocation, vec3 direction, float speed, bool reverse) : MoveOnLine(startLocation, direction, 0) {    
     this->speed = speed;
     this->reverse = reverse;
 }

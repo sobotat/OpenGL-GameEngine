@@ -5,11 +5,11 @@
 class MoveOnLine : public Location {
 protected:
     vec3 startLocation;
-    vec3 endLocation;
+    vec3 direction;
     float progress;
 public:
-    MoveOnLine(vec3 endLocation, float progress);
-    MoveOnLine(vec3 startLocation, vec3 endLocation, float progress);
+    MoveOnLine(vec3 direction, float progress);
+    MoveOnLine(vec3 startLocation, vec3 direction, float progress);
     
     mat4 transform() override;
 
