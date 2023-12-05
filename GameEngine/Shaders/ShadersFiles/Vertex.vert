@@ -12,9 +12,10 @@ out vec3 worldNormal;
 out vec2 uv;
 
 void main () {
-     worldNormal = normalize(transpose(inverse(mat3(modelMatrix) / modelMatrix[3][3])) * vn);
+     worldNormal = normalize(transpose(inverse(mat3(modelMatrix))) * vn);
      uv = vt;
      
-     worldPosition = vec3(modelMatrix * vec4 (vp, 1.0));
+     vec4 worldPositionVec4 = modelMatrix * vec4 (vp, 1.0);
+     worldPosition = vec3(worldPositionVec4 / worldPositionVec4.w);
      gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vp, 1.0);
 }
